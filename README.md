@@ -1,4 +1,4 @@
-# Digitale Arbeitsblätter für den Informatikunterricht
+# Digitale Arbeits&shy;blätter für den Informatik&shy;unterricht
 
 ## Einleitung
 Digitalisierung von Unterrichtsmaterial bedeutet häufig das Erstellen von PDF Dokumenten anstelle gedruckter Arbeitsblätter. Die Möglichkeiten digitaler Medien werden dabei nur unzureichend ausgeschöpft. Angeregt von Armin Hanischs [Chat-Simulation](https://www.arminhanisch.de/2019/02/chats-simulieren/) habe ich begonnen Arbeitsblätter für den Informatikunterricht zu entwerfen, bei denen die Schülerinnen und Schüler Unterrichtsinhalte interaktiv erforschen können.
