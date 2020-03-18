@@ -105,6 +105,8 @@
 		<style>
 			:root {
 				--border-default-style: 1px #aaa solid;
+				--small-gap: 4px;
+				--large-gap: 8px;
 			}
 			* {
 				box-sizing: border-box;
@@ -128,8 +130,8 @@
 			header input {
 				float: right;
 				text-decoration: line-through;
-				padding: 8px;
-				margin: 1em 8px;
+				padding: var(--large-gap);
+				margin: 1em var(--large-gap);
 				font-size: 1.33em;
 				width: 2em;
 				font-family: Serif;
@@ -143,7 +145,7 @@
 			footer a {
 				float: right;
 				text-align: right;
-				padding: 0 8px 8px;
+				padding: 0 var(--large-gap);
 				color: #000;
 				text-decoration: none;
 			}
@@ -157,19 +159,19 @@
 				overflow: auto;
 			}
 			input {
-				border: 1px #aaa solid;
-				padding: 4px;
-				font-family: mono;
+				border: var(--border-default-style);
+				padding: var(--small-gap);
+				font-family: monospace;
 				font-size: 16px;
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 4px;
+				padding: 0 var(--small-gap);
 			}
 			label[for=file-select] {
 				border: var(--border-default-style);
 				display: inline-block;
-				padding: 4px 8px;
+				padding: var(--small-gap) var(--large-gap);
 				cursor: pointer;
 			}
 			input[type=file] {
@@ -182,7 +184,7 @@
 				width: calc(100% - 100px);
 			}
 			#input-length {
-				padding-left: 8px;
+				padding-left: var(--large-gap);
 				width: 100px;
 			}
 			#image-frame {
@@ -192,14 +194,14 @@
 				width: 720px;
 				min-width: 75%;
 				max-width: 100%;
-				padding: 4px;
-				margin: 8px auto;
+				padding: var(--small-gap);
+				margin: var(--large-gap) auto;
 			}
 			#resolutions-frame {
 				width: 720px;
 				min-width: 75%;
 				max-width: 100%;
-				margin: 8px auto;
+				margin: var(--large-gap) auto;
 			}
 			#resolution {
 				float: right;
@@ -212,7 +214,7 @@
 			.palette, #palette-add {
 				float: left;
 				width: 80px;
-				margin: 0 8px 8px 0;
+				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.palette input, #palette-add input {
 				width: 100%;

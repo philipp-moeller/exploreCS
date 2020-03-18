@@ -32,7 +32,7 @@
 				picture: 'wrrrwwgg:rrrrrwgg:rrrrrwww:rrrrrwww:rrrrrwww:rrrrrwwb:wrrrwwbb:wwswwbbb:bwwswwbb:bbwwswww'
 			}
 
-			// handle palette inputs			
+			// handle palette inputs
 			var palette = {'w': '#ffffff', 's': '#000000'}
 			function addColor(hex,char) {
 				var paletteElements = document.getElementsByClassName('palette');
@@ -100,7 +100,7 @@
 					linebreak = input.value;
 				}
 			}
-			
+
 			function validate() {
 				var input = document.getElementById('input');
 				var pos = input.selectionStart;
@@ -147,7 +147,7 @@
 				}
 				document.getElementById('input-length').textContent = rawinput.length>0 ? rawinput.length+' Zeichen' : '';
 			}
-			
+
 			function redraw() {
 				var canvas = document.getElementById('image');
 				canvas.setAttribute('width',canvas.width);
@@ -168,6 +168,8 @@
 		<style>
 			:root {
 				--border-default-style: 1px #aaa solid;
+				--small-gap: 4px;
+				--large-gap: 8px;
 			}
 			* {
 				box-sizing: border-box;
@@ -191,8 +193,8 @@
 			header input {
 				float: right;
 				text-decoration: line-through;
-				padding: 8px;
-				margin: 1em 8px;
+				padding: var(--large-gap);
+				margin: 1em var(--large-gap);
 				font-size: 1.33em;
 				width: 2em;
 				font-family: Serif;
@@ -205,7 +207,7 @@
 			}
 			footer a {
 				float: right;
-				padding: 0 8px 4px;
+				padding: 0 var(--large-gap);
 				color: #000;
 				text-decoration: none;
 			}
@@ -219,14 +221,14 @@
 				overflow: auto;
 			}
 			input {
-				border: 1px #aaa solid;
-				padding: 4px;
-				font-family: mono;
+				border: var(--border-default-style);
+				padding: var(--small-gap);
+				font-family: monospace;
 				font-size: 16px;
 			}
 			input[type=color] {
-				border: 1px #aaa solid;
-				padding: 0 4px;
+				border: var(--border-default-style);
+				padding: 0 var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -235,7 +237,7 @@
 				width: calc(100% - 100px);
 			}
 			#input-length {
-				padding-left: 8px;
+				padding-left: var(--large-gap);
 				width: 100px;
 			}
 			#image-frame {
@@ -243,8 +245,8 @@
 				width: 480px;
 				min-width: 50%;
 				max-width: 100%;
-				padding: 4px;
-				margin: 8px auto;
+				padding: var(--small-gap);
+				margin: var(--large-gap) auto;
 			}
 			#image {
 				background-color: #eee;
@@ -253,7 +255,7 @@
 			.palette, #palette-add, #palette-linebreak {
 				float: left;
 				width: 80px;
-				margin: 0 8px 8px 0;
+				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.palette input, #palette-add input, #palette-linebreak input, #palette-linebreak span {
 				width: 100%;
