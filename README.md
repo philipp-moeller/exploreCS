@@ -1,4 +1,4 @@
-# Digitale Arbeitsblätter für den Informatikunterricht
+# Digitale Arbeits&shy;blätter für den Informatik&shy;unterricht
 
 ## Einleitung
 Digitalisierung von Unterrichtsmaterial bedeutet häufig das Erstellen von PDF Dokumenten anstelle gedruckter Arbeitsblätter. Die Möglichkeiten digitaler Medien werden dabei nur unzureichend ausgeschöpft. Angeregt von Armin Hanischs [Chat-Simulation](https://www.arminhanisch.de/2019/02/chats-simulieren/) habe ich begonnen Arbeitsblätter für den Informatikunterricht zu entwerfen, bei denen die Schülerinnen und Schüler Unterrichtsinhalte interaktiv erforschen können.
@@ -10,8 +10,8 @@ Die Arbeitsblätter sind so gestaltet, dass jede Datei alleinstehend verwendet w
 
 ## Kapitel
 ### Repräsentation von Bildern
-1. [Rastergrafiken](https://github.com/philipp-moeller/exploreCS/blob/master/rastergrafiken.htm)
-2. [Kodierung von Rastergrafiken](https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_rastergrafiken.htm)
-3. [Kodierung farbiger Rastergrafiken](https://github.com/philipp-moeller/exploreCS/blob/master/farbige_rastergrafiken.htm)
-4. [Komprimierung von Rastegrafiken](https://github.com/philipp-moeller/exploreCS/blob/master/komprimierung_rastergrafiken.htm)
-5. [RGB-Farbraum](https://github.com/philipp-moeller/exploreCS/blob/master/rgb_farbraum.htm)
+1. [Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rastergrafiken.htm)
+2. [Kodierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_rastergrafiken.htm)
+3. [Kodierung farbiger Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/farbige_rastergrafiken.htm)
+4. [Komprimierung von Rastegrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/komprimierung_rastergrafiken.htm)
+5. [RGB-Farbraum](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rgb_farbraum.htm)
