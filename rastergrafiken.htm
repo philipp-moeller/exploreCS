@@ -69,6 +69,7 @@
 
 				var res = parseInt(document.getElementById('resolution').value);
 				document.getElementById('image-resolution').textContent = res**2;
+				document.getElementById('quota-resolution').textContent = (Math.round(res**2/parseInt(document.getElementById('orig-resolution').textContent)*10000)/100).toString().replace('.',',');
 				var ratio = Math.round(canvasSize/res);
 
 				var canvas = document.getElementById('image');
@@ -253,7 +254,7 @@
 				<div id="resolutions-frame">
 					<input id="resolution" type="range" min="6" max="60" step="6" value="36" onchange="scaleImg();" />
 					<p>Originalauflösung: <span id="orig-resolution">0</span> Pixel</p>
-					<p>Reduzierte Auflösung: <span id="image-resolution">0</span> Pixel</p>
+					<p>Reduzierte Auflösung: <span id="image-resolution">0</span> Pixel (<span id="quota-resolution">0</span>%)</p>
 				</div>
 			</section>
 			<section id="exercises">
