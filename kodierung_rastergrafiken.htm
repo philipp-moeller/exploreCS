@@ -278,20 +278,24 @@
 				background-color: #eee;
 				width: 100%;
 			}
-			.palette, #palette-add {
+			.palette, .palette-special {
 				float: left;
 				width: 80px;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
-			.palette input, #palette-add input {
+			.palette input, .palette-special input {
 				width: 100%;
 				height: 28px;
 			}
-			#linebreak {
-				width: 20px;
-			}
-			#height, #width {
-				width: 30px;
+			.palette-special span {
+				display: block;
+				overflow: hidden;
+				border: var(--border-default-style);
+				background-color: buttonface;
+				padding: 6px 2px;
+				font-size: 12px;
+				text-align: center;
+				vertical-align: middle;
 			}
 			#example {
 				position: absolute;
@@ -314,8 +318,17 @@
 				<p class="text">Im einfachsten Fall enthält eine Rastergrafik nur schwarze und weiße Bildpunkte. Um ein solches Bild im Speicher eines Rechners abzulegen, muss diese Darstellung in eine Zeichenkette überführt werden.</p>
 			</section>
 			<section>
-				<h2>Kodierung</h2>
+				<h2>Einstellungen</h2>
+				<p class="text">Beim Dekodieren der Zeichenkette sind die Abmessungen des Bildes in der Regel noch unbekannt. Mithilfe eines Steuerzeichens wird deshalb in der kodierten Zeichenkette das Ende einer Zeile dargestellt.</p>
 				<form>
+					<div class="palette-special">
+						<span>Breite</span>
+						<input id="width" type="number" required pattern="\d+" value="5" onchange="getDimensions();" />
+					</div>
+					<div class="palette-special">
+						<span>Höhe</span>
+						<input id="height" type="number" required pattern="\d+" value="5" onchange="getDimensions();" />
+					</div>
 					<div class="palette">
 						<input type="color" value="#000000" disabled="disabled" />
 						<input type="text" maxlength="1" required pattern="[A-Za-z]{1}" value="s" oninput="getPalette();" />
@@ -324,7 +337,10 @@
 						<input type="color" value="#FFFFFF" disabled="disabled" />
 						<input type="text" maxlength="1" required pattern="[A-Za-z]{1}" value="w" oninput="getPalette();" />
 					</div>
-					<p style="clear: both;"><span class="text">Beim Dekodieren der Zeichenkette sind die </span>Abmessungen <span class="text">des Bildes </span><input id="width" type="text" pattern="\d+" value="5" onchange="getDimensions();" /> x <input id="height" type="text" pattern="\d+" value="5" onchange="getDimensions();" /><span class="text"> in der Regel noch unbekannt. Mithilfe eines</span> Steuerzeichen<span class="text">s</span> <input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" /><span class="text"> wird deshalb in der kodierten Zeichenkette das Ende einer Zeile dargestellt.</span></p>
+					<div class="palette-special">
+						<span>Trennzeichen</span>
+						<input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" />
+					</div>
 				</form>
 			</section>
 			<section>
@@ -335,7 +351,7 @@
 				</div>
 			</section>
 			<section>
-				<h2>Repräsentation als Zeichenkette</h2>
+				<h2>Kodierung</h2>
 				<input type="text" id="input" onchange="validate();" readonly="readonly" /><span id="input-length"></span>
 			</section>
 			<section id="exercises">
