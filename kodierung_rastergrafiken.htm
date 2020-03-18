@@ -128,7 +128,7 @@
 				ctx.clearRect(0,0,canvas.width,canvas.height);
 
 				var rawinput = image.join(linebreak).replace(/(0|1)/g,function(match,index) { return palette[1-index]; });
-				document.getElementById('input').value = rawinput;
+				document.getElementById('input').textContent = rawinput;
 
 				var cur = {x: 0, y: 0};
 				var max = {x: 1, y: 1};
@@ -166,17 +166,6 @@
 				size = canvas.clientWidth/dim.x;
 				canvas.setAttribute('height',size*dim.y);
 				draw();
-			}
-
-			function validate() {
-				var input = document.getElementById('input');
-				var pos = input.selectionStart;
-				var origin = input.value;
-				input.value = origin.split('').filter(function(char) {
-					return Object.keys(palette).indexOf(char)!=-1 || char==linebreak;
-				}).join('');
-				if (input.value.length!=origin.length)
-					input.setSelectionRange(pos-1,pos-1);
 			}
 
 			function drawExample() {
@@ -260,6 +249,13 @@
 			}
 			#input {
 				width: calc(100% - 100px);
+				display: inline-block;
+				font-family: monospace;
+				font-size: 16px;
+				border: var(--border-default-style);
+				margin: var(--small-gap) 0;
+				padding: var(--small-gap);
+				word-wrap: break-word;
 			}
 			#input-length {
 				padding-left: var(--large-gap);
@@ -352,7 +348,7 @@
 			</section>
 			<section>
 				<h2>Kodierung</h2>
-				<input type="text" id="input" onchange="validate();" readonly="readonly" /><span id="input-length"></span>
+				<span id="input"></span><span id="input-length"></span>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
