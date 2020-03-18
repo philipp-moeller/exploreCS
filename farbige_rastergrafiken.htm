@@ -27,7 +27,7 @@
 			var size = 40;
 
 			var example = {
-				palette: {'w': '#ffffff', 's': '#000000', 'r': '#ff0000', 'g': '#ffff00', 'b': '#3366ff'},
+				palette: {'s': '#000000', 'w': '#ffffff', 'r': '#c30707', 'g': '#ffea21', 'b': '#8ca9ff'},
 				linebreak: ':',
 				picture: 'wrrrwwgg:rrrrrwgg:rrrrrwww:rrrrrwww:rrrrrwww:rrrrrwwb:wrrrwwbb:wwswwbbb:bwwswwbb:bbwwswww'
 			}
@@ -102,6 +102,8 @@
 			}
 
 			function validate() {
+				document.getElementById('example').style.display = 'none';
+
 				var input = document.getElementById('input');
 				var pos = input.selectionStart;
 				var origin = input.value;
@@ -159,6 +161,7 @@
 			function drawExample() {
 				setPalette(example.palette);
 				setLinebreak(example.linebreak);
+				document.getElementById('example').style.display = 'none';
 				document.getElementById('input').value = example.picture;
 				draw();
 			}
@@ -241,6 +244,7 @@
 				width: 100px;
 			}
 			#image-frame {
+				position: relative;
 				border: var(--border-default-style);
 				width: 480px;
 				min-width: 50%;
@@ -273,6 +277,13 @@
 			}
 			#linebreak {
 				width: 20px;
+			}
+			#example {
+				position: absolute;
+				left: calc(50% - 14px);
+				top: calc(50% - 14px);
+				font-size: 24px;
+				text-decoration: none;
 			}
 		</style>
 	</head>
@@ -314,7 +325,8 @@
 			<section>
 				<h2>Bild</h2>
 				<div id="image-frame">
-					<canvas id="image" ondblclick="drawExample();"></canvas>
+					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
+					<canvas id="image"></canvas>
 				</div>
 			</section>
 			<section id="exercises">

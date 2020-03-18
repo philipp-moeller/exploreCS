@@ -29,7 +29,24 @@
 
 			var example = {
 				linebreak: ':',
-				image: ['001111100','010000010','100101001','100101001','100000001','101000101','100111001','010000010','001111100']
+				image: [
+					'0000011111100000',
+					'0001100001111000',
+					'0011100001111100',
+					'0111000000111110',
+					'0110011110011110',
+					'1000111111000001',
+					'1000111111001101',
+					'1100111111011111',
+					'1110011110011111',
+					'1110000000001101',
+					'1100111111110001',
+					'0111001001001110',
+					'0010001001000100',
+					'0010000000000100',
+					'0001000000001000',
+					'0000111111110000',
+				]
 			}
 
 			// handle palette inputs
@@ -85,6 +102,7 @@
 
 			// handle image input
 			function drawPixel(event) {
+				document.getElementById('example').style.display = 'none';
 				var canvas = document.getElementById('image');
 				var x = Math.floor(event.offsetX/canvas.clientWidth*dim.x);
 				var y = Math.floor(event.offsetY/canvas.clientHeight*dim.y);
@@ -163,6 +181,7 @@
 
 			function drawExample() {
 				setLinebreak(example.linebreak);
+				document.getElementById('example').style.display = 'none';
 				image = example.image.slice(0);
 				setDimensions(image[0].length,image.length);
 				draw();
@@ -274,6 +293,13 @@
 			#height, #width {
 				width: 30px;
 			}
+			#example {
+				position: absolute;
+				left: calc(50% - 14px);
+				top: calc(50% - 14px);
+				font-size: 24px;
+				text-decoration: none;
+			}
 		</style>
 	</head>
 	<body onload="redraw();" onresize="redraw();">
@@ -304,12 +330,13 @@
 			<section>
 				<h2>Bild zeichnen</h2>
 				<div id="image-frame" onmousemove="drawCursor(event);" onmouseout="redraw();">
+					<a id="example" href="#" onclick="drawExample(); return false;" onmousemove="redraw(); event.stopPropagation();">🧩</a>
 					<canvas id="image" onclick="drawPixel(event);" oncontextmenu="redraw();"></canvas>
 				</div>
 			</section>
 			<section>
 				<h2>Repräsentation als Zeichenkette</h2>
-				<input type="text" id="input" onchange="validate();" readonly="readonly" ondblclick="drawExample();" /><span id="input-length"></span>
+				<input type="text" id="input" onchange="validate();" readonly="readonly" /><span id="input-length"></span>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
