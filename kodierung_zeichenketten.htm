@@ -25,7 +25,7 @@
 			// handle text input
 			function extendAlphabet() {
 				var input = document.getElementById('input').value;
-				var chars = input.split('').filter((v, i, a) => a.indexOf(v) === i);
+				var chars = input.split('').filter((v, i, a) => a.indexOf(v)===i);
 				var coded = Object.keys(alphabet);
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				for (var i=alphabetElements.length-1; i>=0; i--) {
@@ -49,7 +49,7 @@
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				alphabet = {};
 				for (var i=0; i<alphabetElements.length; i++) {
-					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? '' : alphabetElements[i].children[0].value;
+					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? ' ' : alphabetElements[i].children[0].value;
 					alphabet[char] = alphabetElements[i].children[1].value;
 				}
 				encode();
