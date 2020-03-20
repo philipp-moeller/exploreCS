@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>ASCII-Code</title>
+		<title>Kodierung von Zeichenketten</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<script>
@@ -22,83 +22,76 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
-			// default values
-			var printable = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-			var cl = {x: 0, y: 0, r: 0};
-			var cr = {x: 0, y: 0, r: 0};
-
-			// handle mixing colors
-			function char2dec(char) {
-				index = printable.indexOf(char);
-				if (index!=-1)
-					return index+32;
-				else
-					return '';
-			}
-			function dec2bin(val,len) {
-				if (val==='')
-					return '';
-				var bin = val.toString(2);
-				return '0'.repeat(Math.max(0,len-bin.length))+bin;
-			}
-			function dec2hex(val) {
-				if (val==='')
-					return '';
-				return val<16 ? '0'+val.toString(16) : val.toString(16);
-			}
-			function dec2char(index) {
-				return (index>31 && index<127) ? printable[index-32] : '¿';
-			}
-			function bin2char(val) {
-				var index = parseInt(val,2);
-				return dec2char(index);
-			}
-			function hex2char(val) {
-				var index = parseInt(val,16);
-				return dec2char(index);
+			// handle text input
+			function extendAlphabet() {
+				var input = document.getElementById('input').value;
+				var chars = input.split('').filter((v, i, a) => a.indexOf(v) === i);
+				var coded = Object.keys(alphabet);
+				var alphabetElements = document.getElementsByClassName('alphabet');
+				for (var i=alphabetElements.length-1; i>=0; i--) {
+					if (chars.indexOf(coded[i])==-1)
+						alphabetElements[i].remove();
+				}
+				var needed = chars.filter(x => !coded.includes(x));
+				for (var i=0; i<needed.length; i++) {
+					var newChar = document.getElementById('hidden').children[0].cloneNode(true);
+					newChar.className = needed[i]==' ' ? 'alphabet small' : 'alphabet';
+					newChar.children[0].value = needed[i]==' ' ? 'Leerzeichen' : needed[i];
+					newChar.children[1].value = '';
+					document.getElementById('alphabet').appendChild(newChar);
+				}
+				getAlphabet();
 			}
 
+			// handle alphabet inputs
+			var alphabet = {}
+			function getAlphabet() {
+				var alphabetElements = document.getElementsByClassName('alphabet');
+				alphabet = {};
+				for (var i=0; i<alphabetElements.length; i++) {
+					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? '' : alphabetElements[i].children[0].value;
+					alphabet[char] = alphabetElements[i].children[1].value;
+				}
+				encode();
+			}
 			function validate() {
-				var rgxd = new RegExp('[^'+printable+']','g');
-				document.getElementById('decoded').value = document.getElementById('decoded').value.replace(rgxd,'');
-				if (document.getElementById('format-bin').checked) {
-					var bin = document.getElementById('encoded').value.replace(/[^01]/g,'').match(/.{1,7}/g);
-					document.getElementById('encoded').value = bin!=undefined ? bin.join(' ') : '';
-				}
-				else if (document.getElementById('format-hex').checked) {
-					var hex = document.getElementById('encoded').value.replace(/[^0-9A-Fa-f]/g,'').match(/[0-9A-Fa-f]{1,2}/g);
-					document.getElementById('encoded').value = hex!=undefined ? hex.join(' ') : '';
-				}
-				else {
-					var dec = document.getElementById('encoded').value.replace(/[^0-9 ]/g,'').match(/1?[0-9]{1,2}/g);
-					document.getElementById('encoded').value = dec!=undefined ? dec.join(' ') : '';
+				var input = document.getElementById('input');
+				input.value = input.value.replace(/[\t\n\r]/g,'');
+				var alphabetElements = document.getElementsByClassName('alphabet');
+				for (var i=0; i<alphabetElements.length; i++) {
+					alphabetElements[i].children[1].value = alphabetElements[i].children[1].value.replace(/[^01]/g,'');
 				}
 			}
 
+			// encode string
 			function encode() {
-				var decoded = document.getElementById('decoded').value.split('');
-				document.getElementById('encoded').value = decoded.map(function(char) {
-					if (document.getElementById('format-bin').checked)
-						return dec2bin(char2dec(char),7);
-					else if (document.getElementById('format-hex').checked)
-						return dec2hex(char2dec(char));
-					else
-						return char2dec(char);
-				}).join(' ');
-			}
-
-			function decode() {
-				var encoded = document.getElementById('encoded').value.split(' ');
-				var decoded = '';
-				if (encoded[0]!='') {
-					if (document.getElementById('format-bin').checked)
-						decoded = encoded.map(bin2char).join('');
-					else if (document.getElementById('format-hex').checked)
-						decoded = encoded.map(hex2char).join('');
-					else
-						decoded = encoded.map(dec2char).join('');
+				var input = document.getElementById('input').value.split('');
+				var codes = Object.values(alphabet);
+				var complete = codes.indexOf('')==-1;
+				var prefix = true;
+				var postfix = true;
+				var example;
+				for (var i=0; i<codes.length; i++) {
+					for (var j=0; j<codes.length; j++) {
+						if (i!=j && codes[i]==codes[j].substr(0,codes[i].length)) {
+							prefix = false;
+						}
+						if (i!=j && codes[i]==codes[j].substr(-codes[i].length))
+							postfix = false;
+					}
 				}
-				document.getElementById('decoded').value = decoded;
+				document.getElementById('result').style.display = (codes.length) ? '' : 'none';
+
+				var valid = complete && (prefix || postfix);
+				document.getElementById('success').style.display = (valid) ? '' : 'none';
+				document.getElementById('encoded').style.display = (valid) ? '' : 'none';
+				document.getElementById('incomplete').style.display = (complete) ? 'none' : '';
+				document.getElementById('not-unique').style.display = (prefix || postfix) ? 'none' : '';
+				if (valid) {
+					var encoded = input.map(x => alphabet[x]).join('');
+					document.getElementById('bitlength').textContent = encoded.length;
+					document.getElementById('encoded').textContent = encoded;
+				}
 			}
 
 		</script>
@@ -145,6 +138,7 @@
 			}
 			footer a {
 				float: right;
+				text-align: right;
 				padding: 0 var(--large-gap) var(--large-gap);
 				color: #000;
 				text-decoration: none;
@@ -171,56 +165,92 @@
 			input:invalid{
 				background-color: #fbb;
 			}
-			form {
-				overflow: auto;
+			#input {
+				width: 100%;
+				font-size: 16px;
 			}
-			#decoded, #encoded {
-				display: block;
+			#hidden {
+				display: none;
+			}
+			.alphabet {
 				float: left;
-				width: calc(50% - var(--small-gap) - var(--large-gap));
+				width: 80px;
+				margin: 0 var(--large-gap) var(--large-gap) 0;
+			}
+			.alphabet input {
+				width: 100%;
+				height: 28px;
+			}
+			.alphabet input.fixed {
+				display: block;
+				overflow: hidden;
+				border: var(--border-default-style);
+				background-color: buttonface;
+				padding: 6px 2px;
+				font-family: sans-serif;
+				text-align: center;
+				vertical-align: middle;
+			}
+			.alphabet.small input.fixed {
+				font-size: 12px;
+			}
+			#encoded {
+				display: block;
 				font-family: monospace;
 				font-size: 16px;
+				min-height: 1em;
 				border: var(--border-default-style);
-				margin: var(--small-gap);
+				margin: var(--small-gap) 0;
 				padding: var(--small-gap);
 				word-wrap: break-word;
 			}
-			#format {
-				padding-left: calc(50% + var(--small-gap));
+			.invalid {
+				color: #c00;
 			}
 		</style>
 	</head>
-	<body>
+	<body onload="encode();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
-			<h1>ASCII-Code</h1>
+			<h1>Kodierung von Zeichenketten</h1>
 		</header>
 		<main>
 			<section>
 				<h2 class="text">Einleitung</h2>
-				<p class="text">Um eine international einheitliche Kodierung von Zeichenketten zu gewährleisten, wurde in den 60er Jahren der ASCII-Code als Grundlage vieler moderner Zeichenkodierungen festgelegt.</p>
+				<p class="text">Um Zeichenketten im Speicher abzulegen, bringt man die einzelnen Zeichen in eine binäre Repräsentation. Das bedeutet, dass man sie durch Zeichenfolgen aus Nullen und Einsen darstellt.</p>
 			</section>
 			<section>
-				<h2>ASCII-Code</h2>
-				<p class="text">Der ASCII-Code kodiert 95 druckbare Zeichen und 33 nicht druckbare Zeichen (z.B. Steuerzeichen) in Binärzahlen der Länge 7-bit.</p>
+				<h2>Eingabe</h2>
 				<form>
-					<textarea id="decoded" oninput="validate(); encode();" rows="8"></textarea>
-					<textarea id="encoded" oninput="validate(); decode();" rows="8"></textarea>
-					<div id="format">
-						<input type="radio" id="format-bin" name="format" onchange="validate(); encode();" checked="checked" /><label for="format-bin">Binär</label>
-						<input type="radio" id="format-dez" name="format" onchange="validate(); encode();" /><label for="format-dez">Dezimal</label>
-						<input type="radio" id="format-hex" name="format" onchange="validate(); encode();" /><label for="format-hex">Hexadezimal</label>
+					<textarea id="input" rows="4" oninput="validate(); extendAlphabet();"></textarea>
+				</form>
+			</section>
+			<section>
+				<h2>Kodierung</h2>
+				<p class="text">Die Kodierung muss so gewählt werden, dass jede kodierte Zeichenkette eindeutig wieder in Klartext überführt werden kann.</p>
+				<form id="hidden">
+					<div>
+						<input type="text" class="fixed" disabled="disabled" value="" />
+						<input type="text" required pattern="[01]+" value="0" oninput="validate(); getAlphabet();" />
 					</div>
 				</form>
+				<form id="alphabet"></form>
+			</section>
+			<section id="result">
+				<h2>Binäre Repräsentation</h2>
+				<p id="success">Du hast eine gültige Kodierung gefunden. Mit dieser Kodierung belegt der Text <span id="bitlength">0</span> Bit im Speicher.</p>
+				<p id="incomplete" class="invalid">Die von dir gewählte Kodierung ist unvollständig.</p>
+				<p id="not-unique" class="invalid">Die von dir gewählte Kodierung ist nicht eindeutig.</p>
+				<span id="encoded"></span>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
-				<p>Beschreibe Bereiche im ASCII-Code die Sonderzeichen, Buchstaben und Zahlen enthalten. Begründe mithilfe der Zahlensysteme, weshalb die Bereiche so gewählt wurden.</p>
+				<p>Formuliere eine allgemeine Strategie, mit der du eine gültige Kodierung der benötigten Zeichen findest.</p>
 			</section>
 		</main>
 		<footer>
-			<a class="prev" href="kodierung_zeichenketten.htm">Kodierung von Zeichenketten</a>
+			<a class="next" href="ascii_code.htm">ASCII-Code</a>
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="31" viewBox="0 0 88 31" baseProfile="basic" version="1.1">
 				<g id="surface1">
 					<path style=" stroke:none;fill-rule:nonzero;fill:rgb(66.666667%,69.803922%,67.058824%);fill-opacity:1;" d="M 2.300781 0.570313 L 85.429688 0.71875 C 86.589844 0.71875 87.628906 0.546875 87.628906 3.039063 L 87.527344 30.414063 L 0.203125 30.414063 L 0.203125 2.9375 C 0.203125 1.707031 0.324219 0.570313 2.300781 0.570313 Z "/>
