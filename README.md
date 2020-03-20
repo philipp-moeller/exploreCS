@@ -6,6 +6,8 @@ Digitalisierung von Unterrichtsmaterial bedeutet häufig das Erstellen von PDF D
 ## Verwendung
 Die Arbeitsblätter stellen keine vollständigen Unterrichtssequenzen dar. Sie können alternativ zu klassischen Arbeitsbögen im Unterricht eingesetzt werden. Trotz einer gewissen Anordnung der Arbeitsblätter sollten diese nicht konsekutiv eingesetzt werden, sondern als ein Baustein im Rahmen eines abwechslungsreichen Unterrichts.
 
+Der Aufbau der Arbeitsblätter ist stets der gleiche. Auf eine kurze Einleitung folgt ein interaktives Seitenelement, das die Schülerinnen und Schüler ohne Aufgabenstellung oder Anleitung erforschen können. Zuletzt folgt eine Aufgabe, die zur Anknüpfung an den weiterführenden Unterricht genutzt werden kann.
+
 Die Arbeitsblätter sind so gestaltet, dass jede Datei alleinstehend verwendet werden kann. Die Arbeitsblätter können so, wie PDF-Dokumente, den Schülerinnen und Schülern einzeln übermittelt werden. Dies bedeutet auch, dass auf den Einsatz von Frameworks verzichtet wird und die Dateien ausschließlich HTML5-, CSS- und Javascript-Code enthalten. Damit sind die Dateien auf jedem Endgerät verwendbar, auf dem ein einigermaßen moderner Browser installiert ist.
 
 ## Kapitel
