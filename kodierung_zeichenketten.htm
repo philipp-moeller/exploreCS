@@ -22,10 +22,30 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
+			var example = {
+				text: 'Mississippi',
+				encoding: {
+					'M': '00',
+					'i': '01',
+					's': '10',
+					'p': '11'
+				}
+			}
+
 			// handle text input
-			function extendAlphabet() {
+			function setText(text,encoding) {
+				document.getElementById('input').value = '';
+				alphabetFromText();
+				for (char in encoding) {
+					addChar(char,encoding[char]);
+				}
+				getAlphabet();
+				document.getElementById('input').value = text;
+				alphabetFromText();
+			}
+			function alphabetFromText() {
 				var input = document.getElementById('input').value;
-				var chars = input.split('').filter((v, i, a) => a.indexOf(v)===i);
+				var chars = input.split('').filter((v,i,a) => a.indexOf(v)===i);
 				var coded = Object.keys(alphabet);
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				for (var i=alphabetElements.length-1; i>=0; i--) {
@@ -34,13 +54,16 @@
 				}
 				var needed = chars.filter(x => !coded.includes(x));
 				for (var i=0; i<needed.length; i++) {
-					var newChar = document.getElementById('hidden').children[0].cloneNode(true);
-					newChar.className = needed[i]==' ' ? 'alphabet small' : 'alphabet';
-					newChar.children[0].value = needed[i]==' ' ? 'Leerzeichen' : needed[i];
-					newChar.children[1].value = '';
-					document.getElementById('alphabet').appendChild(newChar);
+					addChar(needed[i],'');
 				}
 				getAlphabet();
+			}
+			function addChar(char,code) {
+				var newChar = document.getElementById('hidden').children[0].cloneNode(true);
+				newChar.className = char==' ' ? 'alphabet small' : 'alphabet';
+				newChar.children[0].value = char==' ' ? 'Leerzeichen' : char;
+				newChar.children[1].value = code;
+				document.getElementById('alphabet').appendChild(newChar);
 			}
 
 			// handle alphabet inputs
@@ -57,6 +80,7 @@
 			function validate() {
 				var input = document.getElementById('input');
 				input.value = input.value.replace(/[\t\n\r]/g,'');
+				document.getElementById('example').style.display = 'none';
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				for (var i=0; i<alphabetElements.length; i++) {
 					alphabetElements[i].children[1].value = alphabetElements[i].children[1].value.replace(/[^01]/g,'');
@@ -92,6 +116,11 @@
 					document.getElementById('bitlength').textContent = encoded.length;
 					document.getElementById('encoded').textContent = encoded;
 				}
+			}
+
+			function drawExample() {
+				document.getElementById('example').style.display = 'none';
+				setText(example.text,example.encoding);
 			}
 
 		</script>
@@ -151,6 +180,7 @@
 			}
 			section {
 				overflow: auto;
+				position: relative;
 			}
 			input {
 				border: var(--border-default-style);
@@ -207,6 +237,13 @@
 			.invalid {
 				color: #c00;
 			}
+			#example {
+				position: absolute;
+				left: calc(50% - 14px);
+				top: calc(50% - 14px + 1.33em);
+				font-size: 24px;
+				text-decoration: none;
+			}
 		</style>
 	</head>
 	<body onload="encode();">
@@ -223,7 +260,8 @@
 			<section>
 				<h2>Eingabe</h2>
 				<form>
-					<textarea id="input" rows="4" oninput="validate(); extendAlphabet();"></textarea>
+					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
+					<textarea id="input" rows="4" oninput="validate(); alphabetFromText();"></textarea>
 				</form>
 			</section>
 			<section>
