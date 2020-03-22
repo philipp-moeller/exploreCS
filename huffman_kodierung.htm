@@ -229,14 +229,24 @@
 
 			function encode() {
 				createHuffmanTree();
-				for (char in alphabet) {
-					alphabet[char] = huffmanTree.find(char);
+				var charcount = Object.keys(alphabet).length;
+				if (charcount>1) {
+					for (char in alphabet) {
+						alphabet[char] = huffmanTree.find(char);
+					}
+					document.getElementById('tree').parentElement.style.display = '';
+				}
+				else {
+					for (char in alphabet) {
+						alphabet[char] = '0';
+					}
+					document.getElementById('tree').parentElement.style.display = 'none';
 				}
 				var input = document.getElementById('input').value;
 				var encoded = input.split('').map(x => alphabet[x]).join('');
 				document.getElementById('encoded').textContent = encoded;
 				document.getElementById('encoded-bits').textContent = encoded.length;
-				var minimumBits = Math.ceil(Math.log2(Object.keys(alphabet).length));
+				var minimumBits = Math.ceil(Math.log2(charcount));
 				document.getElementById('rate-simple').textContent = (Math.round((1-encoded.length/(minimumBits*input.length))*1000)/10).toString().replace('.',',');
 				document.getElementById('rate-ascii').textContent = (Math.round((1-encoded.length/(8*input.length))*1000)/10).toString().replace('.',',');
 
@@ -261,7 +271,7 @@
 			function redraw() {
 				var canvas = document.getElementById('tree');
 				canvas.setAttribute('width',canvas.clientWidth);
-				size = canvas.width/huffmanTree.width();
+				size = Math.min(100,canvas.width/huffmanTree.width());
 				canvas.setAttribute('height',Math.max(minHeight,size)*huffmanTree.height());
 				draw();
 			}
@@ -341,8 +351,11 @@
 				border: var(--border-default-style);
 				padding: 0 var(--small-gap);
 			}
-			input:invalid{
+			input:invalid {
 				background-color: #fbb;
+			}
+			input:disabled {
+				background-color: #fff;
 			}
 			#input {
 				width: 100%;
@@ -386,6 +399,9 @@
 				padding: var(--small-gap);
 				word-wrap: break-word;
 			}
+			#encoded:empty {
+				display: none;
+			}
 			.invalid {
 				color: #c00;
 			}
@@ -401,7 +417,7 @@
 			}
 		</style>
 	</head>
-	<body onload="redraw();" onresize="redraw();">
+	<body onload="redraw(); encode();" onresize="redraw();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
