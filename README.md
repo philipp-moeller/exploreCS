@@ -14,6 +14,7 @@ Die Arbeitsblätter sind so gestaltet, dass jede Datei alleinstehend verwendet w
 ### Repräsentation von Zeichenketten
 1. [Kodierung von Zeichenketten](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_zeichenketten.htm)
 2. [ASCII-Code](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/ascii_code.htm)
+3. [Huffman Kodierung](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/huffman_kodierung.htm)
 ### Repräsentation von Bildern
 1. [Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rastergrafiken.htm)
 2. [Kodierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_rastergrafiken.htm)
