@@ -24,6 +24,7 @@
 
 			// default data
 			var size = 40;
+			var minHeight = 10;
 			var example = {
 				text: 'TRES TRISTES TIGRES'
 			}
@@ -68,6 +69,9 @@
 					alphabetElements[i].children[1].value = count;
 					nodes.push(new Node(char,count,null,null));
 				}
+				var count = alphabetElements.length;
+				document.getElementById('count').textContent = count;
+				document.getElementById('needed-bits').textContent = Math.ceil(Math.log2(count));
 			}
 			function addChar(char,code) {
 				var newChar = document.getElementById('hidden').children[0].cloneNode(true);
@@ -140,7 +144,7 @@
 					if (this.root!=null) {
 						if (this.left.root!=null) {
 							var lx = cx-(size/2)*2**(this.depth()-1);
-							var ly = cy+size;
+							var ly = cy+Math.max(minHeight,size);
 							ctx.beginPath();
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(lx,ly);
@@ -149,7 +153,7 @@
 						}
 						if (this.right.root!=null) {
 							var rx = cx+(size/2)*2**(this.depth()-1);
-							var ry = cy+size;
+							var ry = cy+Math.max(minHeight,size);
 							ctx.beginPath();
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(rx,ry);
@@ -228,8 +232,13 @@
 				for (char in alphabet) {
 					alphabet[char] = huffmanTree.find(char);
 				}
-				var input = document.getElementById('input').value.split('');
-				var encoded = input.map(x => alphabet[x]).join('');
+				var input = document.getElementById('input').value;
+				var encoded = input.split('').map(x => alphabet[x]).join('');
+				document.getElementById('encoded').textContent = encoded;
+				document.getElementById('encoded-bits').textContent = encoded.length;
+				var minimumBits = Math.ceil(Math.log2(Object.keys(alphabet).length));
+				document.getElementById('rate-simple').textContent = (Math.round((1-encoded.length/(minimumBits*input.length))*1000)/10).toString().replace('.',',');
+				document.getElementById('rate-ascii').textContent = (Math.round((1-encoded.length/(8*input.length))*1000)/10).toString().replace('.',',');
 
 				document.getElementById('encoding').innerHTML = '';
 				var alphabetElements = document.getElementById('alphabet').children;
@@ -253,7 +262,7 @@
 				var canvas = document.getElementById('tree');
 				canvas.setAttribute('width',canvas.clientWidth);
 				size = canvas.width/huffmanTree.width();
-				canvas.setAttribute('height',size*huffmanTree.height());
+				canvas.setAttribute('height',Math.max(minHeight,size)*huffmanTree.height());
 				draw();
 			}
 
@@ -342,6 +351,9 @@
 			#hidden {
 				display: none;
 			}
+			#alphabet, #encoding {
+				overflow: auto;
+			}
 			.alphabet {
 				float: left;
 				width: 80px;
@@ -409,6 +421,7 @@
 			</section>
 			<section>
 				<h2>Buchstabenhäufigkeit</h2>
+				<p>Der Text besteht aus <span id="count">0</span> verschiedenen Zeichen. Bei einer Kodierung mit Bitfolgen gleicher Länge bräuchte man also <span id="needed-bits">0</span> Bit pro Zeichen.</p>
 				<form id="hidden">
 					<div>
 						<input type="text" class="fixed" disabled="disabled" value="" />
@@ -424,6 +437,12 @@
 			<section>
 				<h2>Kodierung</h2>
 				<form id="encoding"></form>
+				<p>Mit der Huffman Kodierung lässt sich der Text in <span id="encoded-bits">0</span> Bit darstellen. Dies entspricht einer Einsparung von <span id="rate-simple">0</span>% gegenüber der Kodierung durch Bitfolgen gleicher Länge und <span id="rate-ascii">0</span>% gegenüber der Darstellung in einem gewöhnlichen 8-bit Zeichensatz.</p>
+				<span id="encoded"></span>
+			</section>
+			<section id="exercises">
+				<h2>Aufgabe</h2>
+				<p>Begründe, weshalb bei der Übertragung einer Huffman-kodierten Zeichenkette das Alphabet mit übermittelt werden muss. Schätze ab, wieviel Bit zur Übertragung des Alphabets nötig sind.</p>
 			</section>
 		</main>
 		<footer>
