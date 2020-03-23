@@ -23,7 +23,7 @@
 			}
 
 			// default values
-			var printable = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
+			const ASCII = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
 			const BIN = 2;
 			const DEC = 10;
 			const HEX = 16;
@@ -38,7 +38,7 @@
 				return val==='' ? '' : (val<16 ? '0'+hex : hex);
 			}
 			function char2dec(char) {
-				index = printable.indexOf(char);
+				index = ASCII.indexOf(char);
 				return index!=-1 ? index+32 : '';
 			}
 			function char2bin(char) {
@@ -48,7 +48,7 @@
 				return dec2hex(char2dec(char));
 			}
 			function dec2char(index) {
-				return (index>31 && index<127) ? printable[index-32] : '¿';
+				return (index>31 && index<127) ? ASCII[index-32] : '¿';
 			}
 			function bin2char(val) {
 				return dec2char(parseInt(val,2));
@@ -59,7 +59,7 @@
 
 			function validate() {
 				// validate decoded
-				var rgxd = new RegExp('[^'+printable+']','g');
+				var rgxd = new RegExp('[^'+ASCII+']','g');
 				var decoded = document.getElementById('decoded').value;
 				document.getElementById('decoded').value = decoded.replace(rgxd,'');
 				// validate encoded
@@ -149,6 +149,9 @@
 				font-family: Serif;
 				font-variant: small-caps;
 				border-top: var(--border-default-style);
+			}
+			footer * {
+				margin-bottom: var(--large-gap);
 			}
 			footer a {
 				float: right;
