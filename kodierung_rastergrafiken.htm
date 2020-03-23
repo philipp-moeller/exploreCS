@@ -22,12 +22,8 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
-			// initialize default values
-			var dim = {x: 5, y: 5};
-			var size = 40;
-			var image = new Array(dim.y).fill('0'.repeat(dim.x));
-
-			var example = {
+			// default values
+			const EXAMPLE = {
 				linebreak: ':',
 				image: [
 					'0000011111100000',
@@ -48,35 +44,39 @@
 					'0000111111110000',
 				]
 			}
+			var dim = {x: 5, y: 5};
+			var image = new Array(dim.y).fill('0'.repeat(dim.x));
+			var pixelsize = 40;
+			var palette = ['s','w'];
+			var linebreak = ',';
 
-			// handle palette inputs
-			var palette = ['s','w']
+			// handle palette
 			function getPalette() {
 				var paletteElements = document.getElementsByClassName('palette');
 				palette = [paletteElements[0].children[1].value, paletteElements[1].children[1].value];
 				redraw();
 			}
 
-			// handle linebreak input
-			var linebreak = ',';
+			// handle linebreak
 			function setLinebreak(char) {
 				document.getElementById('linebreak').value = char;
 				getLinebreak();
 			}
+
 			function getLinebreak() {
 				var input = document.getElementById('linebreak');
-				if (input.value!='') {
+				if (input.value!='')
 					linebreak = input.value;
-				}
 				redraw();
 			}
 
-			// handle dimension input
+			// handle dimensions
 			function setDimensions(height,width) {
 				document.getElementById('height').value = height;
 				document.getElementById('width').value = width;
 				getDimensions();
 			}
+
 			function getDimensions() {
 				var height = document.getElementById('height').value;
 				var width = document.getElementById('width').value;
@@ -100,7 +100,7 @@
 				redraw();
 			}
 
-			// handle image input
+			// handle image
 			function drawPixel(event) {
 				document.getElementById('example').style.display = 'none';
 				var canvas = document.getElementById('image');
@@ -112,6 +112,7 @@
 					draw();
 				}
 			}
+
 			function drawCursor(event) {
 				redraw();
 				var canvas = document.getElementById('image');
@@ -119,7 +120,7 @@
 				var y = Math.floor(event.offsetY/canvas.clientHeight*dim.y);
 				var ctx = canvas.getContext('2d');
 				ctx.fillStyle = 'rgba(192,192,255,0.5)';
-				ctx.fillRect(size*x,size*y,size,size);
+				ctx.fillRect(pixelsize*x,pixelsize*y,pixelsize,pixelsize);
 			}
 
 			function draw() {
@@ -127,16 +128,16 @@
 				var ctx = canvas.getContext('2d');
 				ctx.clearRect(0,0,canvas.width,canvas.height);
 
-				var rawinput = image.join(linebreak).replace(/(0|1)/g,function(match,index) { return palette[1-index]; });
-				document.getElementById('input').textContent = rawinput;
-
+				var raw = image.join(linebreak).replace(/(0|1)/g,function(match,index) { return palette[1-index]; });
+				document.getElementById('encoding').textContent = raw;
 				var cur = {x: 0, y: 0};
 				var max = {x: 1, y: 1};
 
-				rawinput.split('').forEach(function(char) {
+				// draw picture
+				raw.split('').forEach(function(char) {
 					if (palette.indexOf(char)!=-1) {
 						ctx.fillStyle = palette.indexOf(char)==0 ? '#000' : '#fff';
-						ctx.fillRect(size*cur.x,size*cur.y,size,size);
+						ctx.fillRect(pixelsize*cur.x,pixelsize*cur.y,pixelsize,pixelsize);
 						cur.x += 1;
 						max.x = Math.max(cur.x,max.x);
 					}
@@ -146,9 +147,10 @@
 						max.y = Math.max(cur.y+1,max.y);
 					}
 				});
+				// remove empty line
 				if (cur.x==0 && max.y>5)
 					max.y -= 1;
-
+				// redraw to correct dimensions
 				if (max.x!=dim.x) {
 					dim.x = max.x;
 					redraw();
@@ -157,21 +159,22 @@
 					dim.y = max.y;
 					redraw();
 				}
-				document.getElementById('input-length').textContent = rawinput.length>0 ? rawinput.length+' Zeichen' : '';
+
+				document.getElementById('encoding-length').textContent = raw.length>0 ? raw.length+' Zeichen' : '';
 			}
 
 			function redraw() {
 				var canvas = document.getElementById('image');
 				canvas.setAttribute('width',canvas.clientWidth);
-				size = canvas.clientWidth/dim.x;
-				canvas.setAttribute('height',size*dim.y);
+				pixelsize = canvas.clientWidth/dim.x;
+				canvas.setAttribute('height',pixelsize*dim.y);
 				draw();
 			}
 
 			function drawExample() {
-				setLinebreak(example.linebreak);
 				document.getElementById('example').style.display = 'none';
-				image = example.image.slice(0);
+				setLinebreak(EXAMPLE.linebreak);
+				image = EXAMPLE.image.slice(0);
 				setDimensions(image[0].length,image.length);
 				draw();
 			}
@@ -179,6 +182,7 @@
 		</script>
 
 		<style>
+			/* general styles */
 			:root {
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
@@ -192,6 +196,11 @@
 				width: 80%;
 				max-width: 1200px;
 				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
 			}
 			header, main, footer {
 				padding: 20px;
@@ -218,12 +227,20 @@
 				font-variant: small-caps;
 				border-top: var(--border-default-style);
 			}
+			footer * {
+				margin-bottom: var(--large-gap);
+			}
 			footer a {
 				float: right;
-				text-align: right;
-				padding: 0 var(--large-gap) var(--large-gap);
+				padding-bottom: var(--large-gap);
 				color: #000;
 				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
 			}
 			footer a.prev::before {
 				content: '« ';
@@ -231,7 +248,7 @@
 			footer a.next::after {
 				content: ' »';
 			}
-			section {
+			section, form {
 				overflow: auto;
 			}
 			input {
@@ -247,33 +264,9 @@
 			input:invalid{
 				background-color: #fbb;
 			}
-			#input {
-				width: calc(100% - 100px);
-				display: inline-block;
-				font-family: monospace;
-				font-size: 16px;
-				border: var(--border-default-style);
-				margin: var(--small-gap) 0;
-				padding: var(--small-gap);
-				word-wrap: break-word;
-			}
-			#input-length {
-				padding-left: var(--large-gap);
-				width: 100px;
-			}
-			#image-frame {
-				position: relative;
-				border: var(--border-default-style);
-				width: 480px;
-				min-width: 50%;
-				max-width: 100%;
-				padding: var(--small-gap);
-				margin: var(--large-gap) auto;
-			}
-			#image {
-				background-color: #eee;
-				width: 100%;
-			}
+
+			/* special styles */
+
 			.palette, .palette-special {
 				float: left;
 				width: 80px;
@@ -292,6 +285,42 @@
 				font-size: 12px;
 				text-align: center;
 				vertical-align: middle;
+			}
+			#encoding {
+				width: calc(100% - 100px);
+				display: inline-block;
+				font-family: monospace;
+				font-size: 16px;
+				border: var(--border-default-style);
+				margin: var(--small-gap) 0;
+				padding: var(--small-gap);
+				word-wrap: break-word;
+			}
+			#encoding-length {
+				padding: 0 0 0 var(--large-gap);
+				width: 100px;
+			}
+			@media only screen and (max-width: 800px) {
+				#encoding {
+					width: 100%;
+				}
+				#encoding-length {
+					display: block;
+					padding: var(--large-gap) 0 0 0;
+				}
+			}
+			#image-frame {
+				position: relative;
+				border: var(--border-default-style);
+				width: 480px;
+				min-width: 50%;
+				max-width: 100%;
+				padding: var(--small-gap);
+				margin: var(--large-gap) auto;
+			}
+			#image {
+				background-color: #eee;
+				width: 100%;
 			}
 			#example {
 				position: absolute;
@@ -348,7 +377,7 @@
 			</section>
 			<section>
 				<h2>Kodierung</h2>
-				<span id="input"></span><span id="input-length"></span>
+				<span id="encoding"></span><span id="encoding-length"></span>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
