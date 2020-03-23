@@ -24,86 +24,88 @@
 
 			// default values
 			var printable = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-			var cl = {x: 0, y: 0, r: 0};
-			var cr = {x: 0, y: 0, r: 0};
+			const BIN = 2;
+			const DEC = 10;
+			const HEX = 16;
 
-			// handle mixing colors
-			function char2dec(char) {
-				index = printable.indexOf(char);
-				if (index!=-1)
-					return index+32;
-				else
-					return '';
-			}
+			// converting numbers and chars
 			function dec2bin(val,len) {
-				if (val==='')
-					return '';
 				var bin = val.toString(2);
-				return '0'.repeat(Math.max(0,len-bin.length))+bin;
+				return val==='' ? '' : '0'.repeat(Math.max(0,len-bin.length))+bin;
 			}
 			function dec2hex(val) {
-				if (val==='')
-					return '';
-				return val<16 ? '0'+val.toString(16) : val.toString(16);
+				var hex = val.toString(16);
+				return val==='' ? '' : (val<16 ? '0'+hex : hex);
+			}
+			function char2dec(char) {
+				index = printable.indexOf(char);
+				return index!=-1 ? index+32 : '';
+			}
+			function char2bin(char) {
+				return dec2bin(char2dec(char),7);
+			}
+			function char2hex(char) {
+				return dec2hex(char2dec(char));
 			}
 			function dec2char(index) {
 				return (index>31 && index<127) ? printable[index-32] : '¿';
 			}
 			function bin2char(val) {
-				var index = parseInt(val,2);
-				return dec2char(index);
+				return dec2char(parseInt(val,2));
 			}
 			function hex2char(val) {
-				var index = parseInt(val,16);
-				return dec2char(index);
+				return dec2char(parseInt(val,16));
 			}
 
 			function validate() {
+				// validate decoded
 				var rgxd = new RegExp('[^'+printable+']','g');
-				document.getElementById('decoded').value = document.getElementById('decoded').value.replace(rgxd,'');
-				if (document.getElementById('format-bin').checked) {
-					var bin = document.getElementById('encoded').value.replace(/[^01]/g,'').match(/.{1,7}/g);
-					document.getElementById('encoded').value = bin!=undefined ? bin.join(' ') : '';
-				}
-				else if (document.getElementById('format-hex').checked) {
-					var hex = document.getElementById('encoded').value.replace(/[^0-9A-Fa-f]/g,'').match(/[0-9A-Fa-f]{1,2}/g);
-					document.getElementById('encoded').value = hex!=undefined ? hex.join(' ') : '';
-				}
-				else {
-					var dec = document.getElementById('encoded').value.replace(/[^0-9 ]/g,'').match(/1?[0-9]{1,2}/g);
-					document.getElementById('encoded').value = dec!=undefined ? dec.join(' ') : '';
-				}
+				var decoded = document.getElementById('decoded').value;
+				document.getElementById('decoded').value = decoded.replace(rgxd,'');
+				// validate encoded
+				var encoded = document.getElementById('encoded').value;
+				if (document.getElementById('format-bin').checked)
+					var numbers = encoded.replace(/[^01]/g,'').match(/.{1,7}/g);
+				else if (document.getElementById('format-hex').checked)
+					var numbers = encoded.replace(/[^0-9A-Fa-f]/g,'').match(/[0-9A-Fa-f]{1,2}/g);
+				else
+					var numbers = encoded.replace(/[^0-9 ]/g,'').match(/1?[0-9]{1,2}/g);
+				document.getElementById('encoded').value = numbers!=undefined ? numbers.join(' ') : '';
 			}
 
-			function encode() {
-				var decoded = document.getElementById('decoded').value.split('');
-				document.getElementById('encoded').value = decoded.map(function(char) {
-					if (document.getElementById('format-bin').checked)
-						return dec2bin(char2dec(char),7);
-					else if (document.getElementById('format-hex').checked)
-						return dec2hex(char2dec(char));
-					else
-						return char2dec(char);
-				}).join(' ');
+			function getMode() {
+				if (document.getElementById('format-bin').checked)
+					return BIN;
+				else if (document.getElementById('format-hex').checked)
+					return HEX;
+				else
+					return DEC;
 			}
 
-			function decode() {
-				var encoded = document.getElementById('encoded').value.split(' ');
-				var decoded = '';
-				if (encoded[0]!='') {
-					if (document.getElementById('format-bin').checked)
-						decoded = encoded.map(bin2char).join('');
-					else if (document.getElementById('format-hex').checked)
-						decoded = encoded.map(hex2char).join('');
-					else
-						decoded = encoded.map(dec2char).join('');
-				}
+			function encode(str,mode) {
+				var decoded = str!=undefined ? str : document.getElementById('decoded').value;
+				var mode = mode!=undefined ? mode : getMode();
+
+				var convert = mode==BIN ? char2bin : (mode==HEX ? char2hex : char2dec);
+				var encoded = decoded.split('').map(convert).join(' ');
+				document.getElementById('encoded').value = encoded;
+				return encoded;
+			}
+
+			function decode(str,mode) {
+				var encoded = str!=undefined ? str : document.getElementById('encoded').value;
+				var mode = mode!=undefined ? mode : getMode();
+
+				var convert = mode==BIN ? bin2char : (mode==HEX ? hex2char : dec2char);
+				var decoded = (encoded.length>0) ? encoded.split(' ').map(convert).join('') : '';
 				document.getElementById('decoded').value = decoded;
+				return decoded;
 			}
 
 		</script>
 
 		<style>
+			/* general styles */
 			:root {
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
@@ -117,6 +119,11 @@
 				width: 80%;
 				max-width: 1200px;
 				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
 			}
 			header, main, footer {
 				padding: 20px;
@@ -145,9 +152,15 @@
 			}
 			footer a {
 				float: right;
-				padding: 0 var(--large-gap) var(--large-gap);
+				padding-bottom: var(--large-gap);
 				color: #000;
 				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
 			}
 			footer a.prev::before {
 				content: '« ';
@@ -155,7 +168,7 @@
 			footer a.next::after {
 				content: ' »';
 			}
-			section {
+			section, form {
 				overflow: auto;
 			}
 			input {
@@ -171,22 +184,31 @@
 			input:invalid{
 				background-color: #fbb;
 			}
-			form {
-				overflow: auto;
-			}
+
+			/* special styles */
+
 			#decoded, #encoded {
 				display: block;
-				float: left;
-				width: calc(50% - var(--small-gap) - var(--large-gap));
+				width: 100%;
 				font-family: monospace;
 				font-size: 16px;
 				border: var(--border-default-style);
-				margin: var(--small-gap);
 				padding: var(--small-gap);
+				margin: var(--small-gap) 0;
 				word-wrap: break-word;
 			}
 			#format {
-				padding-left: calc(50% + var(--small-gap));
+				margin: var(--small-gap) 0;
+			}
+			@media only screen and (min-width: 800px) {
+			  #decoded, #encoded {
+					float: left;
+					width: calc(50% - var(--small-gap) - var(--large-gap));
+					margin: var(--small-gap);
+				}
+				#format {
+					padding-left: 50%;
+				}
 			}
 		</style>
 	</head>
@@ -208,9 +230,12 @@
 					<textarea id="decoded" oninput="validate(); encode();" rows="8"></textarea>
 					<textarea id="encoded" oninput="validate(); decode();" rows="8"></textarea>
 					<div id="format">
-						<input type="radio" id="format-bin" name="format" onchange="validate(); encode();" checked="checked" /><label for="format-bin">Binär</label>
-						<input type="radio" id="format-dez" name="format" onchange="validate(); encode();" /><label for="format-dez">Dezimal</label>
-						<input type="radio" id="format-hex" name="format" onchange="validate(); encode();" /><label for="format-hex">Hexadezimal</label>
+						<input type="radio" id="format-bin" name="format" onchange="validate(); encode();" checked="checked" />
+						<label for="format-bin">Binär</label>
+						<input type="radio" id="format-dez" name="format" onchange="validate(); encode();" />
+						<label for="format-dez">Dezimal</label>
+						<input type="radio" id="format-hex" name="format" onchange="validate(); encode();" />
+						<label for="format-hex">Hexadezimal</label>
 					</div>
 				</form>
 			</section>
