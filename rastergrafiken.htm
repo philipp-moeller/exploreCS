@@ -23,13 +23,13 @@
 			}
 
 			// default data
-			var canvasSize = 360;
+			const CANVAS_SIZE = 360;
 			var img = new Image(360,360);
 
 			function loadImg(event) {
 		    var canvas = document.getElementById('image');
-				canvas.setAttribute('width',canvasSize);
-				canvas.setAttribute('height',canvasSize);
+				canvas.setAttribute('width',CANVAS_SIZE);
+				canvas.setAttribute('height',CANVAS_SIZE);
 				var reader = new FileReader();
 				reader.onload = function() {
 					img = new Image();
@@ -56,10 +56,10 @@
 				document.getElementById('example').style.display = 'none';
 				var canvas = document.getElementById('image');
 				var ctx = canvas.getContext('2d');
-				ctx.drawImage(img,sx,sy,size,size,0,0,canvasSize,canvasSize);
+				ctx.drawImage(img,sx,sy,size,size,0,0,CANVAS_SIZE,CANVAS_SIZE);
 				var canvas = document.getElementById('orig');
 				var ctx = canvas.getContext('2d');
-				ctx.drawImage(img,sx,sy,size,size,0,0,canvasSize,canvasSize);
+				ctx.drawImage(img,sx,sy,size,size,0,0,CANVAS_SIZE,CANVAS_SIZE);
 				document.getElementById('orig-resolution').textContent = size**2;
 			}
 
@@ -68,12 +68,13 @@
 
 				var res = parseInt(document.getElementById('resolution').value);
 				document.getElementById('image-resolution').textContent = res**2;
-				document.getElementById('quota-resolution').textContent = (Math.round(res**2/parseInt(document.getElementById('orig-resolution').textContent)*10000)/100).toString().replace('.',',');
-				var ratio = Math.round(canvasSize/res);
+				var quota = (Math.round(res**2/parseInt(document.getElementById('orig-resolution').textContent)*10000)/100);
+				document.getElementById('quota-resolution').textContent = quota.toString().replace('.',',');
+				var ratio = Math.round(CANVAS_SIZE/res);
 
 				var canvas = document.getElementById('image');
 				var ctx = canvas.getContext('2d');
-				var imageData = ctx.getImageData(0,0,canvasSize,canvasSize);
+				var imageData = ctx.getImageData(0,0,CANVAS_SIZE,CANVAS_SIZE);
 				var data = imageData.data;
 
 				var pixel = [];
@@ -85,14 +86,14 @@
 					}
 				}
 				for (var i=0; i<data.length; i++) {
-					var row = parseInt(i/(canvasSize*4*ratio));
-					var col = parseInt(i%(canvasSize*4)/(ratio*4));
+					var row = parseInt(i/(CANVAS_SIZE*4*ratio));
+					var col = parseInt(i%(CANVAS_SIZE*4)/(ratio*4));
 					var item = i%4;
 					pixel[row][col][item] += data[i];
 				}
 				for (var i=0; i<data.length; i++) {
-					var row = parseInt(i/(canvasSize*4*ratio));
-					var col = parseInt(i%(canvasSize*4)/(ratio*4));
+					var row = parseInt(i/(CANVAS_SIZE*4*ratio));
+					var col = parseInt(i%(CANVAS_SIZE*4)/(ratio*4));
 					var item = i%4;
 					data[i] = pixel[row][col][item]/(ratio**2);
 				}
@@ -108,6 +109,7 @@
 		</script>
 
 		<style>
+			/* general styles */
 			:root {
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
@@ -121,6 +123,11 @@
 				width: 80%;
 				max-width: 1200px;
 				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
 			}
 			header, main, footer {
 				padding: 20px;
@@ -147,12 +154,20 @@
 				font-variant: small-caps;
 				border-top: var(--border-default-style);
 			}
+			footer * {
+				margin-bottom: var(--large-gap);
+			}
 			footer a {
 				float: right;
-				text-align: right;
-				padding: 0 var(--large-gap);
+				padding-bottom: var(--large-gap);
 				color: #000;
 				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
 			}
 			footer a.prev::before {
 				content: '« ';
@@ -160,7 +175,7 @@
 			footer a.next::after {
 				content: ' »';
 			}
-			section {
+			section, form {
 				overflow: auto;
 			}
 			input {
@@ -173,6 +188,12 @@
 				border: var(--border-default-style);
 				padding: 0 var(--small-gap);
 			}
+			input:invalid{
+				background-color: #fbb;
+			}
+
+			/* special styles */
+
 			label[for=file-select] {
 				border: var(--border-default-style);
 				display: inline-block;
@@ -182,54 +203,32 @@
 			input[type=file] {
 				display: none;
 			}
-			input:invalid{
-				background-color: #fbb;
-			}
 			#input {
 				width: calc(100% - 100px);
 			}
 			#input-length {
-				padding-left: var(--large-gap);
+				padding: 0 0 0 var(--large-gap);
 				width: 100px;
+			}
+			@media only screen and (max-width: 800px) {
+				#input {
+					width: 100%;
+				}
+				#input-length {
+					display: block;
+					padding: var(--large-gap) 0 0 0;
+				}
 			}
 			#image-frame {
 				position: relative;
 				overflow: auto;
 				border: var(--border-default-style);
-				width: 720px;
-				min-width: 75%;
-				max-width: 100%;
 				padding: var(--small-gap);
-				margin: var(--large-gap) auto;
-			}
-			#resolutions-frame {
-				width: 720px;
-				min-width: 75%;
-				max-width: 100%;
-				margin: var(--large-gap) auto;
-			}
-			#resolution {
-				float: right;
 			}
 			#image, #orig {
 				background-color: #eee;
 				width: 50%;
 				float: left;
-			}
-			.palette, #palette-add {
-				float: left;
-				width: 80px;
-				margin: 0 var(--large-gap) var(--large-gap) 0;
-			}
-			.palette input, #palette-add input {
-				width: 100%;
-				height: 28px;
-			}
-			#linebreak {
-				width: 20px;
-			}
-			#height, #width {
-				width: 30px;
 			}
 			#example {
 				position: absolute;
@@ -237,6 +236,15 @@
 				top: calc(50% - 14px);
 				font-size: 24px;
 				text-decoration: none;
+			}
+			#image-frame, #resolutions-frame {
+				width: 720px;
+				min-width: 75%;
+				max-width: 100%;
+				margin: var(--large-gap) auto;
+			}
+			#resolution {
+				float: right;
 			}
 		</style>
 	</head>

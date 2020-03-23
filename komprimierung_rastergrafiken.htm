@@ -22,25 +22,26 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
-			// initialize default values
-			var dim = {x: 5, y: 5};
-			var size = 40;
-
-			var example = {
-				palette: {'w': '#ffffff', 's': '#000000'},
+			// default values
+			const EXAMPLE = {
+				palette: {'s': '#000000', 'w': '#ffffff'},
 				linebreak: ':',
 				picture: 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwww:wwwwwwwwwwwwwwwwwwwwwwwwwwwwww:wwwwwsssssssssssssssssssssssww:wwwwssssssssssssssssssssssssww:wwwsssssssssssssssssssssssssww:wwssssssssssssssssssssssssssww:wssswwwsssssswwwwwssssswwwwwww:wsswwwwsssssswwwwwssssswwwwwww:wswwwwwsssssswwwwwssssswwwwwww:wwwwwwwsssssswwwwwsssswwwwwwww:wwwwwwwsssssswwwwssssswwwwwwww:wwwwwwwsssssswwwwssssswwwwwwww:wwwwwwwsssssswwwwssssswwwwwwww:wwwwwwwsssssswwwwssssswwwwwwww:wwwwwwwsssssswwwwssssswwwwwwww:wwwwwwssssssswwwwssssswwwwwwww:wwwwwwssssssswwwwssssswwwwwwww:wwwwwwssssssswwwwssssswwwwwwww:wwwwwwsssssswwwwwssssswwwwwwww:wwwwwwsssssswwwwwssssswwwwwwww:wwwwwwsssssswwwwwssssswwwwwwww:wwwwwwsssssswwwwwsssssswwwwwww:wwwwwssssssswwwwwwssssswwwwwsw:wwwwwssssssswwwwwwsssssswwsssw:wwwwwssssssswwwwwwwssssssssssw:wwwwwssssssswwwwwwwsssssssssww:wwwwwssssssswwwwwwwsssssssssww:wwwwwssssssswwwwwwwwsssssswwww:wwwwwwwwwwwwwwwwwwwwwwwwwwwwww:wwwwwwwwwwwwwwwwwwwwwwwwwwwwww'
 			}
+			var dim = {x: 5, y: 5};
+			var pixelsize = 40;
+			var palette = {'s': '#000000', 'w': '#ffffff'}
+			var linebreak = ',';
 
-			// handle palette inputs
-			var palette = {'w': '#ffffff', 's': '#000000'}
+			// handle palette
 			function addColor(hex,char) {
-				var paletteElements = document.getElementsByClassName('palette');
-				var newColor = paletteElements[0].cloneNode(true);
+				var firstColor = document.getElementsByClassName('palette').item(0);
+				var newColor = firstColor.cloneNode(true);
 				newColor.children[0].value = typeof(hex)=='string' ? hex : '#000000';
 				newColor.children[1].value = typeof(char)=='string' ? char : '';
-				paletteElements[0].parentElement.insertBefore(newColor,document.getElementById('palette-add'));
+				firstColor.parentElement.insertBefore(newColor,document.getElementById('palette-add'));
 			}
+
 			function setPalette(newPalette) {
 				var paletteElements = document.getElementsByClassName('palette');
 				for (var i=paletteElements.length-1; i>0; i--) {
@@ -53,9 +54,10 @@
 				paletteElements[0].remove();
 				getPalette();
 			}
+
 			function getPalette() {
-				var paletteElements = document.getElementsByClassName('palette');
 				palette = {};
+				var paletteElements = document.getElementsByClassName('palette');
 				for (var i=0; i<paletteElements.length; i++) {
 					var char = paletteElements[i].children[1].value;
 					if (char!='')
@@ -63,9 +65,10 @@
 				}
 				redraw();
 			}
+
 			function handlePaletteKey(event) {
-				var paletteElements = document.getElementsByClassName('palette');
 				var input = event.target;
+				var paletteElements = document.getElementsByClassName('palette');
 				for (var i=0; i<paletteElements.length; i++) {
 					if (paletteElements[i]==input.parentElement)
 						var index = i;
@@ -75,30 +78,49 @@
 					case 46:
 						if (paletteElements.length>2 && input.value=='') {
 							input.parentElement.remove();
-							getPalette();
 							if (index!=undefined) {
 								if (event.keyCode==46 && paletteElements.length>index)
-									paletteElements[index].children[1].focus();
+									var focussedElement = paletteElements[index].children[1];
 								else
-									paletteElements[index-1].children[1].focus();
+									var focussedElement = paletteElements[index-1].children[1];
+
+								if (focussedElement!=undefined) {
+									var pos = focussedElement.value.length;
+									focussedElement.focus();
+									focussedElement.setSelectionRange(pos,pos);
+								}
 							}
+							getPalette();
 							event.preventDefault();
 						}
 						break;
 				}
 			}
 
-			// handle linebreak input
-			var linebreak = ',';
+			// handle linebreak
 			function setLinebreak(char) {
 				document.getElementById('linebreak').value = char;
 				getLinebreak();
 			}
+
 			function getLinebreak() {
 				var input = document.getElementById('linebreak');
-				if (input.value!='') {
+				if (input.value!='')
 					linebreak = input.value;
-				}
+			}
+
+			function validate() {
+				document.getElementById('example').style.display = 'none';
+				// validate input
+				var input = document.getElementById('input');
+				var pos = input.selectionStart;
+				var origin = input.value;
+				var rgxf = new RegExp('[^'+Object.keys(palette).join('')+linebreak+'0-9]','g');
+				input.value = origin.replace(rgxf,'');
+				if (input.value.length!=origin.length)
+					input.setSelectionRange(pos-1,pos-1);
+
+				document.getElementById('compressing').setAttribute('data-step',0);
 			}
 
 			function decode(str) {
@@ -115,35 +137,21 @@
 				return {body: body, head: head};
 			}
 
-			function validate() {
-				document.getElementById('example').style.display = 'none';
-
-				var input = document.getElementById('input');
-				var pos = input.selectionStart;
-				var origin = input.value;
-				input.value = origin.split('').filter(function(char) {
-					return Object.keys(palette).indexOf(char)!=-1 || (!isNaN(char) && char!=' ') || char==linebreak;
-				}).join('');
-				if (input.value.length!=origin.length)
-					input.setSelectionRange(pos-1,pos-1);
-				document.getElementById('compressing').setAttribute('data-step',0);
-			}
-
 			function draw() {
 				var canvas = document.getElementById('image');
 				var ctx = canvas.getContext('2d');
 				ctx.clearRect(0,0,canvas.width,canvas.height);
 
-				var rawinput = document.getElementById('input').value;
-				var input = decode(rawinput);
+				var raw = document.getElementById('input').value;
 				var cur = {x: 0, y: 0};
+				var input = decode(raw);
 				var maxval = input.head!=null ? input.head : 5;
 				var max = {x: maxval, y: maxval};
 
 				input.body.split('').forEach(function(char) {
 					if (Object.keys(palette).indexOf(char)!=-1) {
 						ctx.fillStyle = palette[char];
-						ctx.fillRect(size*cur.x,size*cur.y,size,size);
+						ctx.fillRect(pixelsize*cur.x,pixelsize*cur.y,pixelsize,pixelsize);
 						cur.x += 1;
 						max.x = Math.max(cur.x,max.x);
 					}
@@ -153,9 +161,10 @@
 						max.y = Math.max(cur.y+1,max.y);
 					}
 				});
+				// remove empty line
 				if (cur.x==0 && max.y>maxval)
 					max.y -= 1;
-
+				// redraw to correct dimensions
 				if (max.x!=dim.x) {
 					dim.x = max.x;
 					redraw();
@@ -164,9 +173,11 @@
 					dim.y = max.y;
 					redraw();
 				}
-				document.getElementById('input-length').textContent = rawinput.length>0 ? rawinput.length+' Zeichen' : '';
+
+				document.getElementById('input-length').textContent = raw.length>0 ? raw.length+' Zeichen' : '';
+
 				// generate uncompressed input
-				var plain = decode(rawinput).body;
+				var plain = decode(raw).body;
 				if (input.head!=null) {
 					var rows = [];
 					while (plain.length>0) {
@@ -181,8 +192,8 @@
 			function redraw() {
 				var canvas = document.getElementById('image');
 				canvas.setAttribute('width',canvas.width);
-				size = canvas.width/dim.x;
-				canvas.setAttribute('height',size*dim.y);
+				pixelsize = canvas.width/dim.x;
+				canvas.setAttribute('height',pixelsize*dim.y);
 				draw();
 			}
 
@@ -245,9 +256,9 @@
 			}
 
 			function drawExample() {
-				setPalette(example.palette);
-				setLinebreak(example.linebreak);
-				document.getElementById('input').value = example.picture;
+				setPalette(EXAMPLE.palette);
+				setLinebreak(EXAMPLE.linebreak);
+				document.getElementById('input').value = EXAMPLE.picture;
 				validate();
 				draw();
 				rate();
@@ -256,6 +267,7 @@
 		</script>
 
 		<style>
+			/* general styles */
 			:root {
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
@@ -269,6 +281,11 @@
 				width: 80%;
 				max-width: 1200px;
 				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
 			}
 			header, main, footer {
 				padding: 20px;
@@ -295,12 +312,20 @@
 				font-variant: small-caps;
 				border-top: var(--border-default-style);
 			}
+			footer * {
+				margin-bottom: var(--large-gap);
+			}
 			footer a {
 				float: right;
-				text-align: right;
-				padding: 0 var(--large-gap) var(--large-gap);
+				padding-bottom: var(--large-gap);
 				color: #000;
 				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
 			}
 			footer a.prev::before {
 				content: '« ';
@@ -308,7 +333,7 @@
 			footer a.next::after {
 				content: ' »';
 			}
-			section {
+			section, form {
 				overflow: auto;
 			}
 			input {
@@ -324,26 +349,9 @@
 			input:invalid{
 				background-color: #fbb;
 			}
-			#input, #compressing {
-				width: calc(100% - 100px);
-			}
-			#input-length, #compressing-length {
-				padding-left: var(--large-gap);
-				width: 100px;
-			}
-			#image-frame {
-				position: relative;
-				border: var(--border-default-style);
-				width: 480px;
-				min-width: 50%;
-				max-width: 100%;
-				padding: var(--small-gap);
-				margin: var(--large-gap) auto;
-			}
-			#image {
-				background-color: #eee;
-				width: 100%;
-			}
+
+			/* special styles */
+
 			.palette, #palette-add, #palette-linebreak {
 				float: left;
 				width: 80px;
@@ -362,6 +370,42 @@
 				font-size: 12px;
 				text-align: center;
 				vertical-align: middle;
+			}
+			#input, #compressing {
+				width: calc(100% - 100px);
+			}
+			#input-length, #compressing-length {
+				padding: 0 0 0 var(--large-gap);
+				width: 100px;
+			}
+			@media only screen and (max-width: 800px) {
+				#input, #compressing {
+					width: 100%;
+				}
+				#input-length, #compressing-length {
+					display: block;
+					padding: var(--large-gap) 0 0 0;
+				}
+			}
+			#image-frame {
+				position: relative;
+				border: var(--border-default-style);
+				width: 480px;
+				min-width: 50%;
+				max-width: 100%;
+				padding: var(--small-gap);
+				margin: var(--large-gap) auto;
+			}
+			#image {
+				background-color: #eee;
+				width: 100%;
+			}
+			#example {
+				position: absolute;
+				left: calc(50% - 14px);
+				top: calc(50% - 14px);
+				font-size: 24px;
+				text-decoration: none;
 			}
 			#compressing {
 				display: inline-block;
@@ -387,13 +431,6 @@
 			.compressing-control {
 				height: 2em;
 				width: 2em;
-			}
-			#example {
-				position: absolute;
-				left: calc(50% - 14px);
-				top: calc(50% - 14px);
-				font-size: 24px;
-				text-decoration: none;
 			}
 		</style>
 	</head>
