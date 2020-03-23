@@ -22,7 +22,8 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
-			var example = {
+			// default values
+			const EXAMPLE = {
 				text: 'Mississippi',
 				encoding: {
 					'M': '00',
@@ -31,8 +32,9 @@
 					'p': '11'
 				}
 			}
+			var alphabet = {}
 
-			// handle text input
+			// handle input
 			function setText(text,encoding) {
 				document.getElementById('input').value = '';
 				alphabetFromText();
@@ -43,9 +45,9 @@
 				document.getElementById('input').value = text;
 				alphabetFromText();
 			}
+
 			function alphabetFromText() {
-				var input = document.getElementById('input').value;
-				var chars = input.split('').filter((v,i,a) => a.indexOf(v)===i);
+				var chars = document.getElementById('input').value.split('').filter((v,i,a) => a.indexOf(v)===i);
 				var coded = Object.keys(alphabet);
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				for (var i=alphabetElements.length-1; i>=0; i--) {
@@ -57,7 +59,9 @@
 					addChar(needed[i],'');
 				}
 				getAlphabet();
+				encode();
 			}
+
 			function addChar(char,code) {
 				var newChar = document.getElementById('hidden').children[0].cloneNode(true);
 				newChar.className = char==' ' ? 'alphabet small' : 'alphabet';
@@ -66,8 +70,6 @@
 				document.getElementById('alphabet').appendChild(newChar);
 			}
 
-			// handle alphabet inputs
-			var alphabet = {}
 			function getAlphabet() {
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				alphabet = {};
@@ -75,8 +77,8 @@
 					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? ' ' : alphabetElements[i].children[0].value;
 					alphabet[char] = alphabetElements[i].children[1].value;
 				}
-				encode();
 			}
+
 			function validate() {
 				var input = document.getElementById('input');
 				input.value = input.value.replace(/[\t\n\r]/g,'');
@@ -87,30 +89,24 @@
 				}
 			}
 
-			// encode string
 			function encode() {
 				var input = document.getElementById('input').value.split('');
 				var codes = Object.values(alphabet);
 				var complete = codes.indexOf('')==-1;
 				var prefix = true;
 				var postfix = true;
-				var example;
 				for (var i=0; i<codes.length; i++) {
 					for (var j=0; j<codes.length; j++) {
-						if (i!=j && codes[i]==codes[j].substr(0,codes[i].length)) {
+						if (i!=j && codes[i]==codes[j].substr(0,codes[i].length))
 							prefix = false;
-						}
 						if (i!=j && codes[i]==codes[j].substr(-codes[i].length))
 							postfix = false;
 					}
 				}
-				document.getElementById('result').style.display = (codes.length) ? '' : 'none';
 
 				var valid = complete && (prefix || postfix);
-				document.getElementById('success').style.display = (valid) ? '' : 'none';
-				document.getElementById('encoded').style.display = (valid) ? '' : 'none';
-				document.getElementById('incomplete').style.display = (complete) ? 'none' : '';
-				document.getElementById('not-unique').style.display = (prefix || postfix) ? 'none' : '';
+				document.getElementById('encoding').style.display = (codes.length && valid) ? '' : 'none';
+				document.getElementById('not-unique').style.display = (complete && !valid) ? '' : 'none';
 				if (valid) {
 					var encoded = input.map(x => alphabet[x]).join('');
 					document.getElementById('bitlength').textContent = encoded.length;
@@ -120,12 +116,13 @@
 
 			function drawExample() {
 				document.getElementById('example').style.display = 'none';
-				setText(example.text,example.encoding);
+				setText(EXAMPLE.text,EXAMPLE.encoding);
 			}
 
 		</script>
 
 		<style>
+			/* general styles */
 			:root {
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
@@ -139,6 +136,11 @@
 				width: 80%;
 				max-width: 1200px;
 				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
 			}
 			header, main, footer {
 				padding: 20px;
@@ -165,12 +167,20 @@
 				font-variant: small-caps;
 				border-top: var(--border-default-style);
 			}
+			footer * {
+				margin-bottom: var(--large-gap);
+			}
 			footer a {
 				float: right;
-				text-align: right;
-				padding: 0 var(--large-gap) var(--large-gap);
+				padding-bottom: var(--large-gap);
 				color: #000;
 				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
 			}
 			footer a.prev::before {
 				content: '« ';
@@ -178,9 +188,8 @@
 			footer a.next::after {
 				content: ' »';
 			}
-			section {
+			section, form {
 				overflow: auto;
-				position: relative;
 			}
 			input {
 				border: var(--border-default-style);
@@ -195,9 +204,22 @@
 			input:invalid{
 				background-color: #fbb;
 			}
+			input:disabled {
+				background-color: #fff;
+			}
+
+			/* special styles */
+
 			#input {
 				width: 100%;
 				font-size: 16px;
+			}
+			#example {
+				position: absolute;
+				padding-top: 27px;
+				left: calc(50% - 14px);
+				font-size: 24px;
+				text-decoration: none;
 			}
 			#hidden {
 				display: none;
@@ -234,15 +256,8 @@
 				padding: var(--small-gap);
 				word-wrap: break-word;
 			}
-			.invalid {
+			#not-unique {
 				color: #c00;
-			}
-			#example {
-				position: absolute;
-				left: calc(50% - 14px);
-				top: calc(50% - 14px + 1.33em);
-				font-size: 24px;
-				text-decoration: none;
 			}
 		</style>
 	</head>
@@ -270,16 +285,15 @@
 				<form id="hidden">
 					<div>
 						<input type="text" class="fixed" disabled="disabled" value="" />
-						<input type="text" required pattern="[01]+" value="0" oninput="validate(); getAlphabet();" />
+						<input type="text" required pattern="[01]+" value="0" oninput="validate(); getAlphabet(); encode();" />
 					</div>
 				</form>
 				<form id="alphabet"></form>
+				<p id="not-unique">Die Kodierung ist nicht eindeutig.</p>
 			</section>
-			<section id="result">
+			<section id="encoding">
 				<h2>Binäre Repräsentation</h2>
-				<p id="success">Du hast eine gültige Kodierung gefunden. Mit dieser Kodierung belegt der Text <span id="bitlength">0</span> Bit im Speicher.</p>
-				<p id="incomplete" class="invalid">Die von dir gewählte Kodierung ist unvollständig.</p>
-				<p id="not-unique" class="invalid">Die von dir gewählte Kodierung ist nicht eindeutig.</p>
+				<p>Die Belegung der Zeichen ist gültig. Mit dieser Kodierung belegt der Text <span id="bitlength">0</span> Bit im Speicher.</p>
 				<span id="encoded"></span>
 			</section>
 			<section id="exercises">
