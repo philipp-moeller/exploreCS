@@ -22,86 +22,7 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
-			// default data
-			var size = 40;
-			var minHeight = 10;
-			var example = {
-				text: 'TRES TRISTES TIGRES'
-			}
-
-			// handle text input
-			function setText(text,encoding) {
-				document.getElementById('input').value = '';
-				alphabetFromText();
-				for (char in encoding) {
-					addChar(char,encoding[char]);
-				}
-				getAlphabet();
-				document.getElementById('input').value = text;
-				alphabetFromText();
-			}
-			function alphabetFromText() {
-				var input = document.getElementById('input').value;
-				var chars = input.split('').filter((v,i,a) => a.indexOf(v)===i);
-				var coded = Object.keys(alphabet);
-				var alphabetElements = document.getElementsByClassName('alphabet');
-				for (var i=alphabetElements.length-1; i>=0; i--) {
-					if (chars.indexOf(coded[i])==-1)
-						alphabetElements[i].remove();
-				}
-				var needed = chars.filter(x => !coded.includes(x));
-				for (var i=0; i<needed.length; i++) {
-					addChar(needed[i],0);
-				}
-				getAlphabet();
-				countChars();
-				encode();
-			}
-
-			function countChars() {
-				var input = document.getElementById('input').value;
-				var alphabetElements = document.getElementsByClassName('alphabet');
-				nodes = [];
-				for (var i=0; i<alphabetElements.length; i++) {
-					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? ' ' : alphabetElements[i].children[0].value;
-					var rgxn = new RegExp('[^'+char+']','g');
-					var count = input.replace(rgxn,'').length;
-					alphabetElements[i].children[1].value = count;
-					nodes.push(new Node(char,count,null,null));
-				}
-				var count = alphabetElements.length;
-				document.getElementById('count').textContent = count;
-				document.getElementById('needed-bits').textContent = Math.ceil(Math.log2(count));
-			}
-			function addChar(char,code) {
-				var newChar = document.getElementById('hidden').children[0].cloneNode(true);
-				newChar.className = char==' ' ? 'alphabet small' : 'alphabet';
-				newChar.children[0].value = char==' ' ? 'Leerzeichen' : char;
-				newChar.children[1].value = code;
-				document.getElementById('alphabet').appendChild(newChar);
-			}
-
-			// handle alphabet inputs
-			var alphabet = {}
-			function getAlphabet() {
-				var alphabetElements = document.getElementsByClassName('alphabet');
-				alphabet = {};
-				for (var i=0; i<alphabetElements.length; i++) {
-					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? ' ' : alphabetElements[i].children[0].value;
-					alphabet[char] = alphabetElements[i].children[1].value;
-				}
-			}
-			function validate() {
-				var input = document.getElementById('input');
-				input.value = input.value.replace(/[\t\n\r]/g,'');
-				document.getElementById('example').style.display = 'none';
-				var alphabetElements = document.getElementsByClassName('alphabet');
-				for (var i=0; i<alphabetElements.length; i++) {
-					alphabetElements[i].children[1].value = alphabetElements[i].children[1].value.replace(/[^01]/g,'');
-				}
-			}
-
-			// binary tree
+			// creating abstract classes
 			class BinaryTree {
 				constructor(node) {
 					this.root = node;
@@ -124,6 +45,7 @@
 				width() {
 					return 2**this.depth()+1;
 				}
+				// special methods
 				find(char) {
 					if (this.root==null)
 						return false;
@@ -144,7 +66,7 @@
 					if (this.root!=null) {
 						if (this.left.root!=null) {
 							var lx = cx-(size/2)*2**(this.depth()-1);
-							var ly = cy+Math.max(minHeight,size);
+							var ly = cy+Math.max(MIN_ROW_HEIGHT,size);
 							ctx.beginPath();
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(lx,ly);
@@ -153,7 +75,7 @@
 						}
 						if (this.right.root!=null) {
 							var rx = cx+(size/2)*2**(this.depth()-1);
-							var ry = cy+Math.max(minHeight,size);
+							var ry = cy+Math.max(MIN_ROW_HEIGHT,size);
 							ctx.beginPath();
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(rx,ry);
@@ -190,6 +112,7 @@
 					}
 				}
 			}
+
 			class Node {
 				constructor(char,quantity,left,right) {
 					this.quantity = quantity;
@@ -202,9 +125,81 @@
 				}
 			}
 
+			// default values
+			const EXAMPLE = 'TRES TRISTES TIGRES';
+			const MIN_ROW_HEIGHT = 10;
+			var size = 40;
+			var alphabet = {};
 			var nodes = [];
-			var huffmanTree = new BinaryTree(null);
-			function createHuffmanTree() {
+			var tree = new BinaryTree(null);
+
+			// handle input
+			function setText(text) {
+				document.getElementById('input').value = '';
+				alphabetFromText();
+				document.getElementById('input').value = text;
+				alphabetFromText();
+				encode();
+			}
+
+			function alphabetFromText() {
+				var chars = document.getElementById('input').value.split('').filter((v,i,a) => a.indexOf(v)===i);
+				var coded = Object.keys(alphabet);
+				var alphabetElements = document.getElementsByClassName('alphabet');
+				for (var i=alphabetElements.length-1; i>=0; i--) {
+					if (chars.indexOf(coded[i])==-1)
+						alphabetElements[i].remove();
+				}
+				var needed = chars.filter(x => !coded.includes(x));
+				for (var i=0; i<needed.length; i++) {
+					addChar(needed[i],0);
+				}
+				// read alphabet
+				alphabet = {};
+				for (var i=0; i<alphabetElements.length; i++) {
+					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? ' ' : alphabetElements[i].children[0].value;
+					alphabet[char] = alphabetElements[i].children[1].value;
+				}
+				countChars();
+			}
+
+			function addChar(char,code) {
+				var newChar = document.getElementById('hidden').children[0].cloneNode(true);
+				newChar.className = char==' ' ? 'alphabet small' : 'alphabet';
+				newChar.children[0].value = char==' ' ? 'Leerzeichen' : char;
+				newChar.children[1].value = code;
+				document.getElementById('alphabet').appendChild(newChar);
+			}
+
+			function countChars() {
+				var input = document.getElementById('input').value;
+				var alphabetElements = document.getElementsByClassName('alphabet');
+				nodes = [];
+				for (var i=0; i<alphabetElements.length; i++) {
+					var char = alphabetElements[i].children[0].value=='Leerzeichen' ? ' ' : alphabetElements[i].children[0].value;
+					var rgxn = new RegExp('[^'+char+']','g');
+					var count = input.replace(rgxn,'').length;
+					alphabetElements[i].children[1].value = count;
+					nodes.push(new Node(char,count,null,null));
+				}
+				var count = alphabetElements.length;
+				document.getElementById('count').textContent = count;
+				document.getElementById('needed-bits').textContent = Math.ceil(Math.log2(count));
+			}
+
+			function validate() {
+				var input = document.getElementById('input');
+				input.value = input.value.replace(/[\t\n\r]/g,'');
+				document.getElementById('example').style.display = 'none';
+				var alphabetElements = document.getElementsByClassName('alphabet');
+				for (var i=0; i<alphabetElements.length; i++) {
+					alphabetElements[i].children[1].value = alphabetElements[i].children[1].value.replace(/[^01]/g,'');
+				}
+			}
+
+			// concrete huffman algorithm
+			function encode() {
+				// create tree from alphabet nodes
 				while (nodes.length>1) {
 					// select two nodes with smallest quantitiy
 					var smallest = [0,1];
@@ -224,15 +219,12 @@
 					var right = nodes.splice(Math.min(smallest[0],smallest[1]),1)[0];
 					nodes.push(new Node(null,left.quantity+right.quantity,left,right));
 				}
-				huffmanTree = new BinaryTree(nodes[0]);
-			}
+				tree = new BinaryTree(nodes[0]);
 
-			function encode() {
-				createHuffmanTree();
 				var charcount = Object.keys(alphabet).length;
 				if (charcount>1) {
 					for (char in alphabet) {
-						alphabet[char] = huffmanTree.find(char);
+						alphabet[char] = tree.find(char);
 					}
 					document.getElementById('tree').parentElement.style.display = '';
 				}
@@ -242,6 +234,7 @@
 					}
 					document.getElementById('tree').parentElement.style.display = 'none';
 				}
+
 				var input = document.getElementById('input').value;
 				var encoded = input.split('').map(x => alphabet[x]).join('');
 				document.getElementById('encoded').textContent = encoded;
@@ -265,26 +258,27 @@
 				var canvas = document.getElementById('tree');
 				var ctx = canvas.getContext('2d');
 				ctx.clearRect(0,0,canvas.width,canvas.height);
-				huffmanTree.draw(ctx,canvas.width/2,size/2);
+				tree.draw(ctx,canvas.width/2,size/2);
 			}
 
 			function redraw() {
 				var canvas = document.getElementById('tree');
 				canvas.setAttribute('width',canvas.clientWidth);
-				size = Math.min(100,canvas.width/huffmanTree.width());
-				canvas.setAttribute('height',Math.max(minHeight,size)*huffmanTree.height());
+				size = Math.min(100,canvas.width/tree.width());
+				canvas.setAttribute('height',Math.max(MIN_ROW_HEIGHT,size)*tree.height());
 				draw();
 			}
 
 			function drawExample() {
 				document.getElementById('example').style.display = 'none';
-				setText(example.text,example.encoding);
+				setText(EXAMPLE);
 				encode();
 			}
 
 		</script>
 
 		<style>
+			/* general styles */
 			:root {
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
@@ -298,6 +292,11 @@
 				width: 80%;
 				max-width: 1200px;
 				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
 			}
 			header, main, footer {
 				padding: 20px;
@@ -324,12 +323,20 @@
 				font-variant: small-caps;
 				border-top: var(--border-default-style);
 			}
+			footer * {
+				margin-bottom: var(--large-gap);
+			}
 			footer a {
 				float: right;
-				text-align: right;
-				padding: 0 var(--large-gap) var(--large-gap);
+				padding-bottom: var(--large-gap);
 				color: #000;
 				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
 			}
 			footer a.prev::before {
 				content: '« ';
@@ -337,9 +344,8 @@
 			footer a.next::after {
 				content: ' »';
 			}
-			section {
+			section, form {
 				overflow: auto;
-				position: relative;
 			}
 			input {
 				border: var(--border-default-style);
@@ -351,21 +357,28 @@
 				border: var(--border-default-style);
 				padding: 0 var(--small-gap);
 			}
-			input:invalid {
+			input:invalid{
 				background-color: #fbb;
 			}
 			input:disabled {
 				background-color: #fff;
 			}
+
+			/* special styles */
+
 			#input {
 				width: 100%;
 				font-size: 16px;
 			}
+			#example {
+				position: absolute;
+				left: calc(50% - 14px);
+				padding-top: 27px;
+				font-size: 24px;
+				text-decoration: none;
+			}
 			#hidden {
 				display: none;
-			}
-			#alphabet, #encoding {
-				overflow: auto;
 			}
 			.alphabet {
 				float: left;
@@ -389,6 +402,9 @@
 			.alphabet.small input.fixed {
 				font-size: 12px;
 			}
+			#tree {
+				width: 100%;
+			}
 			#encoded {
 				display: block;
 				font-family: monospace;
@@ -405,19 +421,9 @@
 			.invalid {
 				color: #c00;
 			}
-			#example {
-				position: absolute;
-				left: calc(50% - 14px);
-				top: calc(50% - 14px + 1.33em);
-				font-size: 24px;
-				text-decoration: none;
-			}
-			#tree {
-				width: 100%;
-			}
 		</style>
 	</head>
-	<body onload="redraw(); encode();" onresize="redraw();">
+	<body onload="encode();" onresize="redraw();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
@@ -432,7 +438,7 @@
 				<h2>Eingabe</h2>
 				<form>
 					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
-					<textarea id="input" rows="4" oninput="validate(); alphabetFromText();"></textarea>
+					<textarea id="input" rows="4" oninput="validate(); alphabetFromText(); encode();"></textarea>
 				</form>
 			</section>
 			<section>
