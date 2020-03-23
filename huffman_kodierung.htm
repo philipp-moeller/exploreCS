@@ -183,8 +183,8 @@
 					nodes.push(new Node(char,count,null,null));
 				}
 				var count = alphabetElements.length;
-				document.getElementById('count').textContent = count;
-				document.getElementById('needed-bits').textContent = Math.ceil(Math.log2(count));
+				document.getElementById('count').textContent = Math.max(1,count);
+				document.getElementById('needed-bits').textContent = Math.max(1,Math.ceil(Math.log2(count)));
 			}
 
 			function validate() {
@@ -227,12 +227,14 @@
 						alphabet[char] = tree.find(char);
 					}
 					document.getElementById('tree').parentElement.style.display = '';
+					document.getElementById('encoding').parentElement.style.display = '';
 				}
 				else {
 					for (char in alphabet) {
 						alphabet[char] = '0';
 					}
 					document.getElementById('tree').parentElement.style.display = 'none';
+					document.getElementById('encoding').parentElement.style.display = 'none';
 				}
 
 				var input = document.getElementById('input').value;
