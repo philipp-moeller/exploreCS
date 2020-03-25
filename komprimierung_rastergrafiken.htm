@@ -191,8 +191,8 @@
 
 			function redraw() {
 				var canvas = document.getElementById('image');
-				canvas.setAttribute('width',canvas.width);
-				pixelsize = canvas.width/dim.x;
+				canvas.setAttribute('width',canvas.clientWidth);
+				pixelsize = canvas.clientWidth/dim.x;
 				canvas.setAttribute('height',pixelsize*dim.y);
 				draw();
 			}
