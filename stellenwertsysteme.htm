@@ -25,14 +25,27 @@
 			// default values
 			const NAMESPACE = 'http://www.w3.org/2000/svg';
 			const PADDING = 1;
+			const CHARS = '0123456789ABCDEF';
 			var digits = 8;
 			var base = 10;
 			var number = 1;
 
 			// draw
+			function setNumber() {
+				number = parseInt(document.getElementById('number').value);
+				validate();
+				redraw();
+			}
+
 			function setBase() {
 				base = parseInt(document.getElementById('base').value);
+				validate();
 				redraw();
+			}
+
+			function validate() {
+				number = Math.min(base**digits-1,Math.max(0,number));
+				document.getElementById('number').value = number;
 			}
 
 			function draw() {
@@ -63,10 +76,10 @@
 				var baseNumber = number.toString(base);
 				for (var i=0; i<baseNumber.length; i++) {
 					var height = parseInt(baseNumber[baseNumber.length-1-i]);
+					var cx = pixelsize*(PADDING+(digits-i-1)*(1+PADDING));
 					for (var j=0; j<height; j++) {
 						ctx.fillStyle = '#00c';
 						ctx.beginPath();
-						var cx = pixelsize*(PADDING+(digits-i-1)*(1+PADDING));
 						var cy = pixelsize*(PADDING+base-1.5-j);
 						ctx.arc(cx,cy,pixelsize/2,0,2*Math.PI,false);
 						ctx.fill();
@@ -76,18 +89,22 @@
 						ctx.font = pixelsize/3+'px Sans-Serif';
 						ctx.fillText(base**i,cx,cy+pixelsize*1/9);
 					}
+					ctx.fillStyle = '#000';
+					ctx.textAlign = 'center';
+					ctx.font = pixelsize+'px Sans-Serif';
+					ctx.fillText(CHARS[height],cx,pixelsize*(PADDING+base+0.5)+1/3);
 				}
 			}
 
 			function sub() {
-				number = Math.max(0,number-1);
-				document.getElementById('number').value = number;
+				number -= 1;
+				validate();
 				redraw();
 			}
 
 			function add() {
-				number = Math.min(base**digits-1,number+1);
-				document.getElementById('number').value = number;
+				number += 1;
+				validate();
 				redraw();
 			}
 
@@ -95,7 +112,7 @@
 				var canvas = document.getElementById('image');
 				canvas.setAttribute('width',canvas.clientWidth);
 				var width = digits+(digits+1)*PADDING;
-				var height = base-1+2*PADDING;
+				var height = base+2*PADDING;
 				pixelsize = canvas.clientWidth/width;
 				canvas.setAttribute('height',pixelsize*height);
 				draw();
@@ -192,13 +209,22 @@
 			#number, #base {
 				width: 72px;
 			}
+			#image-frame {
+				position: relative;
+				border: var(--border-default-style);
+				width: 640px;
+				min-width: 75%;
+				max-width: 100%;
+				padding: var(--small-gap);
+				margin: var(--large-gap) auto;
+			}
 			#image {
 				width: 100%;
 			}
 
 		</style>
 	</head>
-	<body onload="redraw();">
+	<body onload="redraw();" onresize="redraw();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
@@ -215,17 +241,22 @@
 				<form>
 					<label for="number">Dezimalzahl:</label>
 					<input type="button" value="-" onclick="sub();" />
-					<input id="number" type="number" value="1" disabled="disabled" />
+					<input id="number" type="number" value="1" onchange="setNumber();" />
 					<input type="button" value="+" onclick="add();" />
 					&nbsp;
 					<label for="base">Anzahl verfügbarer Ziffern:</label>
 					<input id="base" type="number" value="10" min="2" max="16" onchange="setBase();" />
 				</form>
-				<canvas id="image"></canvas>
+			</section>
+			<section>
+				<h2>Veranschaulichung</h2>
+				<div id="image-frame">
+					<canvas id="image"></canvas>
+				</div>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
-				<p>Beschreibe Bereiche im ASCII-Code die Sonderzeichen, Buchstaben und Zahlen enthalten. Begründe mithilfe der Zahlensysteme, weshalb die Bereiche so gewählt wurden.</p>
+				<p>Beschreibe einen Zusammenhang zwischen der Anzahl der Ziffern und der größten in acht Ziffern darstellbaren Zahl.</p>
 			</section>
 		</main>
 		<footer>

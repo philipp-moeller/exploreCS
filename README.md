@@ -11,11 +11,14 @@ Der Aufbau der Arbeitsblätter ist stets der gleiche. Auf eine kurze Einleitung 
 Die Arbeitsblätter sind so gestaltet, dass jede Datei alleinstehend verwendet werden kann. Die Arbeitsblätter können so, wie PDF-Dokumente, den Schülerinnen und Schülern einzeln übermittelt werden. Dies bedeutet auch, dass auf den Einsatz von Frameworks verzichtet wird und die Dateien ausschließlich HTML5-, CSS- und Javascript-Code enthalten. Damit sind die Dateien auf jedem Endgerät verwendbar, auf dem ein einigermaßen moderner Browser installiert ist.
 
 ## Kapitel
-### Repräsentation von Zeichenketten
+### Daten und Information
+#### Repräsentation von Zahlen
+1. [Stellenwertsysteme](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/stellenwertsysteme.htm)
+#### Repräsentation von Zeichenketten
 1. [Kodierung von Zeichenketten](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_zeichenketten.htm)
 2. [ASCII-Code](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/ascii_code.htm)
 3. [Huffman Kodierung](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/huffman_kodierung.htm)
-### Repräsentation von Bildern
+#### Repräsentation von Bildern
 1. [Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rastergrafiken.htm)
 2. [Kodierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_rastergrafiken.htm)
 3. [Kodierung farbiger Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/farbige_rastergrafiken.htm)
