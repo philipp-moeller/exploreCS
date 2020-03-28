@@ -1,14 +1,14 @@
 # Digitale Arbeits&shy;blätter für den Informatik&shy;unterricht
 
 ## Einleitung
-Digitalisierung von Unterrichtsmaterial bedeutet häufig das Erstellen von PDF Dokumenten anstelle gedruckter Arbeitsblätter. Die Möglichkeiten digitaler Medien werden dabei nur unzureichend ausgeschöpft. Angeregt von Armin Hanischs [Chat-Simulation](https://www.arminhanisch.de/2019/02/chats-simulieren/) habe ich begonnen Arbeitsblätter für den Informatikunterricht zu entwerfen, bei denen die Schülerinnen und Schüler Unterrichtsinhalte interaktiv erforschen können.
+Digitalisierung von Unterrichts&shy;material bedeutet häufig nicht mehr als das Ersetzen gedruckter Arbeits&shy;blätter durch PDF-Dokumente. Die Möglichkeiten digitaler Medien werden dabei nur unzureichend ausgeschöpft. Angeregt von Armin Hanischs [Chat-Simulation](https://www.arminhanisch.de/2019/02/chats-simulieren/) habe ich begonnen Arbeits&shy;blätter für den Informatik&shy;unterricht zu entwerfen, mit denen die Schülerinnen und Schüler Unterrichts&shy;inhalte interaktiv erforschen können.
 
 ## Verwendung
-Die Arbeitsblätter stellen keine vollständigen Unterrichtssequenzen dar. Sie können alternativ zu klassischen Arbeitsbögen im Unterricht eingesetzt werden. Trotz einer gewissen Anordnung der Arbeitsblätter sollten diese nicht konsekutiv eingesetzt werden, sondern als ein Baustein im Rahmen eines abwechslungsreichen Unterrichts.
+Die Arbeits&shy;blätter stellen ausdrücklich keine Unterrichts&shy;sequenzen dar. Sie können alternativ zu klassischen Arbeits&shy;bögen eingesetzt werden. Trotz einer gewissen Anordnung sollten die Arbeits&shy;blätter nicht aufeinander folgend eingesetzt werden, sondern als ein Baustein im Rahmen eines abwechslungs&shy;reichen Unterrichts.
 
-Der Aufbau der Arbeitsblätter ist stets der gleiche. Auf eine kurze Einleitung folgt ein interaktives Seitenelement, das die Schülerinnen und Schüler ohne Aufgabenstellung oder Anleitung erforschen können. Zuletzt folgt eine Aufgabe, die zur Anknüpfung an den weiterführenden Unterricht genutzt werden kann.
+Der Aufbau der Arbeits&shy;blätter ist stets der gleiche. Auf eine kurze Einleitung folgt ein interaktives Seitenelement, das die Schülerinnen und Schüler ohne Aufgaben&shy;stellung oder Anleitung erforschen können. Zuletzt folgt eine Aufgabe, die zur Anknüpfung an den weiterführenden Unterricht genutzt werden kann.
 
-Die Arbeitsblätter sind so gestaltet, dass jede Datei alleinstehend verwendet werden kann. Die Arbeitsblätter können so, wie PDF-Dokumente, den Schülerinnen und Schülern einzeln übermittelt werden. Dies bedeutet auch, dass auf den Einsatz von Frameworks verzichtet wird und die Dateien ausschließlich HTML5-, CSS- und Javascript-Code enthalten. Damit sind die Dateien auf jedem Endgerät verwendbar, auf dem ein einigermaßen moderner Browser installiert ist.
+Die Arbeits&shy;blätter sind so gestaltet, dass jedes Dokument alleinstehend verwendet werden kann. Die Arbeits&shy;blätter können so, wie PDF-Dokumente, den Schülerinnen und Schülern einzeln übermittelt werden. Sie sind auf jedem Endgerät verwendbar, auf dem ein einigermaßen moderner Browser installiert ist und bedürfen darüber hinaus keiner speziellen System&shy;konfiguration.
 
 ## Kapitel
 ### Daten und Information
@@ -24,3 +24,4 @@ Die Arbeitsblätter sind so gestaltet, dass jede Datei alleinstehend verwendet w
 3. [Kodierung farbiger Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/farbige_rastergrafiken.htm)
 4. [Komprimierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/komprimierung_rastergrafiken.htm)
 5. [RGB-Farbraum](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rgb_farbraum.htm)
+6. [Vektorgrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/vektorgrafiken.htm)

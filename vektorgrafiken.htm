@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>RGB-Farbraum</title>
+		<title>Vektorgrafiken</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<script>
@@ -23,102 +23,110 @@
 			}
 
 			// default values
-			var ct = {x: 0, y: 0, r: 0};
-			var cl = {x: 0, y: 0, r: 0};
-			var cr = {x: 0, y: 0, r: 0};
+			const SVGNS = 'http://www.w3.org/2000/svg';
+			const EXAMPLE = [
+				['rect','#1d2ddf',60,65,45,45],
+				['ellipse','#da1a1a',100,65,25,25],
+				['polyline','#ffeb2f',89,103,0,0,143,103,118,57]
+			]
+
+			function reduceProperties() {
+				var shapeElements = document.getElementsByClassName('shape');
+				var toDelete = [];
+				for (var i=0; i<shapeElements.length; i++) {
+					switch (shapeElements[i].children[0].value) {
+						case 'rect':
+						case 'ellipse':
+							shapeElements[i].children[2].style.display = '';	// x
+							shapeElements[i].children[3].style.display = '';	// y
+							shapeElements[i].children[4].style.display = '';	// width
+							shapeElements[i].children[5].style.display = '';	// height
+							shapeElements[i].children[6].style.display = 'none';	// x2
+							shapeElements[i].children[7].style.display = 'none';	// y2
+							shapeElements[i].children[8].style.display = 'none';	// x3
+							shapeElements[i].children[9].style.display = 'none';	// y3
+							break;
+						case 'polyline':
+							shapeElements[i].children[2].style.display = '';	// x
+							shapeElements[i].children[3].style.display = '';	// y
+							shapeElements[i].children[4].style.display = 'none';	// width
+							shapeElements[i].children[5].style.display = 'none';	// height
+							shapeElements[i].children[6].style.display = '';	// x2
+							shapeElements[i].children[7].style.display = '';	// y2
+							shapeElements[i].children[8].style.display = '';	// x3
+							shapeElements[i].children[9].style.display = '';	// y3
+							break;
+						default:
+							if (i>0)
+								toDelete.push(i);
+					}
+				}
+				for (var i=0; i<toDelete.length; i++) {
+					shapeElements[toDelete[i]].remove();
+				}
+			}
+
+			function addShape(attr) {
+				var firstShape = document.getElementsByClassName('shape').item(0);
+				var newShape = firstShape.cloneNode(true);
+				var data = newShape.children;
+				if (Array.isArray(attr) && attr[0]!=undefined)
+					data[0].value = attr[0];
+				for (var i=1; i<data.length; i++) {
+					data[i].value = (Array.isArray(attr) && attr[i]!=undefined) ? attr[i] : (i==1 ? '#000000' : '');
+				}
+				firstShape.parentElement.insertBefore(newShape,document.getElementById('shape-add'));
+			}
+
+			function draw() {
+				document.getElementById('example').style.display = 'none';
+				var svg = document.getElementById('image');
+				svg.innerHTML = '';
+				var shapeElements = document.getElementsByClassName('shape');
+				for (var i=0; i<shapeElements.length; i++) {
+					var data = shapeElements[i].children;
+					var shape = document.createElementNS(SVGNS,data[0].value);
+					shape.setAttribute('fill',data[1].value);
+					switch (data[0].value) {
+						case 'rect':
+							shape.setAttribute('x',data[2].value=='' ? 0 : data[2].value);
+							shape.setAttribute('y',data[3].value=='' ? 0 : data[3].value);
+							shape.setAttribute('width',data[4].value=='' ? 0 : data[4].value);
+							shape.setAttribute('height',data[5].value=='' ? 0 : data[5].value);
+							break;
+						case 'ellipse':
+							shape.setAttribute('cx',data[2].value=='' ? 0 : data[2].value);
+							shape.setAttribute('cy',data[3].value=='' ? 0 : data[3].value);
+							shape.setAttribute('rx',data[4].value=='' ? 0 : data[4].value);
+							shape.setAttribute('ry',data[5].value=='' ? 0 : data[5].value);
+							break;
+						case 'polyline':
+							var points = [];
+							points.push((data[2].value=='' ? 0 : data[2].value)+','+(data[3].value=='' ? 0 : data[3].value));
+							points.push((data[6].value=='' ? 0 : data[6].value)+','+(data[7].value=='' ? 0 : data[7].value));
+							points.push((data[8].value=='' ? 0 : data[8].value)+','+(data[9].value=='' ? 0 : data[9].value));
+							shape.setAttribute('points',points.join(' '));
+							break;
+					}
+					svg.appendChild(shape);
+				}
+				document.getElementById('source').textContent = svg.innerHTML;
+			}
+
+			function drawExample() {
+				var shapeElements = document.getElementsByClassName('shape');
+				var existing = shapeElements.length;
+				for (var i=0; i<EXAMPLE.length; i++) {
+					addShape(EXAMPLE[i]);
+				}
+				for (var i=0; i<existing; i++) {
+					shapeElements[0].remove();
+				}
+				reduceProperties();
+				draw();
+			}
 
 			// handle mixing colors
-			function dec2hex(val) {
-				return val<16 ? '0'+val.toString(16) : val.toString(16);
-			}
-
-			function drawVenn(canvasName,r,g,b,rg,rb,gb,rgb) {
-				var canvas = document.getElementById(canvasName);
-				var ctx = canvas.getContext('2d');
-				var tempCanvas = document.createElement('canvas');
-				var tempCtx = tempCanvas.getContext('2d');
-
-				tempCanvas.width = canvas.width;
-				tempCanvas.height = canvas.height;
-
-				function drawCircle(ctx, circle, color) {
-					ctx.beginPath();
-					ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2);
-					ctx.closePath();
-					ctx.fillStyle = color;
-					ctx.fill();
-				}
-
-				function drawIntersect(a,b,c,notC,color) {
-					tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-					tempCtx.save();
-					drawCircle(tempCtx, a, color);
-					tempCtx.globalCompositeOperation = "source-in";
-					drawCircle(tempCtx, b, color);
-					if (c) {
-						drawCircle(tempCtx, c, color);
-					}
-					tempCtx.globalCompositeOperation = "destination-out";
-					if (notC) {
-						drawCircle(tempCtx, notC, color);
-					}
-					tempCtx.restore();
-					ctx.drawImage(tempCanvas, 0, 0);
-				}
-
-				drawCircle(ctx, cr, r);
-				drawCircle(ctx, cl, g);
-				drawCircle(ctx, ct, b);
-				drawIntersect(ct, cl, null, null, gb);
-				drawIntersect(ct, cr, null, null, rb);
-				drawIntersect(cl, cr, null, null, rg);
-				drawIntersect(ct, cl, null, cr, gb);
-				drawIntersect(ct, cr, null, cl, rb);
-				drawIntersect(cl, cr, null, ct, rg);
-				drawIntersect(cl, cr, ct, null, rgb);
-			}
-
-			function subColors() {
-				var b = 255-parseInt(document.getElementById('yellow').value);
-				var r = 255-parseInt(document.getElementById('cyan').value);
-				var g = 255-parseInt(document.getElementById('magenta').value);
-				var hex = '#'+dec2hex(r)+dec2hex(g)+dec2hex(b);
-				document.getElementById('color-sub-res').value = hex;
-				document.getElementById('color-sub-dec').textContent = r+','+g+','+b;
-				document.getElementById('color-sub-hex').textContent = hex;
-
-				drawVenn('color-sub','#'+dec2hex(r)+'ffff','#ff'+dec2hex(g)+'ff','#ffff'+dec2hex(b),'#'+dec2hex(r)+dec2hex(g)+'ff','#'+dec2hex(r)+'ff'+dec2hex(b),'#ff'+dec2hex(g)+dec2hex(b),hex);
-			}
-
-			function addColors() {
-				var b = parseInt(document.getElementById('blue').value);
-				var r = parseInt(document.getElementById('red').value);
-				var g = parseInt(document.getElementById('green').value);
-				var hex = '#'+dec2hex(r)+dec2hex(g)+dec2hex(b);
-				document.getElementById('color-add-res').value = hex;
-				document.getElementById('color-add-dec').textContent = r+','+g+','+b;
-				document.getElementById('color-add-hex').textContent = hex;
-
-				drawVenn('color-add','#'+dec2hex(r)+'0000','#00'+dec2hex(g)+'00','#0000'+dec2hex(b),'#'+dec2hex(r)+dec2hex(g)+'00','#'+dec2hex(r)+'00'+dec2hex(b),'#00'+dec2hex(g)+dec2hex(b),hex);
-			}
-
-			function redraw() {
-				var canvas = document.getElementById('color-sub');
-				var width = canvas.clientWidth;
-				var height = canvas.clientHeight;
-				canvas.setAttribute('width',width);
-				canvas.setAttribute('height',height);
-				var canvas = document.getElementById('color-add');
-				canvas.setAttribute('width',width);
-				canvas.setAttribute('height',height);
-
-				var size = Math.min(height,width)/3;
-				ct = {x: width/2, y: height/2-size*2/3, r: size*3/2};
-				cl = {x: width/2-size/Math.sqrt(3), y: height/2+size*1/3, r: size*3/2};
-				cr = {x: width/2+size/Math.sqrt(3), y: height/2+size*1/3, r: size*3/2};
-				addColors();
-				subColors();
-			}
 
 		</script>
 
@@ -208,114 +216,88 @@
 
 			/* special styles */
 
-			#color-sub, #color-add {
-				border: var(--border-default-style);
-				width: calc(100% - 300px);
-				min-width: 30%;
-				height: 150px;
-				padding: var(--small-gap);
-				float: right;
-			}
-			#color-add {
-				background-color: #000000;
-			}
-			.component {
-				width: 300px;
-				max-width: 70%;
+			.shape, #shape-add {
 				float: left;
-				overflow: auto;
-				padding: var(--small-gap);
+				width: 80px;
+				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
-			.component label {
-				display: inline-block;
-				width: 20%;
-				overflow: hidden;
+			.shape input, .shape select, #shape-add input {
+				width: 100%;
+				height: 28px;
 			}
-			.component input[type=color] {
+			.shape input.small {
+				width: 50%;
+			}
+			.shape:nth-of-type(1) select option:nth-of-type(4) {
 				display: none;
-				vertical-align: 4px;
-				width: 44px;
 			}
-			.component input[type=range] {
-				display: inline-block;
-				vertical-align: -4px;
-				margin: 0;
-				width: 70%;
-			}
-			.code {
-				display: inline-block;
-				font-family: monospace;
+			#image-frame {
+				position: relative;
 				border: var(--border-default-style);
-				margin: var(--small-gap) 0;
+				width: 480px;
+				min-width: 50%;
+				max-width: 100%;
 				padding: var(--small-gap);
-				word-wrap: break-word;
+				margin: var(--large-gap) auto;
 			}
-			#color-sub-res, #color-add-res {
-				display: inline-block;
-				width: 95%;
+			#image {
+				background-color: #eee;
+				width: 100%;
 			}
+			#example {
+				position: absolute;
+				left: calc(50% - 14px);
+				top: calc(50% - 14px);
+				font-size: 24px;
+				text-decoration: none;
+			}
+			#source {
+				width: 100%;
+			}
+
 		</style>
 	</head>
-	<body onload="redraw();" onresize="redraw();">
+	<body onload="reduceProperties();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
-			<h1>RGB-Farbraum</h1>
+			<h1>Vektorgrafiken</h1>
 		</header>
 		<main>
 			<section>
 				<h2 class="text">Einleitung</h2>
-				<p class="text">Fotos bestehen meist aus vielen Tausend verschiedenen Farben. Anstelle einer Farbpalette ist es daher sinnvoll die Farbwerte als Mischverhältnis der Grundfarben anzugeben.</p>
+				<p class="text">Geometrische Formen lassen sich mit wenigen Eigenschaften exakt beschreiben. Bilder, die aus geometrischen Formen aufgebaut sind, können so ohne Rasterung dargestellt werden. Solche Vektorgrafiken besitzen also keine Auflösung.</p>
 			</section>
 			<section>
-				<h2>Subtraktive Farbmischung</h2>
-				<p class="text">Beim Mischen von Farben aus dem Tuschkasten reduzieren diese das Licht, das ins Auge fällt. Man spricht daher von subtraktiver Farbmischung.</p>
-				<form>
-					<canvas id="color-sub"></canvas>
-					<div class="component">
-						<label for="cyan">Cyan</label>
-						<input type="color" value="#00ffff" disabled="disabled" />
-						<input id="cyan" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="yellow">Gelb</label>
-						<input type="color" value="#ffff00" disabled="disabled" onclick="document.getElementById('yellow').value = parseInt(document.getElementById('yellow').value) + 5;" />
-						<input id="yellow" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="magenta">Magenta</label>
-						<input type="color" value="#ff00ff" disabled="disabled" />
-						<input id="magenta" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component"><input id="color-sub-res" type="color" value="#ffffff" disabled="disabled" /></div>
-				</form>
+				<h2>Formen</h2>
+				<div class="shape">
+					<select onchange="reduceProperties();" />
+						<option value="ellipse" selected="selected">Ellipse</option>
+						<option value="rect">Rechteck</option>
+						<option value="polyline">Dreieck</option>
+						<option value="delete">löschen</option>
+					</select>
+					<input type="color" value="#000000" onchange="draw();" />
+					<input type="text" class="small" placeholder="x" oninput="draw();" /><input type="text" class="small" placeholder="y" oninput="draw();" />
+					<input type="text" placeholder="Breite" oninput="draw();" />
+					<input type="text" placeholder="Höhe" oninput="draw();" />
+					<input type="text" class="small" placeholder="x" oninput="draw();" /><input type="text" class="small" placeholder="y" oninput="draw();" />
+					<input type="text" class="small" placeholder="x" oninput="draw();" /><input type="text" class="small" placeholder="y" oninput="draw();" />
+				</div>
+				<div id="shape-add">
+					<input type="button" value="+" onclick="addShape();" />
+				</div>
 			</section>
 			<section>
-				<h2>Additive Farbmischung</h2>
-				<p class="text">Bei Bildschirmen entsteht die Farbe durch Überlagerung der Grundfarben der additiven Farbmischung.</p>
-				<form>
-					<canvas id="color-add"></canvas>
-					<div class="component">
-						<label for="red">Rot</label>
-						<input type="color" value="#ff0000" disabled="disabled" />
-						<input id="red" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="green">Grün</label>
-						<input type="color" value="#00ff00" disabled="disabled" />
-						<input id="green" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="blue">Blau</label>
-						<input type="color" value="#0000ff" disabled="disabled" />
-						<input id="blue" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component"><input id="color-add-res" type="color" value="#000000" disabled="disabled" /></div>
-				</form>
+				<h2>Vektorgrafik</h2>
+				<div id="image-frame">
+					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
+					<svg id="image" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 150"></svg>
+				</div>
 			</section>
 			<section>
-				<h2>Farbkodierung</h2>
-				<p class="text">Im RGB-Farbraum werden die Farbwerte durch drei Zahlen dargestellt. Der Zahlenbereich unterscheidet sich je nach Farbtiefe. Die obigen Mischfarben entsprechen den Kodierungen <span id="color-sub-dec" class="code">255,255,255</span> und <span id="color-add-dec" class="code">0,0,0</span>. Im Hexadezimalsystem können diese Farbwerte durch eine Zeichenkette mit konstanter Länge dargestellt werden: <span id="color-sub-hex" class="code">#ffffff</span> und <span id="color-add-hex" class="code">#000000</span>.</p>
+				<h2>Quelltext</h2>
+				<textarea id="source" rows="6"></textarea>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
@@ -323,8 +305,7 @@
 			</section>
 		</main>
 		<footer>
-			<a class="next" href="vektorgrafiken.htm">Vektorgrafiken</a>
-			<a class="prev" href="komprimierung_rastergrafiken.htm">Komprimierung von Rastergrafiken</a>
+			<a class="prev" href="rgb_farbraum.htm">RGB-Farbraum</a>
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="31" viewBox="0 0 88 31" baseProfile="basic" version="1.1">
 				<g id="surface1">
 					<path style=" stroke:none;fill-rule:nonzero;fill:rgb(66.666667%,69.803922%,67.058824%);fill-opacity:1;" d="M 2.300781 0.570313 L 85.429688 0.71875 C 86.589844 0.71875 87.628906 0.546875 87.628906 3.039063 L 87.527344 30.414063 L 0.203125 30.414063 L 0.203125 2.9375 C 0.203125 1.707031 0.324219 0.570313 2.300781 0.570313 Z "/>
