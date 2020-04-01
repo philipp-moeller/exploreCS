@@ -1,0 +1,23 @@
+@font-face {
+	font-family: 'Lato';
+	src: local('Lato'), url('Lato-Regular.ttf') format('truetype');
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Lato';
+	src: local('Lato'), url('Lato-Bild.ttf') format('truetype');
+	font-display: swap;
+	font-weight: bold;
+}
+
+body {
+	background-color: #fcfcc0;
+	font-family: 'Lato';
+}
+
+header, h1, h2, h3, h4 {
+	font-family: 'Lato';
+	font-weight: bold;
+}
