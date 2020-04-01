@@ -22,28 +22,44 @@
 				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
 			}
 
-			// default values
-			const ALPHA = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-			const ALPHANUM = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-			const ASCII = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-			const PUNCTUATION = ' .,!?()';
+			// constants
+			const LOWERCASE = 'abcdefghijklmnopqrstuvwxyz';
+			const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			const NUMBERS = '0123456789';
+			const UMLAUT = 'äöüÄÖÜ';
+			const PUNCTUATION = ' -.,!?:;';
+			const SPECIAL = '"\'()#$%&*+/<=>@[\\]^_`{|}~';
 
 			function validate() {
 				var alphabet = getAlphabet();
-				var rgxd = new RegExp('[^'+alphabet+PUNCTUATION+'0-9]','g');
 				var decoded = document.getElementById('decoded').value;
-				if (alphabet!=ASCII)
+				decoded = decoded.replace('ß','ss');
+				if (alphabet.indexOf(UPPERCASE)==-1)
+					decoded = decoded.toLowerCase();
+				if (alphabet.indexOf(LOWERCASE)==-1)
 					decoded = decoded.toUpperCase();
-				document.getElementById('decoded').value = decoded.replace(rgxd,'');
+				document.getElementById('decoded').value = decoded.split('').filter(char => alphabet.indexOf(char)!=-1).join('');
 			}
 
 			function getAlphabet() {
-				if (document.getElementById('alphabet-ascii').checked)
-					return ASCII;
-				else if (document.getElementById('alphabet-alphanum').checked)
-					return ALPHANUM;
-				else
-					return ALPHA;
+				alphabet = '';
+				if (document.getElementById('alphabet-lowercase').checked) {
+					alphabet += LOWERCASE;
+					if (document.getElementById('alphabet-umlaut').checked)
+						alphabet += UMLAUT.substr(0,3);
+				}
+				if (document.getElementById('alphabet-uppercase').checked) {
+					alphabet += UPPERCASE;
+					if (document.getElementById('alphabet-umlaut').checked)
+						alphabet += UMLAUT.substr(3,3);
+				}
+				if (document.getElementById('alphabet-numbers').checked)
+					alphabet += NUMBERS;
+				if (document.getElementById('alphabet-punctuation').checked)
+					alphabet += PUNCTUATION;
+				if (document.getElementById('alphabet-special').checked)
+					alphabet += SPECIAL;
+				return alphabet;
 			}
 
 			function drawAlphabet(alphabet) {
@@ -184,21 +200,25 @@
 			#hidden {
 				display: none;
 			}
+			#translation {
+				width: 64px;
+			}
 			#alphabet {
 				overflow: auto;
+				padding: 8px 0;
 			}
 			#alphabet div {
 				border: 1px #000 solid;
 				float: left;
 				min-width: 30px;
-				height: 60px;
+				overflow: auto;
 			}
 			#alphabet div span {
 				display: block;
 				width: 100%;
 				text-align: center;
-				padding: 4px;
-				height: 24px;
+				padding: 8px 4px;
+				height: 32px;
 			}
 			#encoded {
 				display: block;
@@ -227,7 +247,6 @@
 			<section>
 				<h2>Eingabe</h2>
 				<form>
-					<input id="translation" type="number" value="0" onchange="encode();" />
 					<textarea id="decoded" oninput="validate(); encode();" rows="4"></textarea>
 				</form>
 			</section>
@@ -240,17 +259,25 @@
 					</div>
 				</div>
 				<form id="select-alphabet">
-					<input type="radio" id="alphabet-ascii" name="format" onchange="validate(); encode();" />
-					<label for="alphabet-ascii">ASCII-Code</label>
-					<input type="radio" id="alphabet-alphanum" name="format" onchange="validate(); encode();" checked="checked" />
-					<label for="alphabet-alphanum">Buchstaben und Zahlen</label>
-					<input type="radio" id="alphabet-alpha" name="format" onchange="validate(); encode();" />
-					<label for="alphabet-alpha">nur Buchstaben</label>
+					<input type="checkbox" id="alphabet-lowercase" name="format" onchange="validate(); encode();" />
+					<label for="alphabet-lowercase">Kleinbuchstaben</label>
+					<input type="checkbox" id="alphabet-uppercase" name="format" onchange="validate(); encode();" checked="checked" />
+					<label for="alphabet-uppercase">Großbuchstaben</label>
+					<input type="checkbox" id="alphabet-numbers" name="format" onchange="validate(); encode();" checked="checked" />
+					<label for="alphabet-numbers">Zahlen</label>
+					<input type="checkbox" id="alphabet-punctuation" name="format" onchange="validate(); encode();" />
+					<label for="alphabet-punctuation">Satzzeichen</label>
+					<input type="checkbox" id="alphabet-special" name="format" onchange="validate(); encode();" />
+					<label for="alphabet-special">Sonderzeichen</label>
+					<input type="checkbox" id="alphabet-umlaut" name="format" onchange="validate(); encode();" />
+					<label for="alphabet-umlaut">Umlaute</label>
 				</form>
 				<div id="alphabet"></div>
 			</section>
 			<section>
 				<h2>Ausgabe</h2>
+				<label for="translation">Schlüssel:</label>
+				<input id="translation" type="number" value="0" onchange="encode();" />
 				<span id="encoded"></span>
 			</section>
 			<section id="exercises">
