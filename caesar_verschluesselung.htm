@@ -96,9 +96,12 @@
 			}
 
 			function redraw() {
+				var minWidth = 30;
 				// adjust width of alphabet items
 				var alphabetElements = document.getElementById('alphabet').children;
+				document.getElementById('alphabet').style.minWidth = alphabetElements.length*minWidth+'px';
 				for (elem of alphabetElements) {
+					elem.style.minWidth = minWidth+'px';
 					elem.style.width = 'calc(100% / '+alphabetElements.length+')';
 				}
 			}
@@ -211,10 +214,12 @@
 				overflow: auto;
 				padding: 8px 0;
 			}
+			#alphabet-wrapper {
+				overflow: auto;
+			}
 			#alphabet div {
 				border: 1px #000 solid;
 				float: left;
-				min-width: 30px;
 				overflow: auto;
 			}
 			#alphabet div span {
@@ -277,7 +282,9 @@
 					<input type="checkbox" id="alphabet-umlaut" name="format" onchange="validate(); encode();" />
 					<label for="alphabet-umlaut">Umlaute</label>
 				</form>
-				<div id="alphabet"></div>
+				<div id="alphabet-wrapper">
+					<div id="alphabet"></div>
+				</div>
 			</section>
 			<section>
 				<h2>Ausgabe</h2>
