@@ -9,17 +9,17 @@
 			// global scripts
 			function toggleText() {
 				var textElements = document.getElementsByClassName('text');
-				var state = textElements[0].style.display=='none' ? '' : 'none';
-				for (var i=0; i<textElements.length; i++) {
-					textElements[i].style.display = state;
+				var state = textElements.item(0).style.display=='none' ? '' : 'none';
+				for (elem of textElements) {
+					elem.style.display = state;
 				}
-				document.getElementById('toggle-text').style.setProperty('text-decoration',state ? 'none' : '');
+				document.getElementById('toggle-text').style.textDecoration = state ? 'none' : '';
 			}
 			function toggleExercises() {
-				var section = document.getElementById('exercises');
-				var state = section.style.display=='none' ? '' : 'none';
-				section.style.display = state;
-				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
+				var elem = document.getElementById('exercises');
+				var state = elem.style.display=='none' ? '' : 'none';
+				elem.style.display = state;
+				document.getElementById('toggle-exercises').style.textDecoration = state ? 'none' : '';
 			}
 
 			// constants
@@ -31,18 +31,22 @@
 			const SPECIAL = '"\'()#$%&*+/<=>@[\\]^_`{|}~';
 
 			function validate() {
-				var alphabet = getAlphabet();
 				var decoded = document.getElementById('decoded').value;
-				decoded = decoded.replace('ß','ss');
+				var alphabet = getAlphabet();
+				// check for uppercase and lowercase letters
 				if (alphabet.indexOf(UPPERCASE)==-1)
 					decoded = decoded.toLowerCase();
 				if (alphabet.indexOf(LOWERCASE)==-1)
 					decoded = decoded.toUpperCase();
-				document.getElementById('decoded').value = decoded.split('').filter(char => alphabet.indexOf(char)!=-1).join('');
+				// remove non existing letters
+				decoded = decoded.replace('ß','ss');
+				decoded = decoded.split('').filter(char => alphabet.indexOf(char)!=-1).join('');
+				document.getElementById('decoded').value = decoded;
 			}
 
 			function getAlphabet() {
-				alphabet = '';
+				var alphabet = '';
+				// get alphabet-ranges from checkboxes
 				if (document.getElementById('alphabet-lowercase').checked) {
 					alphabet += LOWERCASE;
 					if (document.getElementById('alphabet-umlaut').checked)
@@ -63,11 +67,10 @@
 			}
 
 			function drawAlphabet(alphabet) {
-				var alphabet = alphabet!=undefined ? alphabet : getAlphabet();
 				document.getElementById('alphabet').textContent = '';
-				for (var i=0; i<alphabet.length; i++) {
+				for (char of alphabet!=undefined ? alphabet : getAlphabet()) {
 					var newChar = document.getElementById('hidden').children[0].cloneNode(true);
-					var char = alphabet[i];
+					// manipulate content of copied element
 					newChar.children[0].textContent = char;
 					newChar.children[1].textContent = caesar(char);
 					document.getElementById('alphabet').appendChild(newChar);
@@ -80,7 +83,7 @@
 				var translation = num!=undefined ? num : parseInt(document.getElementById('translation').value);
 				return text.split('').map(function(char) {
 					var i = alphabet.indexOf(char);
-					return i==-1 ? char : alphabet[(i+alphabet.length+translation)%alphabet.length];
+					return i==-1 ? char : alphabet[((i+translation)%alphabet.length+alphabet.length)%alphabet.length];
 				}).join('');
 			}
 
@@ -93,9 +96,10 @@
 			}
 
 			function redraw() {
+				// adjust width of alphabet items
 				var alphabetElements = document.getElementById('alphabet').children;
-				for (var i=0; i<alphabetElements.length; i++) {
-					alphabetElements[i].style.width = 'calc(100% / '+alphabetElements.length+')';
+				for (elem of alphabetElements) {
+					elem.style.width = 'calc(100% / '+alphabetElements.length+')';
 				}
 			}
 

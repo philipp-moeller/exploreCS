@@ -9,17 +9,17 @@
 			// global scripts
 			function toggleText() {
 				var textElements = document.getElementsByClassName('text');
-				var state = textElements[0].style.display=='none' ? '' : 'none';
-				for (var i=0; i<textElements.length; i++) {
-					textElements[i].style.display = state;
+				var state = textElements.item(0).style.display=='none' ? '' : 'none';
+				for (elem of textElements) {
+					elem.style.display = state;
 				}
-				document.getElementById('toggle-text').style.setProperty('text-decoration',state ? 'none' : '');
+				document.getElementById('toggle-text').style.textDecoration = state ? 'none' : '';
 			}
 			function toggleExercises() {
-				var section = document.getElementById('exercises');
-				var state = section.style.display=='none' ? '' : 'none';
-				section.style.display = state;
-				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
+				var elem = document.getElementById('exercises');
+				var state = elem.style.display=='none' ? '' : 'none';
+				elem.style.display = state;
+				document.getElementById('toggle-exercises').style.textDecoration = state ? 'none' : '';
 			}
 
 			// creating abstract classes
