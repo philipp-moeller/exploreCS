@@ -13,18 +13,18 @@ Die Arbeits&shy;blätter sind so gestaltet, dass jedes Dokument alleinstehend ve
 ## Kapitel
 ### Daten und Information
 #### Repräsentation von Zahlen
-1. [Stellenwertsysteme](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/stellenwertsysteme.htm)
+1. [Stellenwertsysteme](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/stellenwertsysteme.htm)
 #### Repräsentation von Zeichenketten
-1. [Kodierung von Zeichenketten](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_zeichenketten.htm)
-2. [ASCII-Code](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/ascii_code.htm)
-3. [Huffman Kodierung](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/huffman_kodierung.htm)
+1. [Kodierung von Zeichenketten](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/kodierung_zeichenketten.htm)
+2. [ASCII-Code](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/ascii_code.htm)
+3. [Huffman Kodierung](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/huffman_kodierung.htm)
 #### Repräsentation von Bildern
-1. [Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rastergrafiken.htm)
-2. [Kodierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/kodierung_rastergrafiken.htm)
-3. [Kodierung farbiger Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/farbige_rastergrafiken.htm)
-4. [Komprimierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/komprimierung_rastergrafiken.htm)
-5. [RGB-Farbraum](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/rgb_farbraum.htm)
-6. [Vektorgrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/vektorgrafiken.htm)
+1. [Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/rastergrafiken.htm)
+2. [Kodierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/kodierung_rastergrafiken.htm)
+3. [Kodierung farbiger Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/farbige_rastergrafiken.htm)
+4. [Komprimierung von Rastergrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/komprimierung_rastergrafiken.htm)
+5. [RGB-Farbraum](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/rgb_farbraum.htm)
+6. [Vektorgrafiken](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/vektorgrafiken.htm)
 ### IT-Sicherheit
 #### Verschlüsselung
-1. [Caesar-Verschlüsselung](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/master/caesar_verschluesselung.htm)
+1. [Caesar-Verschlüsselung](https://htmlpreview.github.io/?https://github.com/philipp-moeller/exploreCS/blob/formatted/caesar_verschluesselung.htm)
