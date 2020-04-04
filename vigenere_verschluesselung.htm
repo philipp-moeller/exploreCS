@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>RGB-Farbraum</title>
+		<title>Vigenère-Chiffre</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<script>
@@ -22,102 +22,139 @@
 				document.getElementById('toggle-exercises').style.textDecoration = state ? 'none' : '';
 			}
 
-			// default values
-			var ct = {x: 0, y: 0, r: 0};
-			var cl = {x: 0, y: 0, r: 0};
-			var cr = {x: 0, y: 0, r: 0};
+			// constants
+			const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			const NUMBERS = '0123456789';
+			const UMLAUT = 'ÄÖÜ';
+			const PUNCTUATION = ' -.,!?:;';
 
-			// handle mixing colors
-			function dec2hex(val) {
-				return val<16 ? '0'+val.toString(16) : val.toString(16);
+			function validate() {
+				var alphabet = getAlphabet();
+				// validate input
+				var decoded = document.getElementById('decoded').value;
+				decoded = decoded.toUpperCase();
+				// remove non existing letters except space
+				decoded = decoded.split('').filter(char => alphabet.indexOf(char)!=-1 || char==' ').join('');
+				document.getElementById('decoded').value = decoded;
+				// validate key
+				var key = document.getElementById('key').value;
+				key = key.toUpperCase();
+				// remove non existing letters except space
+				key = key.split('').filter(char => alphabet.indexOf(char)!=-1).join('');
+				document.getElementById('key').value = key;
 			}
 
-			function drawVenn(canvasName,r,g,b,rg,rb,gb,rgb) {
-				var canvas = document.getElementById(canvasName);
-				var ctx = canvas.getContext('2d');
-				var tempCanvas = document.createElement('canvas');
-				var tempCtx = tempCanvas.getContext('2d');
+			function getAlphabet() {
+				var alphabet = '';
+				// get alphabet-ranges from checkboxes
+				if (document.getElementById('alphabet-uppercase').checked)
+					alphabet += UPPERCASE;
+				if (document.getElementById('alphabet-umlaut').checked)
+					alphabet += UMLAUT;
+				if (document.getElementById('alphabet-numbers').checked)
+					alphabet += NUMBERS;
+				if (document.getElementById('alphabet-punctuation').checked)
+					alphabet += PUNCTUATION;
+				return alphabet;
+			}
 
-				tempCanvas.width = canvas.width;
-				tempCanvas.height = canvas.height;
-
-				function drawCircle(ctx, circle, color) {
-					ctx.beginPath();
-					ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2);
-					ctx.closePath();
-					ctx.fillStyle = color;
-					ctx.fill();
-				}
-
-				function drawIntersect(a,b,c,notC,color) {
-					tempCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
-					tempCtx.save();
-					drawCircle(tempCtx, a, color);
-					tempCtx.globalCompositeOperation = "source-in";
-					drawCircle(tempCtx, b, color);
-					if (c) {
-						drawCircle(tempCtx, c, color);
+			function drawAlphabet(alphabet) {
+				document.getElementById('alphabet').textContent = '';
+				var alphabet = alphabet!=undefined ? alphabet : getAlphabet();
+				for (var i=0; i<alphabet.length; i++) {
+					var newRow = document.createElement('tr');
+					for (var [j,char] of Object.entries(alphabet)) {
+						var newCell = document.createElement('td');
+						newCell.setAttribute('data-row',i);
+						newCell.setAttribute('data-col',j);
+						newCell.addEventListener('mouseover',function() { highlight(this); });
+						newCell.onmouseout = function() { highlight(); };
+						newCell.textContent = caesar(char,i);
+						newRow.appendChild(newCell);
 					}
-					tempCtx.globalCompositeOperation = "destination-out";
-					if (notC) {
-						drawCircle(tempCtx, notC, color);
-					}
-					tempCtx.restore();
-					ctx.drawImage(tempCanvas, 0, 0);
+					document.getElementById('alphabet').appendChild(newRow);
 				}
-
-				drawCircle(ctx, cr, r);
-				drawCircle(ctx, cl, g);
-				drawCircle(ctx, ct, b);
-				drawIntersect(ct, cl, null, null, gb);
-				drawIntersect(ct, cr, null, null, rb);
-				drawIntersect(cl, cr, null, null, rg);
-				drawIntersect(ct, cl, null, cr, gb);
-				drawIntersect(ct, cr, null, cl, rb);
-				drawIntersect(cl, cr, null, ct, rg);
-				drawIntersect(cl, cr, ct, null, rgb);
+				redraw();
 			}
 
-			function subColors() {
-				var b = 255-parseInt(document.getElementById('yellow').value);
-				var r = 255-parseInt(document.getElementById('cyan').value);
-				var g = 255-parseInt(document.getElementById('magenta').value);
-				var hex = '#'+dec2hex(r)+dec2hex(g)+dec2hex(b);
-				document.getElementById('color-sub-res').value = hex;
-				document.getElementById('color-sub-dec').textContent = r+','+g+','+b;
-				document.getElementById('color-sub-hex').textContent = hex;
-
-				drawVenn('color-sub','#'+dec2hex(r)+'ffff','#ff'+dec2hex(g)+'ff','#ffff'+dec2hex(b),'#'+dec2hex(r)+dec2hex(g)+'ff','#'+dec2hex(r)+'ff'+dec2hex(b),'#ff'+dec2hex(g)+dec2hex(b),hex);
+			function highlight(element) {
+				var row = (element!=undefined) ? parseInt(element.getAttribute('data-row')) : -1;
+				var col = (element!=undefined) ? parseInt(element.getAttribute('data-col')) : -1;
+				var rows = document.getElementById('alphabet').children;
+				for (var i in rows) {
+					var cells = rows[i].children;
+					for (var cell of cells) {
+						cell.className = '';
+					}
+					for (var j in cells) {
+						if (i==row || j==col)
+							cells[j].className = 'highlight';
+					}
+				}
 			}
 
-			function addColors() {
-				var b = parseInt(document.getElementById('blue').value);
-				var r = parseInt(document.getElementById('red').value);
-				var g = parseInt(document.getElementById('green').value);
-				var hex = '#'+dec2hex(r)+dec2hex(g)+dec2hex(b);
-				document.getElementById('color-add-res').value = hex;
-				document.getElementById('color-add-dec').textContent = r+','+g+','+b;
-				document.getElementById('color-add-hex').textContent = hex;
+			function caesar(text,num,alphabet) {
+				var alphabet = alphabet!=undefined ? alphabet : getAlphabet();
+				return text.split('').map(function(char) {
+					var i = alphabet.indexOf(char);
+					return i==-1 ? char : alphabet[((i+num)%alphabet.length+alphabet.length)%alphabet.length];
+				}).join('');
+			}
 
-				drawVenn('color-add','#'+dec2hex(r)+'0000','#00'+dec2hex(g)+'00','#0000'+dec2hex(b),'#'+dec2hex(r)+dec2hex(g)+'00','#'+dec2hex(r)+'00'+dec2hex(b),'#00'+dec2hex(g)+dec2hex(b),hex);
+			function vigenere(text,key) {
+				var alphabet = getAlphabet();
+				var encoded = '';
+				var char = 0;
+				while (encoded.length<text.length) {
+					if (alphabet.indexOf(text[encoded.length])==-1) {
+						encoded += text[encoded.length];
+					}
+					else {
+						var num = alphabet.indexOf(key[char]);
+						encoded += caesar(text[encoded.length],num);
+						char = (char+1)%key.length;
+					}
+				}
+				return encoded;
+			}
+
+			function encode(str,key) {
+				var decoded = str!=undefined ? str : document.getElementById('decoded').value;
+				var key = key!=undefined ? key : document.getElementById('key').value;
+				document.getElementById('original').innerHTML = nonbreaking(decoded);
+				var alphabet = getAlphabet();
+				if (alphabet.indexOf(' ')==-1) {
+					var keyphrase = '';
+					var char = 0;
+					while (keyphrase.length<decoded.length) {
+						if (decoded[keyphrase.length]==' ') {
+							keyphrase += ' ';
+						}
+						else {
+							keyphrase += key[char];
+							char = (char+1)%key.length;
+						}
+					}
+					document.getElementById('keyphrase').innerHTML = nonbreaking(keyphrase);
+				}
+				else {
+					var repetitions = Math.ceil(decoded.length/key.length);
+					document.getElementById('keyphrase').innerHTML = nonbreaking(key.repeat(repetitions).substr(0,decoded.length));
+				}
+				var encoded = vigenere(decoded,key);
+				document.getElementById('encoded').innerHTML = nonbreaking(encoded);
+				return encoded;
+			}
+
+			function nonbreaking(str) {
+				return str.replace(/ /g,'&nbsp;').replace(/-/g,'&#8209;');
 			}
 
 			function redraw() {
-				var canvas = document.getElementById('color-sub');
-				var width = canvas.clientWidth;
-				var height = canvas.clientHeight;
-				canvas.setAttribute('width',width);
-				canvas.setAttribute('height',height);
-				var canvas = document.getElementById('color-add');
-				canvas.setAttribute('width',width);
-				canvas.setAttribute('height',height);
-
-				var size = Math.min(height,width)/3;
-				ct = {x: width/2, y: height/2-size*2/3, r: size*3/2};
-				cl = {x: width/2-size/Math.sqrt(3), y: height/2+size*1/3, r: size*3/2};
-				cr = {x: width/2+size/Math.sqrt(3), y: height/2+size*1/3, r: size*3/2};
-				addColors();
-				subColors();
+				var minWidth = 30;
+				// adjust width of alphabet items
+				var alphabetElements = document.getElementById('alphabet').children;
+				document.getElementById('alphabet').style.minWidth = alphabetElements.length*minWidth+'px';
 			}
 
 		</script>
@@ -210,123 +247,120 @@
 
 			/* special styles */
 
-			#color-sub, #color-add {
-				border: var(--border-default-style);
-				width: calc(100% - 300px);
-				min-width: 30%;
-				height: 150px;
-				padding: var(--small-gap);
-				float: right;
-			}
-			#color-add {
-				background-color: #000000;
-			}
-			.component {
-				width: 300px;
-				max-width: 70%;
-				float: left;
-				overflow: auto;
-				padding: var(--small-gap);
-			}
-			.component label {
-				display: inline-block;
-				width: 20%;
-				overflow: hidden;
-			}
-			.component input[type=color] {
-				display: none;
-				vertical-align: 4px;
-				width: 44px;
-			}
-			.component input[type=range] {
-				display: inline-block;
-				vertical-align: -4px;
-				margin: 0;
-				width: 70%;
-			}
-			.code {
-				display: inline-block;
+			#decoded {
+				display: block;
+				width: 100%;
 				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
-				margin: var(--small-gap) 0;
 				padding: var(--small-gap);
+				margin: var(--small-gap) 0;
 				word-wrap: break-word;
 			}
-			#color-sub-res, #color-add-res {
-				display: inline-block;
-				width: 95%;
+			#hidden {
+				display: none;
 			}
+			#key {
+				width: 256px;
+			}
+			#alphabet {
+				overflow: auto;
+				margin: 8px 0;
+				padding: 8px 0;
+				width: 100%;
+				border-spacing: 0;
+				border-collapse: collapse;
+			}
+			#alphabet-wrapper {
+				overflow: auto;
+			}
+			#alphabet tr:nth-child(1), #alphabet tr td:nth-child(1) {
+				font-weight: bold;
+			}
+			#alphabet td {
+				border: var(--border-default-style);
+				height: 24px;
+				text-align: center;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
+				padding: var(--small-gap);
+			}
+			.highlight {
+				background-color: #ff9;
+			}
+			#encoding {
+				overflow: auto;
+				margin: var(--large-gap) 0;
+				font-family: var(--monospace-font-family);
+				border: var(--border-default-style);
+			}
+			#original, #keyphrase, #encoded {
+				display: block;
+				background-color: #fff;
+				font-size: var(--monospace-font-size);
+				margin: var(--small-gap) 0;
+				padding: var(--small-gap);
+				letter-spacing: 4px;
+				height: 30px;
+			}
+
 		</style>
 	</head>
-	<body onload="redraw();" onresize="redraw();">
+	<body onload="drawAlphabet();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
-			<h1>RGB-Farbraum</h1>
+			<h1>Vigenère-Chiffre</h1>
 		</header>
 		<main>
 			<section>
 				<h2 class="text">Einleitung</h2>
-				<p class="text">Fotos bestehen meist aus vielen Tausend verschiedenen Farben. Anstelle einer Farbpalette ist es daher sinnvoll die Farbwerte als Mischverhältnis der Grundfarben anzugeben.</p>
+				<p class="text">Die Caesar-Verschlüsselung ist eine einfache Verschiebechiffre. Jedem Buchstaben eines Alphabets wird durch Verschiebung ein anderer Buchstabe zugeordnet.</p>
 			</section>
 			<section>
-				<h2>Subtraktive Farbmischung</h2>
-				<p class="text">Beim Mischen von Farben aus dem Tuschkasten reduzieren diese das Licht, das ins Auge fällt. Man spricht daher von subtraktiver Farbmischung.</p>
+				<h2>Eingabe</h2>
 				<form>
-					<canvas id="color-sub"></canvas>
-					<div class="component">
-						<label for="cyan">Cyan</label>
-						<input type="color" value="#00ffff" disabled="disabled" />
-						<input id="cyan" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="yellow">Gelb</label>
-						<input type="color" value="#ffff00" disabled="disabled" onclick="document.getElementById('yellow').value = parseInt(document.getElementById('yellow').value) + 5;" />
-						<input id="yellow" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="magenta">Magenta</label>
-						<input type="color" value="#ff00ff" disabled="disabled" />
-						<input id="magenta" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component"><input id="color-sub-res" type="color" value="#ffffff" disabled="disabled" /></div>
+					<input id="decoded" oninput="validate(); encode();" rows="4"></textarea>
 				</form>
 			</section>
 			<section>
-				<h2>Additive Farbmischung</h2>
-				<p class="text">Bei Bildschirmen entsteht die Farbe durch Überlagerung der Grundfarben der additiven Farbmischung.</p>
-				<form>
-					<canvas id="color-add"></canvas>
-					<div class="component">
-						<label for="red">Rot</label>
-						<input type="color" value="#ff0000" disabled="disabled" />
-						<input id="red" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
+				<h2>Alphabet</h2>
+				<div id="hidden">
+					<div>
+						<span></span>
+						<span></span>
 					</div>
-					<div class="component">
-						<label for="green">Grün</label>
-						<input type="color" value="#00ff00" disabled="disabled" />
-						<input id="green" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component">
-						<label for="blue">Blau</label>
-						<input type="color" value="#0000ff" disabled="disabled" />
-						<input id="blue" type="range" min="0" max="255" step="1" value="0" onchange="redraw();" />
-					</div>
-					<div class="component"><input id="color-add-res" type="color" value="#000000" disabled="disabled" /></div>
+				</div>
+				<form id="select-alphabet">
+					<input type="checkbox" id="alphabet-uppercase" name="format" onchange="drawAlphabet(); validate(); encode();" checked="checked" />
+					<label for="alphabet-uppercase">Buchstaben</label>
+					<input type="checkbox" id="alphabet-numbers" name="format" onchange="drawAlphabet(); validate(); encode();" />
+					<label for="alphabet-numbers">Zahlen</label>
+					<input type="checkbox" id="alphabet-punctuation" name="format" onchange="drawAlphabet(); validate(); encode();" />
+					<label for="alphabet-punctuation">Satzzeichen</label>
+					<input type="checkbox" id="alphabet-umlaut" name="format" onchange="drawAlphabet(); validate(); encode();" />
+					<label for="alphabet-umlaut">Umlaute</label>
 				</form>
+				<div id="alphabet-wrapper">
+					<table id="alphabet"></table>
+				</div>
 			</section>
 			<section>
-				<h2>Farbkodierung</h2>
-				<p class="text">Im RGB-Farbraum werden die Farbwerte durch drei Zahlen dargestellt. Der Zahlenbereich unterscheidet sich je nach Farbtiefe. Die obigen Mischfarben entsprechen den Kodierungen <span id="color-sub-dec" class="code">255,255,255</span> und <span id="color-add-dec" class="code">0,0,0</span>. Im Hexadezimalsystem können diese Farbwerte durch eine Zeichenkette mit konstanter Länge dargestellt werden: <span id="color-sub-hex" class="code">#ffffff</span> und <span id="color-add-hex" class="code">#000000</span>.</p>
+				<h2>Kodierung</h2>
+				<label for="key">Schlüssel:</label>
+				<input id="key" type="text" value="VIGENERE" oninput="validate(); encode();" />
+				<div id="encoding">
+					<span id="original"></span>
+					<span id="keyphrase"></span>
+					<span id="encoded"></span>
+				</div>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
-				<p></p>
+				<p>Begründe, weshalb es sich bei der Caesar-Verschlüsselung um ein sehr unsicheres Verschlüsselungsverfahren handelt.</p>
 			</section>
 		</main>
 		<footer>
-			<a class="next" href="vektorgrafiken.htm">Vektorgrafiken</a>
-			<a class="prev" href="komprimierung_rastergrafiken.htm">Komprimierung von Rastergrafiken</a>
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="31" viewBox="0 0 88 31" baseProfile="basic" version="1.1">
 				<g id="surface1">
 					<path style=" stroke:none;fill-rule:nonzero;fill:rgb(66.666667%,69.803922%,67.058824%);fill-opacity:1;" d="M 2.300781 0.570313 L 85.429688 0.71875 C 86.589844 0.71875 87.628906 0.546875 87.628906 3.039063 L 87.527344 30.414063 L 0.203125 30.414063 L 0.203125 2.9375 C 0.203125 1.707031 0.324219 0.570313 2.300781 0.570313 Z "/>
