@@ -351,6 +351,17 @@
 			input:invalid{
 				background-color: #fbb;
 			}
+			@media only screen and (max-width: 800px) {
+				input[type=checkbox], input[type=radio] {
+					float: left;
+					clear: left;
+					margin-top: var(--small-gap);
+				}
+				input[type=checkbox] + label, input[type=radio] + label {
+					float: left;
+					margin-top: var(--small-gap);
+				}
+			}
 
 			/* special styles */
 
