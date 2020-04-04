@@ -91,7 +91,7 @@
 				drawAlphabet();
 				var decoded = str!=undefined ? str : document.getElementById('decoded').value;
 				var encoded = caesar(decoded,num);
-				document.getElementById('encoded').textContent = encoded;
+				document.getElementById('encoded').innerHTML = encoded.replace(/ /g,'&nbsp;');
 				return encoded;
 			}
 
