@@ -91,7 +91,7 @@
 				drawAlphabet();
 				var decoded = str!=undefined ? str : document.getElementById('decoded').value;
 				var encoded = caesar(decoded,num);
-				document.getElementById('encoded').textContent = encoded;
+				document.getElementById('encoded').innerHTML = encoded.replace(/ /g,'&nbsp;');
 				return encoded;
 			}
 
@@ -114,6 +114,8 @@
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
 				--large-gap: 8px;
+				--monospace-font-size: 16px;
+				--monospace-font-family: monospace;
 			}
 			* {
 				box-sizing: border-box;
@@ -181,8 +183,8 @@
 			input {
 				border: var(--border-default-style);
 				padding: var(--small-gap);
-				font-family: monospace;
-				font-size: 16px;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
 			}
 			input[type=color] {
 				border: var(--border-default-style);
@@ -194,11 +196,11 @@
 
 			/* special styles */
 
-			#decoded, #encoded {
+			#decoded {
 				display: block;
 				width: 100%;
-				font-family: monospace;
-				font-size: 16px;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
 				padding: var(--small-gap);
 				margin: var(--small-gap) 0;
@@ -218,7 +220,7 @@
 				overflow: auto;
 			}
 			#alphabet div {
-				border: 1px #000 solid;
+				border: var(--border-default-style);
 				float: left;
 				overflow: auto;
 			}
@@ -226,14 +228,16 @@
 				display: block;
 				width: 100%;
 				text-align: center;
-				padding: 8px 4px;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
+				padding: var(--large-gap) var(--small-gap);
 				height: 32px;
 			}
 			#encoded {
 				display: block;
 				background-color: #fff;
-				font-family: monospace;
-				font-size: 16px;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
 				margin: var(--small-gap) 0;
 				padding: var(--small-gap);

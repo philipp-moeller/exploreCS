@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Kodierung von Rastergrafiken</title>
+		<title>Vigenère-Chiffre</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<script>
@@ -22,161 +22,139 @@
 				document.getElementById('toggle-exercises').style.textDecoration = state ? 'none' : '';
 			}
 
-			// default values
-			const EXAMPLE = {
-				linebreak: ':',
-				image: [
-					'0000011111100000',
-					'0001100001111000',
-					'0011100001111100',
-					'0111000000111110',
-					'0110011110011110',
-					'1000111111000001',
-					'1000111111001101',
-					'1100111111011111',
-					'1110011110011111',
-					'1110000000001101',
-					'1100111111110001',
-					'0111001001001110',
-					'0010001001000100',
-					'0010000000000100',
-					'0001000000001000',
-					'0000111111110000',
-				]
-			}
-			var dim = {x: 5, y: 5};
-			var image = new Array(dim.y).fill('0'.repeat(dim.x));
-			var pixelsize = 40;
-			var palette = ['s','w'];
-			var linebreak = ',';
+			// constants
+			const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+			const NUMBERS = '0123456789';
+			const UMLAUT = 'ÄÖÜ';
+			const PUNCTUATION = ' -.,!?:;';
 
-			// handle palette
-			function getPalette() {
-				var paletteElements = document.getElementsByClassName('palette');
-				palette = [paletteElements[0].children[1].value, paletteElements[1].children[1].value];
-				redraw();
+			function validate() {
+				var alphabet = getAlphabet();
+				// validate input
+				var decoded = document.getElementById('decoded').value;
+				decoded = decoded.toUpperCase();
+				// remove non existing letters except space
+				decoded = decoded.split('').filter(char => alphabet.indexOf(char)!=-1 || char==' ').join('');
+				document.getElementById('decoded').value = decoded;
+				// validate key
+				var key = document.getElementById('key').value;
+				key = key.toUpperCase();
+				// remove non existing letters except space
+				key = key.split('').filter(char => alphabet.indexOf(char)!=-1).join('');
+				document.getElementById('key').value = key;
 			}
 
-			// handle linebreak
-			function setLinebreak(char) {
-				document.getElementById('linebreak').value = char;
-				getLinebreak();
+			function getAlphabet() {
+				var alphabet = '';
+				// get alphabet-ranges from checkboxes
+				if (document.getElementById('alphabet-uppercase').checked)
+					alphabet += UPPERCASE;
+				if (document.getElementById('alphabet-umlaut').checked)
+					alphabet += UMLAUT;
+				if (document.getElementById('alphabet-numbers').checked)
+					alphabet += NUMBERS;
+				if (document.getElementById('alphabet-punctuation').checked)
+					alphabet += PUNCTUATION;
+				return alphabet;
 			}
 
-			function getLinebreak() {
-				var input = document.getElementById('linebreak');
-				if (input.value!='')
-					linebreak = input.value;
-				redraw();
-			}
-
-			// handle dimensions
-			function setDimensions(height,width) {
-				document.getElementById('height').value = height;
-				document.getElementById('width').value = width;
-				getDimensions();
-			}
-
-			function getDimensions() {
-				var height = document.getElementById('height').value;
-				var width = document.getElementById('width').value;
-				dim = {x: width=='' ? 0 : parseInt(width), y: height=='' ? 0 : parseInt(height)};
-				if (image.length>dim.y) {
-					image = image.slice(0,dim.y);
-				}
-				else if (image.length<dim.y) {
-					for (var i=image.length; i<dim.y; i++) {
-						image.push('0'.repeat(dim.x));
+			function drawAlphabet(alphabet) {
+				document.getElementById('alphabet').textContent = '';
+				var alphabet = alphabet!=undefined ? alphabet : getAlphabet();
+				for (var i=0; i<alphabet.length; i++) {
+					var newRow = document.createElement('tr');
+					for (var [j,char] of Object.entries(alphabet)) {
+						var newCell = document.createElement('td');
+						newCell.setAttribute('data-row',i);
+						newCell.setAttribute('data-col',j);
+						newCell.addEventListener('mouseover',function() { highlight(this); });
+						newCell.onmouseout = function() { highlight(); };
+						newCell.textContent = caesar(char,i);
+						newRow.appendChild(newCell);
 					}
-				}
-				for (var i=0; i<image.length; i++) {
-					if (image[i].length>dim.x) {
-						image[i] = image[i].slice(0,dim.x);
-					}
-					else if (image[i].length<dim.x) {
-						image[i] += '0'.repeat(dim.x-image[i].length);
-					}
+					document.getElementById('alphabet').appendChild(newRow);
 				}
 				redraw();
 			}
 
-			// handle image
-			function drawPixel(event) {
-				document.getElementById('example').style.display = 'none';
-				var canvas = document.getElementById('image');
-				var x = Math.floor(event.offsetX/canvas.clientWidth*dim.x);
-				var y = Math.floor(event.offsetY/canvas.clientHeight*dim.y);
-				if (image.length>y) {
-					var val = image[y].substr(x,1);
-					image[y] = image[y].substr(0,x)+(val=='0' ? '1' : '0')+image[y].substr(x+1);
-					draw();
+			function highlight(element) {
+				var row = (element!=undefined) ? parseInt(element.getAttribute('data-row')) : -1;
+				var col = (element!=undefined) ? parseInt(element.getAttribute('data-col')) : -1;
+				var rows = document.getElementById('alphabet').children;
+				for (var i in rows) {
+					var cells = rows[i].children;
+					for (var cell of cells) {
+						cell.className = '';
+					}
+					for (var j in cells) {
+						if (i==row || j==col)
+							cells[j].className = 'highlight';
+					}
 				}
 			}
 
-			function drawCursor(event) {
-				redraw();
-				var canvas = document.getElementById('image');
-				var x = Math.floor(event.offsetX/canvas.clientWidth*dim.x);
-				var y = Math.floor(event.offsetY/canvas.clientHeight*dim.y);
-				var ctx = canvas.getContext('2d');
-				ctx.fillStyle = 'rgba(192,192,255,0.5)';
-				ctx.fillRect(pixelsize*x,pixelsize*y,pixelsize,pixelsize);
+			function caesar(text,num,alphabet) {
+				var alphabet = alphabet!=undefined ? alphabet : getAlphabet();
+				return text.split('').map(function(char) {
+					var i = alphabet.indexOf(char);
+					return i==-1 ? char : alphabet[((i+num)%alphabet.length+alphabet.length)%alphabet.length];
+				}).join('');
 			}
 
-			function draw() {
-				var canvas = document.getElementById('image');
-				var ctx = canvas.getContext('2d');
-				ctx.clearRect(0,0,canvas.width,canvas.height);
-
-				var raw = image.join(linebreak).replace(/(0|1)/g,function(match,index) { return palette[1-index]; });
-				document.getElementById('encoding').textContent = raw;
-				var cur = {x: 0, y: 0};
-				var max = {x: 1, y: 1};
-
-				// draw picture
-				raw.split('').forEach(function(char) {
-					if (palette.indexOf(char)!=-1) {
-						ctx.fillStyle = palette.indexOf(char)==0 ? '#000' : '#fff';
-						ctx.fillRect(pixelsize*cur.x,pixelsize*cur.y,pixelsize,pixelsize);
-						cur.x += 1;
-						max.x = Math.max(cur.x,max.x);
+			function vigenere(text,key) {
+				var alphabet = getAlphabet();
+				var encoded = '';
+				var char = 0;
+				while (encoded.length<text.length) {
+					if (alphabet.indexOf(text[encoded.length])==-1) {
+						encoded += text[encoded.length];
 					}
-					if (char==linebreak) {
-						cur.x = 0;
-						cur.y += 1;
-						max.y = Math.max(cur.y+1,max.y);
+					else {
+						var num = alphabet.indexOf(key[char]);
+						encoded += caesar(text[encoded.length],num);
+						char = (char+1)%key.length;
 					}
-				});
-				// remove empty line
-				if (cur.x==0 && max.y>5)
-					max.y -= 1;
-				// redraw to correct dimensions
-				if (max.x!=dim.x) {
-					dim.x = max.x;
-					redraw();
 				}
-				else if (max.y!=dim.y) {
-					dim.y = max.y;
-					redraw();
-				}
+				return encoded;
+			}
 
-				document.getElementById('encoding-length').textContent = raw.length>0 ? raw.length+' Zeichen' : '';
+			function encode(str,key) {
+				var decoded = str!=undefined ? str : document.getElementById('decoded').value;
+				var key = key!=undefined ? key : document.getElementById('key').value;
+				document.getElementById('original').innerHTML = nonbreaking(decoded);
+				var alphabet = getAlphabet();
+				if (alphabet.indexOf(' ')==-1) {
+					var keyphrase = '';
+					var char = 0;
+					while (keyphrase.length<decoded.length) {
+						if (decoded[keyphrase.length]==' ') {
+							keyphrase += ' ';
+						}
+						else {
+							keyphrase += key[char];
+							char = (char+1)%key.length;
+						}
+					}
+					document.getElementById('keyphrase').innerHTML = nonbreaking(keyphrase);
+				}
+				else {
+					var repetitions = Math.ceil(decoded.length/key.length);
+					document.getElementById('keyphrase').innerHTML = nonbreaking(key.repeat(repetitions).substr(0,decoded.length));
+				}
+				var encoded = vigenere(decoded,key);
+				document.getElementById('encoded').innerHTML = nonbreaking(encoded);
+				return encoded;
+			}
+
+			function nonbreaking(str) {
+				return str.replace(/ /g,'&nbsp;').replace(/-/g,'&#8209;');
 			}
 
 			function redraw() {
-				var canvas = document.getElementById('image');
-				canvas.setAttribute('width',canvas.clientWidth);
-				pixelsize = canvas.clientWidth/dim.x;
-				canvas.setAttribute('height',pixelsize*dim.y);
-				draw();
-			}
-
-			function drawExample() {
-				document.getElementById('example').style.display = 'none';
-				setLinebreak(EXAMPLE.linebreak);
-				image = EXAMPLE.image.slice(0);
-				setDimensions(image[0].length,image.length);
-				draw();
+				var minWidth = 30;
+				// adjust width of alphabet items
+				var alphabetElements = document.getElementById('alphabet').children;
+				document.getElementById('alphabet').style.minWidth = alphabetElements.length*minWidth+'px';
 			}
 
 		</script>
@@ -269,127 +247,120 @@
 
 			/* special styles */
 
-			.palette, .palette-special {
-				float: left;
-				width: 80px;
-				margin: 0 var(--large-gap) var(--large-gap) 0;
-			}
-			.palette input, .palette-special input {
-				width: 100%;
-				height: 28px;
-			}
-			.palette-special span {
+			#decoded {
 				display: block;
-				overflow: hidden;
-				border: var(--border-default-style);
-				background-color: buttonface;
-				padding: 6px 2px;
-				font-size: 12px;
-				text-align: center;
-				vertical-align: middle;
-			}
-			#encoding {
-				width: calc(100% - 100px);
-				display: inline-block;
+				width: 100%;
 				font-family: var(--monospace-font-family);
 				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
-				margin: var(--small-gap) 0;
 				padding: var(--small-gap);
+				margin: var(--small-gap) 0;
 				word-wrap: break-word;
 			}
-			#encoding-length {
-				padding: 0 0 0 var(--large-gap);
-				width: 100px;
+			#hidden {
+				display: none;
 			}
-			@media only screen and (max-width: 800px) {
-				#encoding {
-					width: 100%;
-				}
-				#encoding-length {
-					display: block;
-					padding: var(--large-gap) 0 0 0;
-				}
+			#key {
+				width: 256px;
 			}
-			#image-frame {
-				position: relative;
-				border: var(--border-default-style);
-				width: 480px;
-				min-width: 50%;
-				max-width: 100%;
-				padding: var(--small-gap);
-				margin: var(--large-gap) auto;
-			}
-			#image {
-				background-color: #eee;
+			#alphabet {
+				overflow: auto;
+				margin: 8px 0;
+				padding: 8px 0;
 				width: 100%;
+				border-spacing: 0;
+				border-collapse: collapse;
 			}
-			#example {
-				position: absolute;
-				left: calc(50% - 14px);
-				top: calc(50% - 14px);
-				font-size: 24px;
-				text-decoration: none;
+			#alphabet-wrapper {
+				overflow: auto;
 			}
+			#alphabet tr:nth-child(1), #alphabet tr td:nth-child(1) {
+				font-weight: bold;
+			}
+			#alphabet td {
+				border: var(--border-default-style);
+				height: 24px;
+				text-align: center;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
+				padding: var(--small-gap);
+			}
+			.highlight {
+				background-color: #ff9;
+			}
+			#encoding {
+				overflow: auto;
+				margin: var(--large-gap) 0;
+				font-family: var(--monospace-font-family);
+				border: var(--border-default-style);
+			}
+			#original, #keyphrase, #encoded {
+				display: block;
+				background-color: #fff;
+				font-size: var(--monospace-font-size);
+				margin: var(--small-gap) 0;
+				padding: var(--small-gap);
+				letter-spacing: 4px;
+				height: 30px;
+			}
+
 		</style>
-		<link rel="stylesheet" type="text/css" href="theme.css" />
 	</head>
-	<body onload="redraw();" onresize="redraw();">
+	<body onload="drawAlphabet();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
-			<h1>Kodierung von Rastergrafiken</h1>
+			<h1>Vigenère-Chiffre</h1>
 		</header>
 		<main>
 			<section>
 				<h2 class="text">Einleitung</h2>
-				<p class="text">Im einfachsten Fall enthält eine Rastergrafik nur schwarze und weiße Bildpunkte. Um ein solches Bild im Speicher eines Rechners abzulegen, muss diese Darstellung in eine Zeichenkette überführt werden.</p>
+				<p class="text">Die Caesar-Verschlüsselung ist eine einfache Verschiebechiffre. Jedem Buchstaben eines Alphabets wird durch Verschiebung ein anderer Buchstabe zugeordnet.</p>
 			</section>
 			<section>
-				<h2>Einstellungen</h2>
-				<p class="text">Beim Dekodieren der Zeichenkette sind die Abmessungen des Bildes in der Regel noch unbekannt. Mithilfe eines Steuerzeichens wird deshalb in der kodierten Zeichenkette das Ende einer Zeile dargestellt.</p>
+				<h2>Eingabe</h2>
 				<form>
-					<div class="palette-special">
-						<span>Breite</span>
-						<input id="width" type="number" required pattern="\d+" value="5" onchange="getDimensions();" />
-					</div>
-					<div class="palette-special">
-						<span>Höhe</span>
-						<input id="height" type="number" required pattern="\d+" value="5" onchange="getDimensions();" />
-					</div>
-					<div class="palette">
-						<input type="color" value="#000000" disabled="disabled" />
-						<input type="text" maxlength="1" required pattern="[A-Za-z]{1}" value="s" oninput="getPalette();" />
-					</div>
-					<div class="palette">
-						<input type="color" value="#FFFFFF" disabled="disabled" />
-						<input type="text" maxlength="1" required pattern="[A-Za-z]{1}" value="w" oninput="getPalette();" />
-					</div>
-					<div class="palette-special">
-						<span>Trennzeichen</span>
-						<input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" />
-					</div>
+					<input id="decoded" oninput="validate(); encode();" rows="4"></textarea>
 				</form>
 			</section>
 			<section>
-				<h2>Bild zeichnen</h2>
-				<div id="image-frame" onmousemove="drawCursor(event);" onmouseout="redraw();">
-					<a id="example" href="#" onclick="drawExample(); return false;" onmousemove="redraw(); event.stopPropagation();">🧩</a>
-					<canvas id="image" onclick="drawPixel(event);" oncontextmenu="redraw();"></canvas>
+				<h2>Alphabet</h2>
+				<div id="hidden">
+					<div>
+						<span></span>
+						<span></span>
+					</div>
+				</div>
+				<form id="select-alphabet">
+					<input type="checkbox" id="alphabet-uppercase" name="format" onchange="drawAlphabet(); validate(); encode();" checked="checked" />
+					<label for="alphabet-uppercase">Buchstaben</label>
+					<input type="checkbox" id="alphabet-numbers" name="format" onchange="drawAlphabet(); validate(); encode();" />
+					<label for="alphabet-numbers">Zahlen</label>
+					<input type="checkbox" id="alphabet-punctuation" name="format" onchange="drawAlphabet(); validate(); encode();" />
+					<label for="alphabet-punctuation">Satzzeichen</label>
+					<input type="checkbox" id="alphabet-umlaut" name="format" onchange="drawAlphabet(); validate(); encode();" />
+					<label for="alphabet-umlaut">Umlaute</label>
+				</form>
+				<div id="alphabet-wrapper">
+					<table id="alphabet"></table>
 				</div>
 			</section>
 			<section>
 				<h2>Kodierung</h2>
-				<span id="encoding"></span><span id="encoding-length"></span>
+				<label for="key">Schlüssel:</label>
+				<input id="key" type="text" value="VIGENERE" oninput="validate(); encode();" />
+				<div id="encoding">
+					<span id="original"></span>
+					<span id="keyphrase"></span>
+					<span id="encoded"></span>
+				</div>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
-				<p>Formuliere einen allgemeinen Zusammenhang zwischen den Abmessungen eines rechteckigen Bildes und der Anzahl der benötigten Zeichen bei der Kodierung des Bildes.</p>
+				<p>Begründe, weshalb es sich bei der Caesar-Verschlüsselung um ein sehr unsicheres Verschlüsselungsverfahren handelt.</p>
 			</section>
 		</main>
 		<footer>
-			<a class="next" href="farbige_rastergrafiken.htm">Kodierung farbiger Rastergrafiken</a>
-			<a class="prev" href="rastergrafiken.htm">Rastergrafiken</a>
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="31" viewBox="0 0 88 31" baseProfile="basic" version="1.1">
 				<g id="surface1">
 					<path style=" stroke:none;fill-rule:nonzero;fill:rgb(66.666667%,69.803922%,67.058824%);fill-opacity:1;" d="M 2.300781 0.570313 L 85.429688 0.71875 C 86.589844 0.71875 87.628906 0.546875 87.628906 3.039063 L 87.527344 30.414063 L 0.203125 30.414063 L 0.203125 2.9375 C 0.203125 1.707031 0.324219 0.570313 2.300781 0.570313 Z "/>

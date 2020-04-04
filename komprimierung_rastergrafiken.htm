@@ -272,6 +272,8 @@
 				--border-default-style: 1px #aaa solid;
 				--small-gap: 4px;
 				--large-gap: 8px;
+				--monospace-font-size: 16px;
+				--monospace-font-family: monospace;
 			}
 			* {
 				box-sizing: border-box;
@@ -339,8 +341,8 @@
 			input {
 				border: var(--border-default-style);
 				padding: var(--small-gap);
-				font-family: monospace;
-				font-size: 16px;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
 			}
 			input[type=color] {
 				border: var(--border-default-style);
@@ -409,8 +411,8 @@
 			}
 			#compressing {
 				display: inline-block;
-				font-family: monospace;
-				font-size: 16px;
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
 				margin: var(--small-gap) 0;
 				padding: var(--small-gap);
