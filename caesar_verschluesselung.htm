@@ -38,9 +38,9 @@
 					decoded = decoded.toLowerCase();
 				if (alphabet.indexOf(LOWERCASE)==-1)
 					decoded = decoded.toUpperCase();
-				// remove non existing letters
+				// remove non existing letters except space
 				decoded = decoded.replace('ß','ss');
-				decoded = decoded.split('').filter(char => alphabet.indexOf(char)!=-1).join('');
+				decoded = decoded.split('').filter(char => alphabet.indexOf(char)!=-1 || char==' ').join('');
 				document.getElementById('decoded').value = decoded;
 			}
 
