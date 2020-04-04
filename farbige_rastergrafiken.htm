@@ -9,17 +9,17 @@
 			// global scripts
 			function toggleText() {
 				var textElements = document.getElementsByClassName('text');
-				var state = textElements[0].style.display=='none' ? '' : 'none';
-				for (var i=0; i<textElements.length; i++) {
-					textElements[i].style.display = state;
+				var state = textElements.item(0).style.display=='none' ? '' : 'none';
+				for (elem of textElements) {
+					elem.style.display = state;
 				}
-				document.getElementById('toggle-text').style.setProperty('text-decoration',state ? 'none' : '');
+				document.getElementById('toggle-text').style.textDecoration = state ? 'none' : '';
 			}
 			function toggleExercises() {
-				var section = document.getElementById('exercises');
-				var state = section.style.display=='none' ? '' : 'none';
-				section.style.display = state;
-				document.getElementById('toggle-exercises').style.setProperty('text-decoration',state ? 'none' : '');
+				var elem = document.getElementById('exercises');
+				var state = elem.style.display=='none' ? '' : 'none';
+				elem.style.display = state;
+				document.getElementById('toggle-exercises').style.textDecoration = state ? 'none' : '';
 			}
 
 			// default values
@@ -47,9 +47,8 @@
 				for (var i=paletteElements.length-1; i>0; i--) {
 					paletteElements[i].remove();
 				}
-				var chars = Object.keys(newPalette);
-				for (var i=0; i<chars.length; i++) {
-					addColor(newPalette[chars[i]],chars[i]);
+				for (char in newPalette) {
+					addColor(newPalette[char],char);
 				}
 				paletteElements[0].remove();
 				getPalette();
@@ -57,11 +56,10 @@
 
 			function getPalette() {
 				palette = {};
-				var paletteElements = document.getElementsByClassName('palette');
-				for (var i=0; i<paletteElements.length; i++) {
-					var char = paletteElements[i].children[1].value;
+				for (elem of document.getElementsByClassName('palette')) {
+					var char = elem.children[1].value;
 					if (char!='')
-						palette[char] = paletteElements[i].children[0].value;
+						palette[char] = elem.children[0].value;
 				}
 				redraw();
 			}
