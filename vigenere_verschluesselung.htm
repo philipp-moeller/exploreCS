@@ -81,7 +81,7 @@
 				var row = (element!=undefined) ? parseInt(element.getAttribute('data-row')) : -1;
 				var col = (element!=undefined) ? parseInt(element.getAttribute('data-col')) : -1;
 				var rows = document.getElementById('alphabet').children;
-				for (var i in rows) {
+				for (var i=0; i<rows.length; i++) {
 					var cells = rows[i].children;
 					for (var cell of cells) {
 						cell.className = '';
@@ -244,6 +244,17 @@
 			input:invalid{
 				background-color: #fbb;
 			}
+			@media only screen and (max-width: 800px) {
+				input[type=checkbox], input[type=radio] {
+					float: left;
+					clear: left;
+					margin-top: var(--small-gap);
+				}
+				input[type=checkbox] + label, input[type=radio] + label {
+					float: left;
+					margin-top: var(--small-gap);
+				}
+			}
 
 			/* special styles */
 
@@ -288,6 +299,15 @@
 			.highlight {
 				background-color: #ff9;
 			}
+			.input, #alphabet tr:nth-child(1) {
+				color: #a00;
+			}
+			.key, #alphabet td:nth-child(1) {
+				color: #00a;
+			}
+			#alphabet tr:nth-child(1) td:nth-child(1) {
+				color: #a00;
+			}
 			#encoding {
 				overflow: auto;
 				margin: var(--large-gap) 0;
@@ -316,12 +336,12 @@
 		<main>
 			<section>
 				<h2 class="text">Einleitung</h2>
-				<p class="text">Die Caesar-Verschlüsselung ist eine einfache Verschiebechiffre. Jedem Buchstaben eines Alphabets wird durch Verschiebung ein anderer Buchstabe zugeordnet.</p>
+				<p class="text">Bei der Vigenère-Chiffre werden die einzelnen Zeichen des Klartexts mit unterschiedlichen Alphabeten kodiert.</p>
 			</section>
 			<section>
 				<h2>Eingabe</h2>
 				<form>
-					<input id="decoded" oninput="validate(); encode();" rows="4"></textarea>
+					<input id="decoded" class="input" oninput="validate(); encode();" rows="4"></textarea>
 				</form>
 			</section>
 			<section>
@@ -349,19 +369,20 @@
 			<section>
 				<h2>Kodierung</h2>
 				<label for="key">Schlüssel:</label>
-				<input id="key" type="text" value="VIGENERE" oninput="validate(); encode();" />
+				<input id="key" class="key" type="text" value="VIGENERE" oninput="validate(); encode();" />
 				<div id="encoding">
-					<span id="original"></span>
-					<span id="keyphrase"></span>
+					<span id="original" class="input"></span>
+					<span id="keyphrase" class="key"></span>
 					<span id="encoded"></span>
 				</div>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
-				<p>Begründe, weshalb es sich bei der Caesar-Verschlüsselung um ein sehr unsicheres Verschlüsselungsverfahren handelt.</p>
+				<p>Erläutere ein Verfahren, mithilfe der Tabelle und des Schlüssels eine kodierte Nachricht zu dekodieren.</p>
 			</section>
 		</main>
 		<footer>
+			<a class="prev" href="caesar_verschluesselung.htm">Caesar-Verschlüsselung</a>
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="31" viewBox="0 0 88 31" baseProfile="basic" version="1.1">
 				<g id="surface1">
 					<path style=" stroke:none;fill-rule:nonzero;fill:rgb(66.666667%,69.803922%,67.058824%);fill-opacity:1;" d="M 2.300781 0.570313 L 85.429688 0.71875 C 86.589844 0.71875 87.628906 0.546875 87.628906 3.039063 L 87.527344 30.414063 L 0.203125 30.414063 L 0.203125 2.9375 C 0.203125 1.707031 0.324219 0.570313 2.300781 0.570313 Z "/>
