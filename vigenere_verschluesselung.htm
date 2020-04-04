@@ -299,6 +299,15 @@
 			.highlight {
 				background-color: #ff9;
 			}
+			.input, #alphabet tr:nth-child(1) {
+				color: #a00;
+			}
+			.key, #alphabet td:nth-child(1) {
+				color: #00a;
+			}
+			#alphabet tr:nth-child(1) td:nth-child(1) {
+				color: #a00;
+			}
 			#encoding {
 				overflow: auto;
 				margin: var(--large-gap) 0;
@@ -326,12 +335,12 @@
 		<main>
 			<section>
 				<h2 class="text">Einleitung</h2>
-				<p class="text">Die Caesar-Verschlüsselung ist eine einfache Verschiebechiffre. Jedem Buchstaben eines Alphabets wird durch Verschiebung ein anderer Buchstabe zugeordnet.</p>
+				<p class="text">Bei der Vigenère-Chiffre werden die einzelnen Zeichen des Klartexts mit unterschiedlichen Alphabeten kodiert.</p>
 			</section>
 			<section>
 				<h2>Eingabe</h2>
 				<form>
-					<input id="decoded" oninput="validate(); encode();" rows="4"></textarea>
+					<input id="decoded" class="input" oninput="validate(); encode();" rows="4"></textarea>
 				</form>
 			</section>
 			<section>
@@ -359,16 +368,16 @@
 			<section>
 				<h2>Kodierung</h2>
 				<label for="key">Schlüssel:</label>
-				<input id="key" type="text" value="VIGENERE" oninput="validate(); encode();" />
+				<input id="key" class="key" type="text" value="VIGENERE" oninput="validate(); encode();" />
 				<div id="encoding">
-					<span id="original"></span>
-					<span id="keyphrase"></span>
+					<span id="original" class="input"></span>
+					<span id="keyphrase" class="key"></span>
 					<span id="encoded"></span>
 				</div>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
-				<p>Begründe, weshalb es sich bei der Caesar-Verschlüsselung um ein sehr unsicheres Verschlüsselungsverfahren handelt.</p>
+				<p>Erläutere ein Verfahren, mithilfe der Tabelle und des Schlüssels eine kodierte Nachricht zu dekodieren.</p>
 			</section>
 		</main>
 		<footer>
