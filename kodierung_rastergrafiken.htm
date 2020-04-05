@@ -282,7 +282,7 @@
 
 			.palette, .palette-special {
 				float: left;
-				width: 5em;
+				width: 4em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.palette input, .palette-special input, .palette-special span {
@@ -301,27 +301,14 @@
 				vertical-align: middle;
 			}
 			#encoding {
-				width: calc(100% - 100px);
-				display: inline-block;
+				width: 100%;
+				display: block;
 				font-family: var(--monospace-font-family);
 				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
 				margin: var(--small-gap) 0;
 				padding: var(--small-gap);
 				word-wrap: break-word;
-			}
-			#encoding-length {
-				padding: 0 0 0 var(--large-gap);
-				width: 100px;
-			}
-			@media only screen and (max-width: 800px) {
-				#encoding {
-					width: 100%;
-				}
-				#encoding-length {
-					display: block;
-					padding: var(--large-gap) 0 0 0;
-				}
 			}
 			#image-frame {
 				position: relative;
@@ -377,7 +364,7 @@
 						<input type="text" maxlength="1" required pattern="[A-Za-z]{1}" value="w" oninput="getPalette();" />
 					</div>
 					<div class="palette-special">
-						<span>Trennzeichen</span>
+						<span>Umbruch</span>
 						<input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" />
 					</div>
 				</form>
@@ -391,7 +378,8 @@
 			</section>
 			<section>
 				<h2>Kodierung</h2>
-				<span id="encoding"></span><span id="encoding-length"></span>
+				<span id="encoding"></span>
+				<p>Länge: <span id="encoding-length">0 Zeichen</span></p>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>

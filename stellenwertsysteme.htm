@@ -222,6 +222,20 @@
 			#number, #base {
 				width: 72px;
 			}
+			@media only screen and (max-width: 800px) {
+				#settings label {
+					float: left;
+					clear: left;
+					height: 1.5em;
+					line-height: 1.5em;
+					margin-top: var(--small-gap);
+				}
+				#settings input {
+					float: left;
+					height: 1.5em;
+					margin: var(--small-gap) 0 0 var(--small-gap);
+				}
+			}
 			#image-frame {
 				position: relative;
 				border: var(--border-default-style);
@@ -250,7 +264,7 @@
 			</section>
 			<section>
 				<h2>Stellenwertsysteme</h2>
-				<form>
+				<form id="settings">
 					<label for="number">Dezimalzahl:</label>
 					<input type="button" value="-" onclick="sub();" />
 					<input id="number" type="number" value="1" onchange="setNumber();" />
