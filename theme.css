@@ -14,7 +14,7 @@
 
 :root {
 	--border-default-style: 1px #ddd solid;
-	--header-height: 4em;
+	--header-height: 6em;
 	--small-gap: 0.1em;
 	--large-gap: 0.2em;
 	--monospace-font-size: 1em;
@@ -41,11 +41,19 @@ body {
 	font-size: calc(66vw * var(--font-ratio));
 }
 
+header {
+	position: absolute;
+	height: var(--header-height);
+
+	left: 4vw;
+	width: calc(40vw - 2 * 4vw);
+}
+
 main {
 	overflow: hidden;
 	column-count: 2;
 	column-gap: 8vw;
-	height: calc(66vw - 10vw - var(--header-height));
+	height: calc(66vw - 10vw);
 }
 
 @media only screen and (min-width: 1500px) {
@@ -61,20 +69,21 @@ main {
 		font-size: calc(1200px * var(--font-ratio));
   }
 
-	main {
-		height: calc(800px - 120px - var(--header-height));
+	header {
+		left: 48px;
+		width: calc(600px - 2 * 48px);
 	}
-}
 
-header {
-	width: 50%;
-	height: var(--header-height);
+	main {
+		height: calc(800px - 120px);
+	}
 }
 
 header h1 {
 	font-family: 'Crimson';
 	font-weight: bold;
 	font-variant: normal;
+	margin: 0.5em 0;
 }
 
 header, footer, main {
@@ -82,6 +91,10 @@ header, footer, main {
 	border: 0;
 	margin: 0;
 	padding: 0;
+}
+
+main > section:nth-child(1) {
+	margin-top: var(--header-height);
 }
 
 footer {
