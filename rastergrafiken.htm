@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>Rastergrafiken</title>
 		<meta charset="utf-8" />
@@ -188,7 +188,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -250,14 +250,14 @@
 				font-size: 24px;
 				text-decoration: none;
 			}
-			#image-frame, #resolutions-frame {
+			#image-frame {
 				width: 720px;
 				min-width: 75%;
 				max-width: 100%;
 				margin: var(--large-gap) auto;
 			}
 			#resolution {
-				float: right;
+				width: 100%;
 			}
 		</style>
 		<link rel="stylesheet" type="text/css" href="theme.css" />
@@ -274,22 +274,20 @@
 				<p class="text">Die meisten digitalen Bilder (u.a. alle Digitalfotografien) sind Rastergrafiken. Das heißt, sie bestehen aus einem Raster einfarbiger Bildpunkte (Pixel).</p>
 			</section>
 			<section>
-				<h2>Bild auswählen</h2>
-				<label for="file-select">&#128449; Datei auswählen</label>
-				<input id="file-select" type="file" accept="image/*" onchange="loadImg(event);">
-			</section>
-			<section>
 				<h2>Bild</h2>
+				<label for="file-select">&#128193; Datei auswählen</label>
+				<input id="file-select" type="file" accept="image/*" onchange="loadImg(event);">
 				<div id="image-frame">
 					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
 					<canvas id="orig" width="360" height="360"></canvas>
 					<canvas id="image" width="360" height="360"></canvas>
-				</div>
-				<div id="resolutions-frame">
 					<input id="resolution" type="range" min="6" max="60" step="6" value="36" onchange="scaleImg();" />
-					<p>Originalauflösung: <span id="orig-resolution">0</span> Pixel</p>
-					<p>Reduzierte Auflösung: <span id="image-resolution">0</span> Pixel (<span id="quota-resolution">0</span>%)</p>
 				</div>
+			</section>
+			<section>
+				<h2>Auflösung</h2>
+				<p>Originalauflösung: <span id="orig-resolution">0</span> Pixel</p>
+				<p>Reduzierte Auflösung: <span id="image-resolution">0</span> Pixel (<span id="quota-resolution">0</span>%)</p>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>

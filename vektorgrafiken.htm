@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>Vektorgrafiken</title>
 		<meta charset="utf-8" />
@@ -210,7 +210,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -231,15 +231,21 @@
 
 			.shape, #shape-add {
 				float: left;
-				width: 80px;
+				width: 5em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.shape input, .shape select, #shape-add input {
 				width: 100%;
-				height: 28px;
+				height: 1.75em;
 			}
 			.shape input.small {
 				width: 50%;
+			}
+			.shape select {
+				border: var(--border-default-style);
+				padding: var(--small-gap);
+				font-size: calc(0.8 * var(--monospace-font-size));
+				height: calc(1.75em / 0.8);
 			}
 			.shape:nth-of-type(1) select option:nth-of-type(4) {
 				display: none;

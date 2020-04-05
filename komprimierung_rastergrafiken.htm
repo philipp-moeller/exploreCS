@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>Komprimierung von Rastergrafiken</title>
 		<meta charset="utf-8" />
@@ -174,7 +174,7 @@
 					redraw();
 				}
 
-				document.getElementById('input-length').textContent = raw.length>0 ? raw.length+' Zeichen' : '';
+				document.getElementById('input-length').textContent = raw.length;
 
 				// generate uncompressed input
 				var plain = decode(raw).body;
@@ -204,7 +204,7 @@
 				// uncompressed input
 				document.getElementById('compressing').textContent = plain;
 				var length = plain.length;
-				document.getElementById('compressing-length').textContent = length>0 ? length+' Zeichen' : '';
+				document.getElementById('compressing-length').textContent = length;
 				if (step>0) {
 					// check for rectangular picture
 					var rows = plain.split(linebreak);
@@ -222,7 +222,7 @@
 							plain = plain.replace(rgxl,'');
 							document.getElementById('compressing').innerHTML = '<span class="highlight">'+prefix+'</span>'+plain;
 							var length = prefix.length+plain.length;
-							document.getElementById('compressing-length').textContent = length>0 ? length+' Zeichen' : '';
+							document.getElementById('compressing-length').textContent = length;
 						}
 					}
 					else
@@ -244,7 +244,7 @@
 					document.getElementById('compressing').innerHTML = prefix+plain;
 					plain = plain.replace(/(<span class=\"highlight variants\">|<\/span>)/g,'');
 					var length = prefix.length+plain.length;
-					document.getElementById('compressing-length').textContent = length>0 ? length+' Zeichen' : '';
+					document.getElementById('compressing-length').textContent = length;
 				}
 				document.getElementById('compressing').setAttribute('data-step',Math.min(step,5-jumped));
 				return length;
@@ -346,7 +346,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -367,38 +367,26 @@
 
 			.palette, #palette-add, #palette-linebreak {
 				float: left;
-				width: 80px;
+				width: 4em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.palette input, #palette-add input, #palette-linebreak input, #palette-linebreak span {
 				width: 100%;
-				height: 28px;
+				height: 1.75em;
 			}
 			#palette-linebreak span {
 				display: block;
 				overflow: hidden;
 				border: var(--border-default-style);
 				background-color: buttonface;
-				padding: 6px 2px;
-				font-size: 12px;
+				line-height: calc(1.75em / 0.75);
+				font-size: 0.75em;
+				height: calc(1.75em / 0.75);
 				text-align: center;
 				vertical-align: middle;
 			}
 			#input, #compressing {
-				width: calc(100% - 100px);
-			}
-			#input-length, #compressing-length {
-				padding: 0 0 0 var(--large-gap);
-				width: 100px;
-			}
-			@media only screen and (max-width: 800px) {
-				#input, #compressing {
-					width: 100%;
-				}
-				#input-length, #compressing-length {
-					display: block;
-					padding: var(--large-gap) 0 0 0;
-				}
+				width: 100%;
 			}
 			#image-frame {
 				position: relative;
@@ -421,7 +409,7 @@
 				text-decoration: none;
 			}
 			#compressing {
-				display: inline-block;
+				display: block;
 				font-family: var(--monospace-font-family);
 				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
@@ -463,7 +451,7 @@
 				<h2>Zeichentabelle</h2>
 				<form>
 					<div id="palette-linebreak">
-						<span>Trennzeichen</span>
+						<span>Umbruch</span>
 						<input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" />
 					</div>
 					<div class="palette">
@@ -481,7 +469,8 @@
 			</section>
 			<section>
 				<h2>Eingabe</h2>
-				<input type="text" id="input" oninput="validate(); draw(); rate();" /><span id="input-length"></span>
+				<input type="text" id="input" oninput="validate(); draw(); rate();" />
+				<p>Länge: <span id="input-length">0</span> Zeichen</p>
 			</section>
 			<section>
 				<h2>Bild</h2>
@@ -496,7 +485,8 @@
 				<input class="compressing-control" type="button" value="&#9664;" onclick="compress(parseInt(document.getElementById('compressing').getAttribute('data-step'))-1);" />
 				<input class="compressing-control" type="button" value="&#9654;" onclick="compress();" />
 				<br />
-				<span id="compressing"></span><span id="compressing-length"></span>
+				<span id="compressing"></span>
+				<p>Länge: <span id="compressing-length">0</span> Zeichen</p>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>

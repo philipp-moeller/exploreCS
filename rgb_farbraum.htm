@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>RGB-Farbraum</title>
 		<meta charset="utf-8" />
@@ -202,7 +202,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -232,6 +232,9 @@
 			#color-add {
 				background-color: #000000;
 			}
+			#color-sub {
+				background-color: #ffffff;
+			}
 			.component {
 				width: 300px;
 				max-width: 70%;
@@ -258,10 +261,6 @@
 			.code {
 				display: inline-block;
 				font-family: var(--monospace-font-family);
-				border: var(--border-default-style);
-				margin: var(--small-gap) 0;
-				padding: var(--small-gap);
-				word-wrap: break-word;
 			}
 			#color-sub-res, #color-add-res {
 				display: inline-block;

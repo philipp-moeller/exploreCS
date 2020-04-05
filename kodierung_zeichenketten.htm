@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>Kodierung von Zeichenketten</title>
 		<meta charset="utf-8" />
@@ -201,7 +201,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -239,25 +239,26 @@
 			}
 			.alphabet {
 				float: left;
-				width: 80px;
+				width: 4em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.alphabet input {
 				width: 100%;
-				height: 28px;
+				height: 1.75em;
 			}
 			.alphabet input.fixed {
 				display: block;
 				overflow: hidden;
 				border: var(--border-default-style);
 				background-color: buttonface;
-				padding: 6px 2px;
+				line-height: calc(1.75em / 0.75);
 				font-family: sans-serif;
 				text-align: center;
 				vertical-align: middle;
 			}
 			.alphabet.small input.fixed {
-				font-size: 12px;
+				font-size: 0.75em;
+				height: calc(1.75em / 0.75);
 			}
 			#encoded {
 				display: block;

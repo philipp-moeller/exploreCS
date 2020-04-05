@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>Kodierung farbiger Rastergrafiken</title>
 		<meta charset="utf-8" />
@@ -155,7 +155,7 @@
 					redraw();
 				}
 
-				document.getElementById('input-length').textContent = raw.length>0 ? raw.length+' Zeichen' : '';
+				document.getElementById('input-length').textContent = raw.length;
 			}
 
 			function redraw() {
@@ -256,7 +256,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -277,38 +277,26 @@
 
 			.palette, #palette-add, #palette-linebreak {
 				float: left;
-				width: 80px;
+				width: 4em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.palette input, #palette-add input, #palette-linebreak input, #palette-linebreak span {
+				display: block;
 				width: 100%;
-				height: 28px;
+				height: 1.75em;
 			}
 			#palette-linebreak span {
-				display: block;
 				overflow: hidden;
 				border: var(--border-default-style);
 				background-color: buttonface;
-				padding: 6px 2px;
-				font-size: 12px;
+				line-height: calc(1.75em / 0.75);
+				font-size: 0.75em;
+				height: calc(1.75em / 0.75);
 				text-align: center;
 				vertical-align: middle;
 			}
 			#input {
-				width: calc(100% - 100px);
-			}
-			#input-length {
-				padding: 0 0 0 var(--large-gap);
-				width: 100px;
-			}
-			@media only screen and (max-width: 800px) {
-				#input {
-					width: 100%;
-				}
-				#input-length {
-					display: block;
-					padding: var(--large-gap) 0 0 0;
-				}
+				width: 100%;
 			}
 			#image-frame {
 				position: relative;
@@ -348,7 +336,7 @@
 				<h2>Zeichentabelle</h2>
 				<form>
 					<div id="palette-linebreak">
-						<span>Trennzeichen</span>
+						<span>Umbruch</span>
 						<input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" />
 					</div>
 					<div class="palette">
@@ -366,7 +354,8 @@
 			</section>
 			<section>
 				<h2>Eingabe</h2>
-				<input type="text" id="input" oninput="validate(); draw();" /><span id="input-length"></span>
+				<input type="text" id="input" oninput="validate(); draw();" />
+				<p>Länge: <span id="input-length">0</span> Zeichen</p>
 			</section>
 			<section>
 				<h2>Bild</h2>

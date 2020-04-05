@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de-DE">
 	<head>
 		<title>Kodierung von Rastergrafiken</title>
 		<meta charset="utf-8" />
@@ -261,7 +261,7 @@
 			}
 			input[type=color] {
 				border: var(--border-default-style);
-				padding: 0 var(--small-gap);
+				padding: var(--small-gap);
 			}
 			input:invalid{
 				background-color: #fbb;
@@ -282,45 +282,33 @@
 
 			.palette, .palette-special {
 				float: left;
-				width: 80px;
+				width: 4em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
-			.palette input, .palette-special input {
+			.palette input, .palette-special input, .palette-special span {
+				display: block;
 				width: 100%;
-				height: 28px;
+				height: 1.75em;
 			}
 			.palette-special span {
-				display: block;
 				overflow: hidden;
 				border: var(--border-default-style);
 				background-color: buttonface;
-				padding: 6px 2px;
-				font-size: 12px;
+				line-height: calc(1.75em / 0.75);
+				font-size: 0.75em;
+				height: calc(1.75em / 0.75);
 				text-align: center;
 				vertical-align: middle;
 			}
 			#encoding {
-				width: calc(100% - 100px);
-				display: inline-block;
+				width: 100%;
+				display: block;
 				font-family: var(--monospace-font-family);
 				font-size: var(--monospace-font-size);
 				border: var(--border-default-style);
 				margin: var(--small-gap) 0;
 				padding: var(--small-gap);
 				word-wrap: break-word;
-			}
-			#encoding-length {
-				padding: 0 0 0 var(--large-gap);
-				width: 100px;
-			}
-			@media only screen and (max-width: 800px) {
-				#encoding {
-					width: 100%;
-				}
-				#encoding-length {
-					display: block;
-					padding: var(--large-gap) 0 0 0;
-				}
 			}
 			#image-frame {
 				position: relative;
@@ -377,7 +365,7 @@
 						<input type="text" maxlength="1" required pattern="[A-Za-z]{1}" value="w" oninput="getPalette();" />
 					</div>
 					<div class="palette-special">
-						<span>Trennzeichen</span>
+						<span>Umbruch</span>
 						<input id="linebreak" type="text" maxlength="1" required pattern="[^0-9]{1}" value="," oninput="getLinebreak();" />
 					</div>
 				</form>
@@ -391,7 +379,8 @@
 			</section>
 			<section>
 				<h2>Kodierung</h2>
-				<span id="encoding"></span><span id="encoding-length"></span>
+				<span id="encoding"></span>
+				<p>Länge: <span id="encoding-length">0 Zeichen</span></p>
 			</section>
 			<section id="exercises">
 				<h2>Aufgabe</h2>
