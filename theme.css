@@ -81,7 +81,7 @@ main {
 		background-repeat: no-repeat;
 		background-size: 1500px auto;
 		width: 1200px;
-		height: 800px;
+		height: 1000px;
 		margin: 80px auto;
 		padding: 60px 48px;
 		font-size: calc(1200px * var(--font-ratio));
@@ -93,7 +93,7 @@ main {
 	}
 
 	main {
-		height: calc(800px - 120px);
+		height: calc(1000px - 120px);
 	}
 }
 
