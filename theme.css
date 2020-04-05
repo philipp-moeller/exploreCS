@@ -32,7 +32,7 @@
 
 :root {
 	--border-default-style: 1px #ddd solid;
-	--header-height: 6em;
+	--header-height: 7em;
 	--small-gap: 0.25em;
 	--large-gap: 0.5em;
 	--monospace-font-size: 1em;
@@ -135,7 +135,7 @@ h2, h3, h4 {
 	font-weight: bold;
 	font-variant: normal;
 	margin: 0;
-	padding: 2em 0 1em;
+	padding: 1em 0 0.5em;
 }
 
 section {
