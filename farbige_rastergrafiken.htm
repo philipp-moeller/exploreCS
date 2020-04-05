@@ -277,20 +277,21 @@
 
 			.palette, #palette-add, #palette-linebreak {
 				float: left;
-				width: 80px;
+				width: 5em;
 				margin: 0 var(--large-gap) var(--large-gap) 0;
 			}
 			.palette input, #palette-add input, #palette-linebreak input, #palette-linebreak span {
 				display: block;
 				width: 100%;
-				height: 28px;
+				height: 1.75em;
 			}
 			#palette-linebreak span {
 				overflow: hidden;
 				border: var(--border-default-style);
 				background-color: buttonface;
-				padding: 6px 2px;
-				font-size: 12px;
+				padding: calc(var(--small-gap) * 1.5) calc(var(--small-gap) * 0.5);
+				font-size: 0.75em;
+				height: calc(1.75em / 0.75);
 				text-align: center;
 				vertical-align: middle;
 			}
