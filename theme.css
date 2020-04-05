@@ -14,24 +14,67 @@
 
 :root {
 	--border-default-style: 1px #ddd solid;
+	--header-height: 4em;
+	--small-gap: 0.1em;
+	--large-gap: 0.2em;
+	--monospace-font-size: 1em;
+	--font-ratio: 0.02;
 }
 
 body {
 	font-family: 'Crimson';
 	max-width: none;
-	padding: 0;
+	overflow-x: hidden;
+
 	/* set book as background */
+	filter: sepia(0.5);
 	background-color: #cdd5e1;
 	background-image: url('images/book.png');
-	background-position: top center;
+
+	background-position: 0 10vw;
 	background-repeat: no-repeat;
 	background-size: 100vw auto;
-	width: 69.5vw;
-	height: 53vw;
-	margin: 9.5vw 14vw 10vw 16.5vw;
+	width: 80vw;
+	height: 66vw;
+	margin: 10vw;
+	padding: 5vw 4vw;
+	font-size: calc(66vw * var(--font-ratio));
+}
+
+main {
+	overflow: hidden;
 	column-count: 2;
-	column-gap: 5vw;
-	opacity: 0.9;
+	column-gap: 8vw;
+	height: calc(66vw - 10vw - var(--header-height));
+}
+
+@media only screen and (min-width: 1500px) {
+
+  body {
+		background-position: calc(50vw - 750px) 80px;
+		background-repeat: no-repeat;
+		background-size: 1500px auto;
+		width: 1200px;
+		height: 800px;
+		margin: 80px auto;
+		padding: 60px 48px;
+		font-size: calc(1200px * var(--font-ratio));
+  }
+
+	main {
+		height: calc(800px - 120px - var(--header-height));
+	}
+}
+
+header {
+	width: 50%;
+	height: var(--header-height);
+}
+
+header h1 {
+	font-family: 'Crimson';
+	font-weight: bold;
+	font-variant: normal;
 }
 
 header, footer, main {
@@ -42,28 +85,35 @@ header, footer, main {
 }
 
 footer {
-	/* font color */
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
 	font-size: 1em;
 	font-family: 'Crimson';
 	font-weight: normal;
 	font-variant: normal;
 }
 
-h1, h2, h3, h4 {
+footer svg {
+	display: none;
+}
+
+h2, h3, h4 {
 	font-family: 'Crimson';
 	font-weight: bold;
 	font-variant: normal;
 	margin: 0;
-	padding: 24px 0 12px;
+	padding: 2em 0 1em;
 }
 
 section {
 	break-inside: avoid;
 	width: 100%;
-	hyphens: auto;
 }
 
 #exercises,
+#example,
 header input {
 	display: none;
 }
