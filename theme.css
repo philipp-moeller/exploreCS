@@ -36,7 +36,24 @@
 	--small-gap: 0.25em;
 	--large-gap: 0.5em;
 	--monospace-font-size: 1em;
-	--font-ratio: 0.02;
+
+	--lines-per-page: 50;
+
+	--background-original-width: 1600;
+	--background-original-height: 1200;
+	--background-ratio: calc(var(--background-original-width) / var(--background-original-height));
+	--background-margin-left: 160;
+	--background-margin-right: 160;
+	--background-margin-top: 30;
+	--background-margin-bottom: 180;
+	--background-inner-width: calc(var(--background-original-width) - var(--background-margin-left) - var(--background-margin-right));
+	--background-inner-height: calc(var(--background-original-height) - var(--background-margin-top) - var(--background-margin-bottom));
+	--background-selector-width: 200;
+	--background-selector-height: 200;
+
+	--background-width: 100vw;
+	--background-height: calc(var(--background-width) / var(--background-ratio));
+	--background-padding: calc(0.05 * var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
 }
 
 body {
@@ -49,59 +66,79 @@ body {
 	background-color: #cdd5e1;
 	background-image: url('images/book.png');
 
-	background-position: 0 10vw;
+	background-position: 0 0.1vh;
 	background-repeat: no-repeat;
-	background-size: 100vw auto;
-	width: 80vw;
-	height: 66vw;
-	margin: 10vw;
-	padding: 5vw 4vw;
-	font-size: calc(66vw * var(--font-ratio));
+	background-size: var(--background-width) auto;
+	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
+	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)));
+	margin-top: calc(0.1vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
+	margin-left: calc(var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
+	padding: var(--background-padding);
+	font-size: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) / var(--lines-per-page));
 }
 
 header {
 	position: absolute;
 	height: var(--header-height);
-
-	left: 4vw;
-	width: calc(40vw - 2 * 4vw);
+	left: var(--background-padding);
+	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
 }
 
 main {
 	overflow: hidden;
 	column-count: 2;
-	column-gap: 8vw;
-	height: calc(66vw - 10vw);
+	column-gap: calc(2 * var(--background-padding));
+	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
 }
 
-@media only screen and (min-width: 1500px) {
+footer {
+	position: absolute;
+	overflow: visible;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	background-color: #f00;
+}
+
+footer a.next::after, footer a.prev::before {
+	content: none;
+}
+
+footer a.next, footer a.prev {
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	bottom: 0;
+	width: calc(var(--background-width) * (var(--background-selector-width) / var(--background-original-width)));
+	height: calc(var(--background-height) * (var(--background-selector-height) / var(--background-original-height)));
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+footer a.next {
+	background-image: url('images/next.png');
+	background-position: bottom right;
+	right: 0;
+}
+
+footer a.prev {
+	background-image: url('images/prev.png');
+	background-position: bottom left;
+	left: 0;
+}
+
+@media only screen and (min-width: 1200px) {
+
+	:root {
+		--background-width: 1200px;
+	}
 
   body {
-		background-position: calc(50vw - 750px) 80px;
-		background-repeat: no-repeat;
-		background-size: 1500px auto;
-		width: 1200px;
-		height: 1000px;
-		margin: 80px auto;
-		padding: 60px 48px;
-		font-size: calc(1200px * var(--font-ratio));
+		background-position: center 0.2vh;
+		margin-top: calc(0.2vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
+		margin-left: calc(50vw - var(--background-width) / 2 + var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
   }
-
-	header {
-		left: 48px;
-		width: calc(600px - 2 * 48px);
-	}
-
-	main {
-		height: calc(1000px - 120px);
-	}
-}
-
-header h1 {
-	font-family: 'Crimson';
-	font-weight: bold;
-	font-variant: normal;
-	margin: 0.5em 0;
 }
 
 header, footer, main {
@@ -115,19 +152,15 @@ main > section:nth-child(1) {
 	margin-top: var(--header-height);
 }
 
-footer {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	font-size: 1em;
-	font-family: 'Crimson';
-	font-weight: normal;
-	font-variant: normal;
+header input, #example, #exercises {
+	display: none;
 }
 
-footer svg {
-	display: none;
+header h1 {
+	font-family: 'Crimson';
+	font-weight: bold;
+	font-variant: normal;
+	margin: 0.5em 0;
 }
 
 h2, h3, h4 {
@@ -141,10 +174,4 @@ h2, h3, h4 {
 section {
 	break-inside: avoid;
 	width: 100%;
-}
-
-#exercises,
-#example,
-header input {
-	display: none;
 }
