@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+	<head>
+		<title>ASCII-Code</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<style>
+			/* general styles */
+			:root {
+				--border-default-style: 1px #aaa solid;
+				--small-gap: 4px;
+				--large-gap: 8px;
+				--monospace-font-size: 16px;
+				--monospace-font-family: monospace;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			body {
+				font-family: Sans-Serif;
+				width: 80%;
+				max-width: 1200px;
+				margin: 20px auto;
+			}
+			@media only screen and (max-width: 800px) {
+				body {
+					width: 90%;
+				}
+			}
+			header, main, footer {
+				padding: 20px;
+			}
+			header, h1, h2, h3, h4 {
+				font-family: Serif;
+				font-variant: small-caps;
+			}
+			header {
+				border-bottom: var(--border-default-style);
+			}
+			header input {
+				float: right;
+				text-decoration: line-through;
+				padding: var(--large-gap);
+				margin: 1em var(--large-gap);
+				font-size: 1.33em;
+				width: 2em;
+				font-family: Serif;
+			}
+			footer {
+				font-size: 1.2em;
+				font-family: Serif;
+				font-variant: small-caps;
+				border-top: var(--border-default-style);
+			}
+			footer * {
+				margin-bottom: var(--large-gap);
+			}
+			footer a {
+				float: right;
+				padding-bottom: var(--large-gap);
+				color: #000;
+				text-decoration: none;
+			}
+			footer a.prev {
+				padding-right: calc(2 * var(--large-gap));
+			}
+			footer a.next {
+				padding-left: calc(2 * var(--large-gap));
+			}
+			footer a.prev::before {
+				content: '« ';
+			}
+			footer a.next::after {
+				content: ' »';
+			}
+			section, form {
+				overflow: auto;
+			}
+			input {
+				border: var(--border-default-style);
+				padding: var(--small-gap);
+				font-family: var(--monospace-font-family);
+				font-size: var(--monospace-font-size);
+			}
+			input[type=color] {
+				border: var(--border-default-style);
+				padding: var(--small-gap);
+			}
+			input:invalid{
+				background-color: #fbb;
+			}
+			@media only screen and (max-width: 800px) {
+				input[type=checkbox], input[type=radio] {
+					float: left;
+					clear: left;
+					margin-top: var(--small-gap);
+				}
+				input[type=checkbox] + label, input[type=radio] + label {
+					float: left;
+					margin-top: var(--small-gap);
+				}
+			}
+
+			/* special styles */
+
+			h1.ada {
+				font-family: 'Ada';
+				font-size: 2.8em;
+			}
+
+			p.ada {
+				font-family: 'Ada';
+				font-size: 1.4em;
+			}
+
+		</style>
+		<link rel="stylesheet" type="text/css" href="theme.css" />
+	</head>
+	<body>
+		<header>
+			<h1 class="ada">Willkommen</h1>
+		</header>
+		<main>
+			<section>
+				<p class="ada">Hallo, mein Name ist Ada Lovelace. Du kennst mich nicht? Aber die Namen Goethe und Schiller sagen dir was, oder? Genau das ist der Grund weshalb wir hier sind.</p>
+				<p class="ada">Warum kennt nur jeder Bibis Beauty Palace, aber keiner kennt die Menschen, die das Leben, wie wir es heute führen erst ermöglicht haben.</p>
+				<p class="ada">Naja, du wirst diese Ignoranz bald ablegen, dafür werde ich sorgen.</p>
+				<p class="ada">In diesem Raum sind Rätsel zum Thema informatische Grundbildung versteckt. Nur wenn du alle Rätsel löst, findest du den Schlüssel für die Tür, die - <em>KLICK</em> - jetzt gerade hinter dir abgeschlossen wird.</p>
+				<p class="ada">🖤 Ada</p>
+				<p class="ada">PS: Um mehr über mich zu erfahren, blättere einfach in diesem Buch.</p>
+			</section>
+			<section>
+				<h2>Hans Christian Ørsted</h2>
+				<p>Hans Christian Ørsted wurde als Sohn des Apothekers Søren Christian Ørsted geboren. Da es bis 1814 keine allgemeine Schulbildung gab, erhielten Hans Christian und sein jüngerer Bruder Anders Sandøe Ørsted hauptsächlich Unterricht von einem deutschen Perückenmacher und seiner Frau, bei denen sie u. a. Deutsch, Mathematik und die Lutherischen Katechismen lernten. Durch die Arbeit in der Apotheke seines Vaters, in der er mit zwölf Jahren anfing auszuhelfen, wurde Ørsteds Interesse an der Wissenschaft geweckt. Er erlangte seine weitere Bildung hauptsächlich autodidaktisch und ging 1793 nach Kopenhagen, um seine Aufnahmeprüfung an der Universität Kopenhagen abzulegen, an der er dann Naturwissenschaften und Pharmazie studierte. Die pharmazeutischen Examine legte er 1797 ab. 1799 erlangte er den Doktorgrad mit einer Dissertation über Kants Naturphilosophie mit dem Titel Über die Architektonik der Naturmetaphysik und wurde 1800 Adjunkt.</p>
+				<p>Von 1801 bis 1804 unternahm er eine ausgedehnte Studienreise durch Europa. Unter anderem verbrachte er mehrere Monate in Frankreich und Deutschland, wo er persönlich bekannt wurde mit dem Naturforscher Henrich Steffens, dem ihn philosophisch beeinflussenden Naturphilosophen Schelling und dem Physiker Johann Wilhelm Ritter. Ritter war Erfinder des ersten Akkus, der Ritter’schen Ladungssäule, beschäftigte sich mit Galvanismus und gilt als Mitbegründer der Elektrochemie. Mit Ritter verband Ørsted eine langjährige Freundschaft und dessen naturphilosophische Ideen und Ansichten gehörten zu den Grundsteinen für Ørsteds spätere Forschungen zum Elektromagnetismus. 1806 wurde Ørsted außerordentlicher Professor für Chemie und Physik an der Universität Kopenhagen. Dort wurde er 1817 ordentlicher Professor für Physik und amtierte 1825/26 und 1840/41 als Rektor.</p>
+				<p>Im Januar 1812 wurde er in der Kopenhagener Freimaurerloge Friedrich zur gekrönten Hoffnung aufgenommen und an seinem Hochzeitstag 1814, an dem er Inger Birgitte Ballum heiratete, ernannten ihn die Kopenhagener Logen zum Ehrenmitglied. Ørsted hatte mit seiner Frau drei Söhne und vier Töchter. Der Schriftsteller Hans Christian Andersen (1805–1875) unterhielt eine langjährige Freundschaft zu Ørsted und wurde von dessen naturphilosophischen Ansichten beeinflusst, was sich nach Ansicht von John L. Greenway besonders in seinem Märchen Die Glocke widerspiegelt. Als Literaturkenner und überzeugt von Andersens Talent, war Ørsted 1835 eine treibende Kraft zur Veröffentlichung von Andersens Märchen (Eventyr, fortalte for Børn 1835–1848, dt. „Märchen, für Kinder erzählt“).</p>
+				<p>1824 gründete er die Dänische Gesellschaft zur Verbreitung der Naturlehre. Auf Initiative von Ørsted wurde 1829 in Kopenhagen die Polytechnische Lehranstalt (dänisch Den Polytekniske Læreanstalt; Vorgänger von Dänemarks Technischer Universität) gegründet, deren erster Rektor er seit der Eröffnung bis zu seinem Tod im Jahr 1851 war. Als er im Alter von 73 Jahren in Kopenhagen verstarb, war er anerkannter Physiker, Chemiker und Astronom, und gilt heute als eine der führenden Persönlichkeiten des Goldenen Zeitalters Dänemarks. Seine Grabstätte liegt auf dem Assistenzfriedhof im Kopenhagener Stadtteil Nørrebro.</p>
+			</section>
+			<section>
+				<h2>Konrad Zuse</h2>
+				<p>Konrad Zuse wurde als Sohn von Maria und Emil Zuse geboren. Er hatte eine ältere Schwester, über die er meinte: „Sie hatte das Pech, in der damaligen Zeit als intelligenter Mensch und Frau geboren zu sein.“ Als er zwei Jahre alt war, zog die Familie in das ostpreußische Braunsberg, wo der Vater als Postbeamter im mittleren Dienst arbeitete. Dort besuchte er das humanistische Gymnasium Hosianum. Als er 1923 in der 9. Klasse war, zog die Familie Zuse nach Hoyerswerda, wo er das Reform-Realgymnasium, das heutige Lessing-Gymnasium, besuchte. Bereits im Alter von 14 Jahren tüftelte er an Erfindungen; „Zuses Mandarinenautomat“ gab auf Münzeinwurf Obst und Wechselgeld heraus. Mit dem Metallbaukasten der Firma Stabil hat er mit 18 Jahren einen Kohlenverladekran zusammengebaut, wofür er die Ehrenurkunde der Firma erhielt. 1927 legte er sein Abitur ab.</p>
+				<p>Zuse hat sich selbst als „Bummelstudent“ bezeichnet. Als 17-Jähriger studierte er an der Technischen Hochschule Berlin-Charlottenburg (heute Technische Universität Berlin) zunächst Maschinenbau, wechselte dann zur Architektur und schließlich zum Bauingenieurswesen. Zwischendurch arbeitete er fast ein Jahr lang als Reklamezeichner. Während seines Studiums wurde er Mitglied in der Berliner Studentenverbindung AV Motiv. Schon früh entdeckte er seine Vorliebe für Technik und Kunst.</p>
+				<p>1935 schloss Zuse sein Ingenieurstudium mit einem Diplom ab. Danach arbeitete er zunächst als Statiker bei der Henschel Flugzeug-Werke AG in Schönefeld bei Berlin, gab diese Stelle jedoch bald auf und richtete eine Erfinderwerkstatt in der Wohnung seiner Eltern ein. Hier entstand die Z1, eine programmierbare Rechenmaschine, die allerdings noch nicht voll funktionsfähig war, weil sie mechanisch funktionierte. Das Prinzip der Z1 übernahm Zuse dann für die Z3, die er mit Relais aufbaute. Dies war der erste voll funktionsfähige Computer der Welt (siehe Abschnitt „Leistungen“). Zuse verfügte über die Gabe, Menschen mit seiner Begeisterung so anzustecken, dass sie ihm immer wieder Geld gaben – sein Vater ließ sich sogar aus dem Ruhestand reaktivieren, um die Entwicklung mitzufinanzieren – oder Arbeitszeit spendeten.</p>
+				<p>Während des Zweiten Weltkrieges wurde Konrad Zuse zweimal einberufen, nahm aber nie an Kriegshandlungen teil. Mit Hilfe von Herbert Wagner – Leiter der Sonderabteilung F bei der Henschel Flugzeug-Werke AG, in der ferngesteuerte Gleitbomben entwickelt wurden – konnte er erreichen, dass er „unabkömmlich“ gestellt und bei den Henschel-Werken beschäftigt wurde. Dort arbeitete er an der Gleitbombe Hs 293 mit und entwickelte Spezialrechner zur Flügelvermessung. Für wie wichtig Zuses Arbeit gehalten wurde, zeigt auch die Tatsache, dass er mitten im Krieg 1941 die „Zuse Ingenieurbüro und Apparatebau, Berlin“ gründen konnte, die zuletzt 20 Mitarbeiter beschäftigte. Es war das einzige Unternehmen, das in Deutschland Rechner entwickeln durfte.</p>
+				<p>Auch wenn Zuse nie Mitglied der NSDAP wurde, hat er während des Kriegs keine erkennbaren Vorbehalte gegen die Arbeit in der Rüstungsindustrie gezeigt. Dokumente aus dem Nachlass Zuses belegen, wie „Rüstungsbetriebe und NS-Institutionen Zuses Computer mit über 250.000 Reichsmark“ finanzierten. Seine Erfahrungen mit dem Militär hat Zuse im Rückblick folgendermaßen resümiert: „Nur zu oft ist der Erfinder der faustische Idealist, der die Welt verbessern möchte, aber an den harten Realitäten scheitert. Will er seine Ideen durchsetzen, muß er sich mit Mächten einlassen, deren Realitätssinn schärfer und ausgeprägter ist. In der heutigen Zeit sind solche Mächte, ohne daß ich damit ein Werturteil aussprechen möchte, vornehmlich Militärs und Manager. […] Nach meiner Erfahrung sind die Chancen des Einzelnen, sich gegen solches Paktieren zu wehren, gering.“</p>
+				<p>Im Januar 1945 heiratete er seine Frau Gisela, geb. Brandes (1919–2013), in Berlin, mit der er später fünf Kinder hatte. Der älteste Sohn Horst ist heute Hochschullehrer für Informatik. Der Familie gelang die Flucht aus Berlin über Göttingen in das Allgäu, wobei Konrad Zuse den zuletzt entstandenen Rechner Z4 retten konnte. Er bildete die Grundlage, um nach dem Krieg das erste deutsche Computerunternehmen, die „Zuse KG“, aufzubauen. Wenn irgendwo im Land eine seiner Rechenmaschinen kaputt war, wurde für das Wochenende die Familie in den VW-Käfer geladen, zum „Reparatur-Ausflug“. Nach stürmischem Wachstum musste Konrad Zuse 1964 seine Kapitalanteile wegen Überschuldung abgeben. Danach war er als Berater tätig und schrieb sein Buch zum „Rechnenden Raum“.</p>
+				<p>1983 durfte Zuse nach einer privaten Einladung eine öffentliche Vorlesung an der Technischen Hochschule Ilmenau in Thüringen halten. Das Rechenzentrum der TH durfte er nicht besuchen.</p>
+			</section>
+		</main>
+		<footer>
+		</footer>
+	</body>
+	<script type="text/javascript" src="book.js"></script>
+</html>
