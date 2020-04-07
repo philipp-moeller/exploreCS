@@ -36,6 +36,7 @@
 	--small-gap: 0.25em;
 	--large-gap: 0.5em;
 	--monospace-font-size: 1em;
+	--canvas-background-color: rgba(216,216,216,0.33);
 
 	--lines-per-page: 50;
 
