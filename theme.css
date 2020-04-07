@@ -6,6 +6,13 @@
 }
 
 @font-face {
+	font-family: 'Ada';
+	src: url('fonts/Vtks Garota Bonita.ttf') format('truetype');
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
 	font-family: 'Crimson';
 	src: local('Crimson Text'), url('fonts/CrimsonText-Bold.ttf') format('truetype');
 	font-display: swap;
@@ -40,17 +47,18 @@
 
 	--lines-per-page: 50;
 
-	--background-original-width: 1600;
-	--background-original-height: 1200;
+	--background-original-width: 1662;
+	--background-original-height: 1262;
 	--background-ratio: calc(var(--background-original-width) / var(--background-original-height));
-	--background-margin-left: 160;
-	--background-margin-right: 160;
-	--background-margin-top: 30;
-	--background-margin-bottom: 180;
+	--background-margin-left: 232;
+	--background-margin-right: 248;
+	--background-margin-top: 128;
+	--background-margin-bottom: 134;
 	--background-inner-width: calc(var(--background-original-width) - var(--background-margin-left) - var(--background-margin-right));
 	--background-inner-height: calc(var(--background-original-height) - var(--background-margin-top) - var(--background-margin-bottom));
-	--background-selector-width: 200;
-	--background-selector-height: 200;
+	--background-selector-width: 116;
+	--background-selector-height: 116;
+	--background-selector-offset: 6;
 
 	--background-width: 100vw;
 	--background-height: calc(var(--background-width) / var(--background-ratio));
@@ -63,7 +71,7 @@ body {
 	overflow-x: hidden;
 
 	/* set book as background */
-	filter: sepia(0.5);
+	filter: grayscale(0.5);
 	background-color: #cdd5e1;
 	background-image: url('images/book.png');
 
@@ -88,6 +96,7 @@ header {
 main {
 	overflow: hidden;
 	column-count: 2;
+	column-fill: auto;
 	column-gap: calc(2 * var(--background-padding));
 	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
 }
@@ -110,23 +119,32 @@ footer a.next, footer a.prev {
 	position: absolute;
 	padding: 0;
 	margin: 0;
-	bottom: 0;
 	width: calc(var(--background-width) * (var(--background-selector-width) / var(--background-original-width)));
 	height: calc(var(--background-height) * (var(--background-selector-height) / var(--background-original-height)));
 	background-repeat: no-repeat;
 	background-size: contain;
+	transition: 0.5s;
+	transform: scale(0.6);
+}
+
+footer a.next:hover, footer a.prev:hover {
+	transform: scale(1.2);
 }
 
 footer a.next {
 	background-image: url('images/next.png');
 	background-position: bottom right;
+	transform-origin: bottom right;
 	right: 0;
+	bottom: calc(var(--background-height) * (var(--background-selector-offset) / var(--background-original-height)));
 }
 
 footer a.prev {
 	background-image: url('images/prev.png');
 	background-position: bottom left;
+	transform-origin: bottom left;
 	left: 0;
+	bottom: 0;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -175,6 +193,12 @@ h2, h3, h4 {
 section {
 	break-inside: avoid;
 	width: 100%;
+}
+
+p {
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
 }
 
 input, select, textarea {

@@ -15,8 +15,8 @@ function goToPage(num) {
 	var footer = document.getElementsByTagName('footer').item(0);
 	footer.innerHTML = '';
 
-	var lastPage = (main.children.item(main.children.length-2).offsetLeft-main.offsetLeft)/pageWidth;
-	if (lastPage>num+1) {
+	var pageCount = Math.floor(main.scrollWidth/pageWidth);
+	if (pageCount>num+1) {
 		var next = document.createElement('a');
 		next.className = 'next';
 		next.setAttribute('href','#');
