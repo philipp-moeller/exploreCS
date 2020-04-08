@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 	<head>
-		<title>ASCII-Code</title>
+		<title>Willkommen</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+		<link rel="stylesheet" type="text/css" href="../theme.css" />
 		<style>
 			/* general styles */
 			:root {
@@ -17,91 +18,9 @@
 			* {
 				box-sizing: border-box;
 			}
-			body {
-				font-family: Sans-Serif;
-				width: 80%;
-				max-width: 1200px;
-				margin: 20px auto;
-			}
-			@media only screen and (max-width: 800px) {
-				body {
-					width: 90%;
-				}
-			}
-			header, main, footer {
-				padding: 20px;
-			}
-			header, h1, h2, h3, h4 {
-				font-family: Serif;
-				font-variant: small-caps;
-			}
-			header {
-				border-bottom: var(--border-default-style);
-			}
-			header input {
-				float: right;
-				text-decoration: line-through;
-				padding: var(--large-gap);
-				margin: 1em var(--large-gap);
-				font-size: 1.33em;
-				width: 2em;
-				font-family: Serif;
-			}
-			footer {
-				font-size: 1.2em;
-				font-family: Serif;
-				font-variant: small-caps;
-				border-top: var(--border-default-style);
-			}
-			footer * {
-				margin-bottom: var(--large-gap);
-			}
-			footer a {
-				float: right;
-				padding-bottom: var(--large-gap);
-				color: #000;
-				text-decoration: none;
-			}
-			footer a.prev {
-				padding-right: calc(2 * var(--large-gap));
-			}
-			footer a.next {
-				padding-left: calc(2 * var(--large-gap));
-			}
-			footer a.prev::before {
-				content: '« ';
-			}
-			footer a.next::after {
-				content: ' »';
-			}
 			section, form {
 				overflow: auto;
 			}
-			input {
-				border: var(--border-default-style);
-				padding: var(--small-gap);
-				font-family: var(--monospace-font-family);
-				font-size: var(--monospace-font-size);
-			}
-			input[type=color] {
-				border: var(--border-default-style);
-				padding: var(--small-gap);
-			}
-			input:invalid{
-				background-color: #fbb;
-			}
-			@media only screen and (max-width: 800px) {
-				input[type=checkbox], input[type=radio] {
-					float: left;
-					clear: left;
-					margin-top: var(--small-gap);
-				}
-				input[type=checkbox] + label, input[type=radio] + label {
-					float: left;
-					margin-top: var(--small-gap);
-				}
-			}
-
 			/* special styles */
 
 			h1.ada {
@@ -115,7 +34,6 @@
 			}
 
 		</style>
-		<link rel="stylesheet" type="text/css" href="theme.css" />
 	</head>
 	<body>
 		<header>
@@ -165,5 +83,5 @@
 		<footer>
 		</footer>
 	</body>
-	<script type="text/javascript" src="book.js"></script>
+	<script type="text/javascript" src="../book.js"></script>
 </html>
