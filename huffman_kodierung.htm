@@ -351,7 +351,7 @@
 			section, form {
 				overflow: auto;
 			}
-			input {
+			input, select, textarea {
 				border: var(--border-default-style);
 				padding: var(--small-gap);
 				font-family: var(--monospace-font-family);
@@ -436,7 +436,7 @@
 		</style>
 		<link rel="stylesheet" type="text/css" href="theme.css" />
 	</head>
-	<body onload="encode();" onresize="redraw();">
+	<body id="huffman_kodierung" onload="encode();" onresize="redraw();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
