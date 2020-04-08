@@ -7,7 +7,14 @@
 
 @font-face {
 	font-family: 'Ada';
-	src: url('fonts/Vtks Garota Bonita.ttf') format('truetype');
+	src: url('fonts/A Sensible Armadillo.ttf') format('truetype');
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Scene';
+	src: url('fonts/mulders-handwriting.ttf') format('truetype');
 	font-display: swap;
 	font-weight: normal;
 }
@@ -203,4 +210,8 @@ p {
 
 input, select, textarea {
 	background-color: rgba(255,255,255,0.33);
+}
+
+em {
+	font-family: 'Scene';
 }
