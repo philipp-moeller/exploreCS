@@ -20,14 +20,14 @@ function goToPage(num) {
 		var next = document.createElement('a');
 		next.className = 'next';
 		next.setAttribute('href','#');
-		next.onclick = function() { goToPage(num+2); };
+		next.onclick = function() { goToPage(num+2); return false; };
 		footer.appendChild(next);
 	}
 	if (num>0) {
 		var prev = document.createElement('a');
 		prev.className = 'prev';
 		prev.setAttribute('href','#');
-		prev.onclick = function() { goToPage(num-2); };
+		prev.onclick = function() { goToPage(num-2); return false; };
 		footer.appendChild(prev);
 	}
 }
