@@ -70,6 +70,13 @@
 	--background-width: 100vw;
 	--background-height: calc(var(--background-width) / var(--background-ratio));
 	--background-padding: calc(0.05 * var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
+
+	--page-width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
+	--page-height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
+}
+
+* {
+	box-sizing: border-box;
 }
 
 body {
@@ -97,7 +104,7 @@ header {
 	position: absolute;
 	height: var(--header-height);
 	left: var(--background-padding);
-	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
+	width: var(--page-width);
 }
 
 main {
@@ -105,7 +112,7 @@ main {
 	column-count: 2;
 	column-fill: auto;
 	column-gap: calc(2 * var(--background-padding));
-	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
+	height: var(--page-height);
 }
 
 footer {
@@ -114,7 +121,7 @@ footer {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height: 5px;
+	height: 0;
 	background-color: #f00;
 }
 
@@ -198,8 +205,15 @@ h2, h3, h4 {
 }
 
 section {
+	position: relative;
+	overflow: visible;
 	break-inside: avoid;
 	width: 100%;
+}
+
+section.pagebreak {
+	break-before: column;
+	break-after: column;
 }
 
 p {
@@ -214,4 +228,43 @@ input, select, textarea {
 
 em {
 	font-family: 'Scene';
+}
+
+body a.close {
+	display: block;
+	position: absolute;
+	top: calc(-0.5 * var(--background-height) * (var(--background-margin-top) / var(--background-original-height)) - 0.5em);
+	right: calc(-0.5 * var(--background-width) * (var(--background-margin-right) / var(--background-original-width)));
+	color: #fff;
+	font-family: 'Ada';
+	font-size: 3em;
+	text-decoration: none;
+}
+
+footer .page-number {
+	display: block;
+	position: absolute;
+	top: calc(-0.5 * var(--background-padding) - 0.5em);
+	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
+	text-align: center;
+}
+
+footer .page-number:first-of-type {
+	left: var(--background-padding);
+}
+
+footer .page-number:last-of-type {
+	right: var(--background-padding);
+}
+
+.note {
+	display: block;
+	position: absolute;
+	color: #000;
+	height: calc(0.8 * var(--page-width));
+	width: calc(0.8 * var(--page-width));
+	overflow: visible;
+	padding: 10%;
+	filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.5));
+	transform: rotate(-5deg);
 }

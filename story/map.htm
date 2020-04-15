@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+	<head>
+		<title>Willkommen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script>
+
+			function scrollToCenter() {
+				var body = document.getElementsByTagName('body').item(0);
+				var height = body.offsetHeight;
+				window.scroll({
+				  top: Math.floor(height/2.25),
+				  left: 0,
+				  behavior: 'smooth'
+				});
+			}
+
+			window.onload = function() { setTimeout(function(){ scrollToCenter(); }, 200); };
+
+		</script>
+
+		<style>
+			/* general styles */
+			:root {
+				--border-default-style: 1px #aaa solid;
+				--small-gap: 4px;
+				--large-gap: 8px;
+				--monospace-font-size: 16px;
+				--monospace-font-family: monospace;
+			}
+			* {
+				box-sizing: border-box;
+			}
+			section, form {
+				overflow: auto;
+			}
+			/* special styles */
+
+			body {
+				background-image: url('../images/room.jpg');
+				background-size: 100vw 150vw;
+				background-position: 0 0;
+				background-repeat: no-repeat;
+				margin: 0;
+				height: 150vw;
+			}
+
+			main a {
+				position: absolute;
+				display: block;
+			}
+
+			main a:hover {
+				background-color: rgba(255,255,255,0.1);
+				filter: brightness(150%);
+			}
+
+			a.item:hover {
+				background-color: transparent;
+				filter: brightness(105%);
+			}
+
+			a.item img {
+				height: 100%;
+				width: 100%;
+			}
+
+		</style>
+	</head>
+	<body>
+		<header>
+
+		</header>
+		<main>
+			<a href="ascii_hex.htm" style="left: 67.8vw; top: 47.1vw; width: 1.1vw; height: 7.6vw; transform: skewX(-3deg);"></a>
+			<a href="../ascii_code.htm" style="left: 60.2vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
+			<a href="../ascii_code.htm" style="left: 61.1vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
+			<a href="../ascii_code.htm" style="left: 62vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
+			<a href="../ascii_code.htm" style="left: 62.9vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
+			<a href="../ascii_code.htm" style="left: 63.8vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
+			<a class="item" style="left: 37.8vw; top: 95.8vw; width: 11vw; height: 4vw;" href="welcome.htm"><img src="../images/welcome-book.png" alt="Wilkommen" style="filter: drop-shadow(-3px 5px 3px rgba(0,0,0,0.8));" /></a>
+			<a class="item" style="left: 85.4vw; top: 111.8vw; width: 5vw; height: 2vw;" href="color-codes.htm"><img src="../images/color-note.png" alt="Farbtafel" style="filter: drop-shadow(-1px 1px 2px rgba(0,0,0,0.8));" /></a>
+		</main>
+		<footer>
+		</footer>
+	</body>
+</html>
