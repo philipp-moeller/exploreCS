@@ -1,0 +1,228 @@
+@font-face {
+	font-family: 'Crimson';
+	src: local('Crimson Text'), url('fonts/CrimsonText-Regular.ttf') format('truetype');
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Ada';
+	src: url('fonts/A Sensible Armadillo.ttf') format('truetype');
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Scene';
+	src: url('fonts/mulders-handwriting.ttf') format('truetype');
+	font-display: swap;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Crimson';
+	src: local('Crimson Text'), url('fonts/CrimsonText-Bold.ttf') format('truetype');
+	font-display: swap;
+	font-weight: bold;
+}
+
+@media only screen and (orientation: portrait) {
+	body::before {
+		content: 'Bitte drehen...';
+		color: #fff;
+		font-size: 10vw;
+		padding-top: calc(50vh - 5vw);
+		position: absolute;
+		left: -10vw;
+		width: 100vw;
+		top: -10vw;
+		height: 100vh;
+		opacity: 0.8;
+		background-color: #000;
+		text-align: center;
+		z-index: 1;
+	}
+}
+
+:root {
+	--border-default-style: 1px #ddd solid;
+	--header-height: 6.3em;
+	--small-gap: 0.25em;
+	--large-gap: 0.5em;
+	--monospace-font-size: 1em;
+	--canvas-background-color: rgba(216,216,216,0.33);
+
+	--lines-per-page: 36;
+
+	--background-original-width: 795;
+	--background-original-height: 1006;
+	--background-ratio: calc(var(--background-original-width) / var(--background-original-height));
+	--background-margin-left: 120;
+	--background-margin-right: 20;
+	--background-margin-top: 15;
+	--background-margin-bottom: 0;
+	--background-inner-width: calc(var(--background-original-width) - var(--background-margin-left) - var(--background-margin-right));
+	--background-inner-height: calc(var(--background-original-height) - var(--background-margin-top) - var(--background-margin-bottom));
+	--background-selector-width: 116;
+	--background-selector-height: 116;
+	--background-selector-offset: 6;
+
+	--background-width: 50vw;
+	--background-height: calc(var(--background-width) / var(--background-ratio));
+	--background-padding: calc(0.05 * var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
+
+	--page-width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) - 2 * var(--background-padding));
+	--page-height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Crimson';
+	max-width: none;
+	overflow-x: hidden;
+
+	/* set book as background */
+	filter: grayscale(0.5);
+	background-color: #edc5c1;
+	background-image: url('images/note.png');
+
+	background-position: center 2.5vh;
+	background-repeat: no-repeat;
+	background-size: var(--background-width) auto;
+	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
+	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)));
+	margin-top: calc(2.5vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
+	margin-left: calc(var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
+	padding: var(--background-padding);
+	font-size: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) / var(--lines-per-page));
+}
+
+header {
+	position: absolute;
+	height: var(--header-height);
+	left: var(--background-padding);
+	width: var(--page-width);
+}
+
+main {
+	overflow: hidden;
+	column-count: 1;
+	column-fill: auto;
+	column-gap: calc(2 * var(--background-padding));
+	height: var(--page-height);
+}
+
+footer {
+	display: none;
+}
+
+@media only screen and (min-width: 1200px) {
+
+	:root {
+		--background-width: 600px;
+	}
+
+  body {
+		background-position: center 5vh;
+		margin-top: calc(5vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
+		margin-left: calc(50vw - var(--background-width) / 2 + var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
+  }
+}
+
+header, footer, main {
+	background-color: transparent;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+main > section:nth-child(1) {
+	margin-top: var(--header-height);
+}
+
+header input, #example, #exercises {
+	display: none;
+}
+
+header h1 {
+	font-family: 'Crimson';
+	font-weight: bold;
+	font-variant: normal;
+	margin: 0.5em 0;
+}
+
+h2, h3, h4 {
+	font-family: 'Crimson';
+	font-weight: bold;
+	font-variant: normal;
+	margin: 0;
+	padding: 1em 0 0.5em;
+}
+
+section {
+	position: relative;
+	overflow: visible;
+	break-inside: avoid;
+	width: 100%;
+}
+
+section.pagebreak {
+	break-before: column;
+	break-after: column;
+}
+
+p {
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+input, select, textarea {
+	background-color: rgba(255,255,255,0.33);
+}
+
+em {
+	font-family: 'Scene';
+}
+
+body a.close {
+	display: block;
+	position: absolute;
+	top: calc(-0.5 * var(--background-height) * (var(--background-margin-top) / var(--background-original-height)) - 0.5em);
+	right: calc(-0.5 * var(--background-width) * (var(--background-margin-right) / var(--background-original-width)));
+	color: #fff;
+	font-family: 'Ada';
+	font-size: 3em;
+	text-decoration: none;
+}
+
+footer .page-number {
+	display: block;
+	position: absolute;
+	top: calc(-0.5 * var(--background-padding) - 0.5em);
+	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
+	text-align: center;
+}
+
+footer .page-number:first-of-type {
+	left: var(--background-padding);
+}
+
+footer .page-number:last-of-type {
+	right: var(--background-padding);
+}
+
+.note {
+	display: block;
+	position: absolute;
+	color: #000;
+	height: calc(0.8 * var(--page-width));
+	width: calc(0.8 * var(--page-width));
+	overflow: visible;
+	padding: 10%;
+	filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.5));
+	transform: rotate(-5deg);
+}

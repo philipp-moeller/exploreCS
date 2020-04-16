@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+	<head>
+		<title>Farbkodierung</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script type="text/javascript" src="riddle.js"></script>
+		<script>
+
+			function loadColorCode() {
+				var section = document.getElementById('colors');
+				for (var i=0; i<COLORS_HEX.length; i++) {
+					section.innerHTML += i+': '+COLORS_HEX[i]+'<br />';
+				}
+			}
+
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../note.css" />
+		<style>
+
+			/* special styles */
+
+			body {
+				background-color: #880c21;
+			}
+
+			h1.ada {
+				font-family: 'Ada';
+			}
+
+			p.ada {
+				font-family: 'Ada';
+				font-size: 1.2em;
+			}
+
+		</style>
+	</head>
+	<body onload="loadColorCode();">
+		<header>
+			<h1 class="ada">Willkommen</h1>
+		</header>
+		<main>
+			<section>
+				<p id="colors" class="ada"></p>
+				<p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+			</section>
+		</main>
+		<footer>
+		</footer>
+		<a class="close" href="map.htm">x</a>
+	</body>
+</html>
