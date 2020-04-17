@@ -8,10 +8,14 @@
 		<script type="text/javascript" src="riddle.js"></script>
 		<script>
 
+			function scribble(color) {
+				return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="8 58 25 25"><path style="fill:none;stroke:'+color+';stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 9.1659225,65.017112 14.741071,59.914435 9.9218745,69.458334 20.694196,59.34747 10.016367,76.072917 26.741814,60.953869 10.772303,82.687492 31.655505,64.166667 18.426339,84.010417 31.844492,72.954612 28.726168,81.553554 v 0" id="path820" inkscape:connector-curvature="0" /></svg>';
+			}
+
 			function loadColorCode() {
 				var section = document.getElementById('colors');
 				for (var i=0; i<COLORS_HEX.length; i++) {
-					section.innerHTML += i+': '+COLORS_HEX[i]+'<br />';
+					section.innerHTML += '<tr><td>'+i+'</td><td>'+COLORS_HEX[i]+'</td><td>'+(i<2 ? scribble(COLORS_HEX[i]) : '')+'</td></tr>';
 				}
 			}
 
@@ -30,21 +34,33 @@
 				font-family: 'Ada';
 			}
 
-			p.ada {
+			#colors {
 				font-family: 'Ada';
-				font-size: 1.2em;
+				font-size: 1.4em;
+				transform: rotate(2deg);
+				margin-left: calc(var(--large-gap) * 2);
+			}
+
+			#colors td {
+				vertical-align: middle;
+				padding: calc(var(--small-gap) / 2);
+			}
+
+			#colors svg {
+				height: 1em;
+				width: 1em;
 			}
 
 		</style>
 	</head>
 	<body onload="loadColorCode();">
 		<header>
-			<h1 class="ada">Willkommen</h1>
+			<h1>Dreifarbentheorie</h1>
 		</header>
 		<main>
 			<section>
-				<p id="colors" class="ada"></p>
-				<p>Consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+				<p>Die additive Mischung bei den Trichromaten, zu denen die Menschen gehören, wird durch die Dreifarbentheorie von Thomas Young und Hermann von Helmholtz beschrieben.</p>
+				<table id="colors" class="ada"></table>
 			</section>
 		</main>
 		<footer>
