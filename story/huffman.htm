@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+	<head>
+		<title>Ascii-Code</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script type="text/javascript" src="riddle.js"></script>
+		<script>
+
+			// copy from caesar_verschluesselung.htm
+
+			const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+			function caesar(text,translation) {
+				var alphabet = UPPERCASE;
+				return text.split('').map(function(char) {
+					var i = alphabet.indexOf(char);
+					return i==-1 ? char : alphabet[((i+translation)%alphabet.length+alphabet.length)%alphabet.length];
+				}).join('');
+			}
+
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="../book.css" />
+		<style>
+			/* general styles */
+			:root {
+				--border-default-style: 1px #aaa solid;
+				--small-gap: 4px;
+				--large-gap: 8px;
+				--monospace-font-size: 16px;
+				--monospace-font-family: monospace;
+			}
+
+			/* special styles */
+
+			body {
+				background-color: #880c21;
+			}
+
+			.note {
+				font-family: 'Ada';
+				font-size: 2.4em;
+				left: calc(0.1 * var(--page-width));
+				top: calc(var(--page-height) - var(--page-width));
+				background: #ffc;
+				text-align: center;
+			}
+
+			p.ada {
+				font-family: 'Ada';
+				font-size: 1.4em;
+			}
+
+		</style>
+	</head>
+	<body onload="createRiddle();">
+		<header>
+			<h1>Lorem Ipsum</h1>
+		</header>
+		<main data-before="39,1227,7110,91" data-after="202,34">
+			<section class="pagebreak">
+				<div class="note">♜ ASCII &nbsp;<br /><br /><span id="riddle"></span></div>
+				<h2>Et accusam et justo duo</h2>
+				<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</p>
+				<p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+				<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+			</section>
+		</main>
+		<footer>
+		</footer>
+		<a class="close" href="map.htm">x</a>
+	</body>
+	<script type="text/javascript" src="../book.js"></script>
+
+</html>
