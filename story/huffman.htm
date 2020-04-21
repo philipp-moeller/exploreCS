@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 	<head>
-		<title>Ascii-Code</title>
+		<title>Huffman-Kodierung</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -18,6 +18,10 @@
 					var i = alphabet.indexOf(char);
 					return i==-1 ? char : alphabet[((i+translation)%alphabet.length+alphabet.length)%alphabet.length];
 				}).join('');
+			}
+
+			function createRiddle() {
+				document.getElementById('riddle').textContent = caesar(HUFFMAN_CAESAR,HUFFMAN_CAESAR_SHIFT);
 			}
 
 		</script>
@@ -39,33 +43,28 @@
 				background-color: #880c21;
 			}
 
-			.note {
+			.ada {
 				font-family: 'Ada';
-				font-size: 2.4em;
-				left: calc(0.1 * var(--page-width));
-				top: calc(var(--page-height) - var(--page-width));
-				background: #ffc;
+				font-size: 4.4em;
+				transform: rotate(-3deg);
+				opacity: 0.15;
+				padding-top: 0.5em;
 				text-align: center;
-			}
-
-			p.ada {
-				font-family: 'Ada';
-				font-size: 1.4em;
 			}
 
 		</style>
 	</head>
 	<body onload="createRiddle();">
 		<header>
-			<h1>Lorem Ipsum</h1>
+			<h1>♞ Caesar Ipsum</h1>
 		</header>
 		<main data-before="39,1227,7110,91" data-after="202,34">
 			<section class="pagebreak">
-				<div class="note">♜ ASCII &nbsp;<br /><br /><span id="riddle"></span></div>
 				<h2>Et accusam et justo duo</h2>
 				<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</p>
-				<p>Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+				<p id="riddle"></p>
 				<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+				<div class="ada">[A-Z]</div>
 			</section>
 		</main>
 		<footer>
