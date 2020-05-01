@@ -1,109 +1,77 @@
-@font-face {
-	font-family: 'Crimson';
-	src: local('Crimson Text'), url('fonts/CrimsonText-Regular.ttf') format('truetype');
-	font-display: swap;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Ada';
-	src: url('fonts/A Sensible Armadillo.ttf') format('truetype');
-	font-display: swap;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Scene';
-	src: url('fonts/mulders-handwriting.ttf') format('truetype');
-	font-display: swap;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Crimson';
-	src: local('Crimson Text'), url('fonts/CrimsonText-Bold.ttf') format('truetype');
-	font-display: swap;
-	font-weight: bold;
-}
-
-@media only screen and (orientation: portrait) {
-	body::before {
-		content: 'Bitte drehen...';
-		color: #fff;
-		font-size: 10vw;
-		padding-top: calc(50vh - 5vw);
-		position: absolute;
-		left: -10vw;
-		width: 100vw;
-		top: -10vw;
-		height: 100vh;
-		opacity: 0.8;
-		background-color: #000;
-		text-align: center;
-		z-index: 1;
-	}
-}
-
 :root {
-	--border-default-style: 1px #ddd solid;
+
+	/* default book data */
+
 	--header-height: 7em;
-	--small-gap: 0.25em;
-	--large-gap: 0.5em;
-	--monospace-font-size: 1em;
-	--canvas-background-color: rgba(216,216,216,0.33);
+	--lines-per-page: 42;
 
-	--lines-per-page: 50;
+	--book-x: 56vh;
+	--book-y: 15vh;
+	--book-w: 80vh;
+	--book-h: 62vh;
+	--book-distance: 20vh;
+	--book-tilt: 2.2deg;
+	--book-padding: 3.5vh;
+	--book-inner-width: calc(var(--book-w) - 2 * var(--book-padding));
+	--book-inner-height: calc(var(--book-h) - 3 * var(--book-padding));
 
-	--background-original-width: 1662;
-	--background-original-height: 1262;
-	--background-ratio: calc(var(--background-original-width) / var(--background-original-height));
-	--background-margin-left: 232;
-	--background-margin-right: 248;
-	--background-margin-top: 128;
-	--background-margin-bottom: 134;
-	--background-inner-width: calc(var(--background-original-width) - var(--background-margin-left) - var(--background-margin-right));
-	--background-inner-height: calc(var(--background-original-height) - var(--background-margin-top) - var(--background-margin-bottom));
-	--background-selector-width: 116;
-	--background-selector-height: 116;
-	--background-selector-offset: 6;
+	--book-prev-x: -3vh;
+	--book-prev-y: -2vh;
+	--book-prev-size: 5vh;
+	--book-next-x: -3vh;
+	--book-next-y: -2vh;
+	--book-next-size: 5vh;
 
-	--background-width: 100vw;
-	--background-height: calc(var(--background-width) / var(--background-ratio));
-	--background-padding: calc(0.05 * var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
-
-	--page-width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
-	--page-height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
-}
-
-* {
-	box-sizing: border-box;
+	--page-width: calc(var(--book-inner-height) / 2 - var(--book-padding));
+	--page-height: var(--book-inner-height);
 }
 
 body {
-	font-family: 'Crimson';
-	max-width: none;
-	overflow-x: hidden;
 
-	/* set book as background */
+	/* set default book as background */
+
 	filter: grayscale(0.5);
-	background-color: #cdd5e1;
-	background-image: url('images/book.png');
+	background-image: url('images/book_1.jpg');
 
-	background-position: 0 0.1vh;
-	background-repeat: no-repeat;
-	background-size: var(--background-width) auto;
-	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
-	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)));
-	margin-top: calc(0.1vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
-	margin-left: calc(var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
-	padding: var(--background-padding);
-	font-size: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) / var(--lines-per-page));
+	width: var(--book-w);
+	height: var(--book-h);
+	perspective: var(--book-distance);
+
+	margin-top: var(--book-y);
+	margin-left: var(--book-x);
+	margin-right: calc(100vh * 1920 / 922 - var(--book-x) - var(--book-w));
+	margin-bottom: calc(100vh - var(--book-y) - var(--book-h));
+	padding: calc(1.5 * var(--book-padding)) var(--book-padding);
+
+	font-size: calc(var(--page-height) / var(--lines-per-page));
+}
+
+body > * {
+  transform-style: preserve-3d;
+	transform: rotateX(var(--book-tilt));
+}
+
+body a.close {
+	display: block;
+	position: absolute;
+	top: calc(-0.25 * var(--book-padding));
+	right: var(--book-padding);
+	font-family: 'Ada';
+	font-size: 5vh;
+	text-decoration: none;
+}
+
+header, footer, main {
+	background-color: transparent;
+	border: 0;
+	margin: 0;
+	padding: 0;
 }
 
 header {
 	position: absolute;
 	height: var(--header-height);
-	left: var(--background-padding);
+	left: var(--book-padding);
 	width: var(--page-width);
 }
 
@@ -111,8 +79,12 @@ main {
 	overflow: hidden;
 	column-count: 2;
 	column-fill: auto;
-	column-gap: calc(2 * var(--background-padding));
+	column-gap: calc(2 * var(--book-padding));
 	height: var(--page-height);
+}
+
+main > section:first-child {
+	margin-top: var(--header-height);
 }
 
 footer {
@@ -122,7 +94,22 @@ footer {
 	right: 0;
 	bottom: 0;
 	height: 0;
-	background-color: #f00;
+}
+
+footer .page-number {
+	display: block;
+	position: absolute;
+	bottom: calc(-1 * var(--book-padding) - 0.5em);
+	width: var(--page-width);
+	text-align: center;
+}
+
+footer .page-number:first-of-type {
+	left: var(--book-padding);
+}
+
+footer .page-number:last-of-type {
+	right: var(--book-padding);
 }
 
 footer a.next::after, footer a.prev::before {
@@ -133,8 +120,6 @@ footer a.next, footer a.prev {
 	position: absolute;
 	padding: 0;
 	margin: 0;
-	width: calc(var(--background-width) * (var(--background-selector-width) / var(--background-original-width)));
-	height: calc(var(--background-height) * (var(--background-selector-height) / var(--background-original-height)));
 	background-repeat: no-repeat;
 	background-size: contain;
 	transition: 0.5s;
@@ -149,17 +134,24 @@ footer a.next {
 	background-image: url('images/next.png');
 	background-position: bottom right;
 	transform-origin: bottom right;
-	right: 0;
-	bottom: calc(var(--background-height) * (var(--background-selector-offset) / var(--background-original-height)));
+	width: var(--book-next-size);
+	height: var(--book-next-size);
+	right: var(--book-next-x);
+	bottom: var(--book-next-y);
 }
 
 footer a.prev {
 	background-image: url('images/prev.png');
 	background-position: bottom left;
 	transform-origin: bottom left;
-	left: 0;
-	bottom: 0;
+	width: var(--book-prev-size);
+	height: var(--book-prev-size);
+	left: var(--book-prev-x);
+	bottom: var(--book-prev-y);
 }
+
+
+/*
 
 @media only screen and (min-width: 1200px) {
 
@@ -173,17 +165,7 @@ footer a.prev {
 		margin-left: calc(50vw - var(--background-width) / 2 + var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
   }
 }
-
-header, footer, main {
-	background-color: transparent;
-	border: 0;
-	margin: 0;
-	padding: 0;
-}
-
-main > section:nth-child(1) {
-	margin-top: var(--header-height);
-}
+*/
 
 header input, #example, #exercises {
 	display: none;
@@ -230,33 +212,6 @@ em {
 	font-family: 'Scene';
 }
 
-body a.close {
-	display: block;
-	position: absolute;
-	top: -3vw;
-	right: -6vw;
-	color: #fff;
-	font-family: 'Ada';
-	font-size: 3vw;
-	text-decoration: none;
-}
-
-footer .page-number {
-	display: block;
-	position: absolute;
-	top: calc(-0.5 * var(--background-padding) - 0.5em);
-	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
-	text-align: center;
-}
-
-footer .page-number:first-of-type {
-	left: var(--background-padding);
-}
-
-footer .page-number:last-of-type {
-	right: var(--background-padding);
-}
-
 .note {
 	display: block;
 	position: absolute;
@@ -264,9 +219,13 @@ footer .page-number:last-of-type {
 	height: calc(0.8 * var(--page-width));
 	width: calc(0.8 * var(--page-width));
 	overflow: visible;
-	padding: 10%;
+	padding: calc(0.08 * var(--page-width));
 	filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.5));
 	transform: rotate(-5deg);
+}
+
+.note * {
+	filter: none;
 }
 
 .note::before {

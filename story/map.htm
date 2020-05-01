@@ -5,53 +5,23 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<script>
-
-			function scrollToCenter() {
-				var body = document.getElementsByTagName('body').item(0);
-				var height = body.offsetHeight;
-				window.scroll({
-				  top: Math.floor(height/2.25),
-				  left: 0,
-				  behavior: 'smooth'
-				});
-			}
-
-			window.onload = function() { setTimeout(function(){ scrollToCenter(); }, 200); };
-
-		</script>
-
+		<link rel="stylesheet" type="text/css" href="../default.css" />
 		<style>
 
 			/* special styles */
 
 			body {
 				background-image: url('../images/room.jpg');
-				background-size: 100vw 150vw;
-				background-position: 0 0;
-				background-repeat: no-repeat;
-				margin: 0;
-				height: 150vw;
 			}
 
 			main a {
 				position: absolute;
 				display: block;
+				background-color: rgba(210,255,255,0.3);
 			}
 
 			main a:hover {
-				background-color: rgba(255,255,255,0.1);
-				filter: brightness(150%);
-			}
-
-			a.item:hover {
-				background-color: transparent;
-				filter: brightness(105%);
-			}
-
-			a.item img {
-				height: 100%;
-				width: 100%;
+				background-color: rgba(210,255,255,0.3);
 			}
 
 		</style>
@@ -61,14 +31,18 @@
 
 		</header>
 		<main>
-			<a href="ascii_hex.htm" style="left: 67.8vw; top: 47.1vw; width: 1.1vw; height: 7.6vw; transform: skewX(-3deg);"></a>
-			<a href="huffman.htm" style="left: 30.8vw; top: 59.2vw; width: 1vw; height: 5.7vw;"></a>
-			<a href="../ascii_code.htm" style="left: 60.2vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
-			<a href="../rgb_farbraum.htm" style="left: 61.1vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
-			<a href="../caesar_verschluesselung.htm" style="left: 62vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
-			<a href="../huffman_kodierung.htm" style="left: 62.9vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
-			<a href="../ascii_code.htm" style="left: 63.8vw; top: 57.8vw; width: 0.8vw; height: 7.3vw;"></a>
-			<a class="item" style="left: 37.8vw; top: 95.8vw; width: 11vw; height: 4vw;" href="welcome.htm"><img src="../images/welcome-book.png" alt="Wilkommen" style="filter: drop-shadow(-3px 5px 3px rgba(0,0,0,0.8));" /></a>
+			<a href="welcome.htm" style="left: 90vh; top: 57vh; width: 6vh; height: 1.8vh; transform: skew(-72deg,18deg);"></a>
+
+			<!-- rechtes Regal -->
+
+			<a href="ascii_hex.htm" style="left: 169.7vh; top: 26.5vh; width: 1.1vh; height: 7vh; transform: skew(-9deg,-2deg);"></a>
+
+			<a href="../ascii_code.htm" style="left: 142.5vh; top: 62.1vh; width: 1.6vh; height: 5.5vh; transform: skew(-3deg,12deg);"></a>
+			<a href="../rgb_farbraum.htm" style="left: 144.2vh; top: 63.1vh; width: 1.1vh; height: 4.8vh; transform: skew(-5deg,12deg);"></a>
+			<a href="../caesar_verschluesselung.htm" style="left: 145.4vh; top: 63.3vh; width: 1vh; height: 4.9vh; transform: skew(-3deg,12deg);"></a>
+			<a href="../huffman_kodierung.htm" style="left: 146.5vh; top: 63.2vh; width: 0.5vh; height: 5.4vh; transform: skew(-3deg,12deg);"></a>
+			<a href="huffman.htm" style="left: 147.7vh; top: 63.2vh; width: 1.4vh; height: 5.8vh; transform: skew(-5deg,18deg);"></a>
+
 			<a class="item" style="left: 85.4vw; top: 111.8vw; width: 5vw; height: 2vw;" href="color_codes.htm"><img src="../images/color-note.png" alt="Farbtafel" style="filter: drop-shadow(-1px 1px 2px rgba(0,0,0,0.8));" /></a>
 		</main>
 		<footer>
