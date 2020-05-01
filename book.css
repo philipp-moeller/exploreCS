@@ -16,12 +16,12 @@
 	--book-inner-width: calc(var(--book-w) - 2 * var(--book-padding));
 	--book-inner-height: calc(var(--book-h) - 3 * var(--book-padding));
 
-	--book-prev-x: -3vh;
-	--book-prev-y: -2vh;
-	--book-prev-size: 5vh;
-	--book-next-x: -3vh;
-	--book-next-y: -2vh;
-	--book-next-size: 5vh;
+	--book-prev-x: -12.5vh;
+	--book-prev-y: -7.7vh;
+	--book-prev-size: 6.8vh;
+	--book-next-x: -8.4vh;
+	--book-next-y: -6.8vh;
+	--book-next-size: 6.8vh;
 
 	--page-width: calc(var(--book-inner-height) / 2 - var(--book-padding));
 	--page-height: var(--book-inner-height);
@@ -125,31 +125,33 @@ footer a.next, footer a.prev {
 	background-repeat: no-repeat;
 	background-size: contain;
 	transition: 0.5s;
-	transform: scale(0.6);
+	transform: scale(0.5);
 }
 
 footer a.next:hover, footer a.prev:hover {
-	transform: scale(1.2);
+	transform: scale(1);
 }
 
 footer a.next {
-	background-image: url('images/next.png');
+	background-image: url('images/book_1_next.png');
 	background-position: bottom right;
 	transform-origin: bottom right;
 	width: var(--book-next-size);
 	height: var(--book-next-size);
 	right: var(--book-next-x);
 	bottom: var(--book-next-y);
+	filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.1));
 }
 
 footer a.prev {
-	background-image: url('images/prev.png');
+	background-image: url('images/book_1_prev.png');
 	background-position: bottom left;
 	transform-origin: bottom left;
 	width: var(--book-prev-size);
 	height: var(--book-prev-size);
 	left: var(--book-prev-x);
 	bottom: var(--book-prev-y);
+	filter: drop-shadow(-2px 2px 3px rgba(0,0,0,0.1));
 }
 
 
