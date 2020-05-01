@@ -3,14 +3,15 @@
 	/* default book data */
 
 	--header-height: 7em;
-	--lines-per-page: 42;
+	--lines-per-page: 38;
 
-	--book-x: 56vh;
-	--book-y: 15vh;
-	--book-w: 80vh;
-	--book-h: 62vh;
+	--book-x: 54vh;
+	--book-y: 12vh;
+	--book-w: 91vh;
+	--book-h: 63vh;
 	--book-distance: 20vh;
-	--book-tilt: 2.2deg;
+	--book-tilt: 7.2;
+	--book-rotate: 1;
 	--book-padding: 3.5vh;
 	--book-inner-width: calc(var(--book-w) - 2 * var(--book-padding));
 	--book-inner-height: calc(var(--book-h) - 3 * var(--book-padding));
@@ -48,7 +49,7 @@ body {
 
 body > * {
   transform-style: preserve-3d;
-	transform: rotateX(var(--book-tilt));
+	transform: rotate(calc(1deg * var(--book-rotate))) rotateX(calc(1deg * var(--book-tilt)));
 }
 
 body a.close {
@@ -71,7 +72,8 @@ header, footer, main {
 header {
 	position: absolute;
 	height: var(--header-height);
-	left: var(--book-padding);
+	top: calc(var(--book-tilt) / 3.14 * var(--book-padding));
+	left: calc(var(--book-tilt) / 3.14 * var(--book-padding));
 	width: var(--page-width);
 }
 
