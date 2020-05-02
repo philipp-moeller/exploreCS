@@ -52,3 +52,14 @@ body {
 
 	font-family: 'Crimson';
 }
+
+body a.close {
+	display: block;
+	position: fixed;
+	top: 5vh;
+	right: 5vh;
+	font-family: 'Ada';
+	font-size: 5vh;
+	text-decoration: none;
+	color: #666;
+}

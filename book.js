@@ -98,11 +98,9 @@ if (!closeable) {
 	var close = document.createElement('a');
 	close.className = 'close';
 	close.setAttribute('href','#');
-	close.onclick = function() { window.history.back() };
+	close.onclick = function() { window.history.back(); return false; };
 	close.textContent = 'x';
 	body.appendChild(close);
 }
 
-body.onload = function() {
-	goToPage(0);
-};
+window.addEventListener('load',function() { goToPage(0); },false);

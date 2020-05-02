@@ -1,135 +1,66 @@
-@font-face {
-	font-family: 'Crimson';
-	src: local('Crimson Text'), url('fonts/CrimsonText-Regular.ttf') format('truetype');
-	font-display: swap;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Ada';
-	src: url('fonts/A Sensible Armadillo.ttf') format('truetype');
-	font-display: swap;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Scene';
-	src: url('fonts/mulders-handwriting.ttf') format('truetype');
-	font-display: swap;
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Crimson';
-	src: local('Crimson Text'), url('fonts/CrimsonText-Bold.ttf') format('truetype');
-	font-display: swap;
-	font-weight: bold;
-}
-
-@media only screen and (orientation: portrait) {
-	body::before {
-		content: 'Bitte drehen...';
-		color: #fff;
-		font-size: 10vw;
-		padding-top: calc(50vh - 5vw);
-		position: absolute;
-		left: -10vw;
-		width: 100vw;
-		top: -10vw;
-		height: 100vh;
-		opacity: 0.8;
-		background-color: #000;
-		text-align: center;
-		z-index: 1;
-	}
-}
-
 :root {
-	--border-default-style: 1px #ddd solid;
-	--header-height: 5.5em;
-	--small-gap: 0.25em;
-	--large-gap: 0.5em;
-	--monospace-font-size: 1em;
-	--canvas-background-color: rgba(216,216,216,0.33);
 
-	--lines-per-page: 36;
+	/* default note data */
 
-	--background-original-width: 795;
-	--background-original-height: 1006;
-	--background-ratio: calc(var(--background-original-width) / var(--background-original-height));
-	--background-margin-left: 120;
-	--background-margin-right: 20;
-	--background-margin-top: 50;
-	--background-margin-bottom: 0;
-	--background-inner-width: calc(var(--background-original-width) - var(--background-margin-left) - var(--background-margin-right));
-	--background-inner-height: calc(var(--background-original-height) - var(--background-margin-top) - var(--background-margin-bottom));
-	--background-selector-width: 116;
-	--background-selector-height: 116;
-	--background-selector-offset: 6;
+	--header-height: 5em;
+	--lines-per-page: 32;
 
-	--background-width: 50vw;
-	--background-height: calc(var(--background-width) / var(--background-ratio));
-	--background-padding: calc(0.05 * var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
+	--note-x: 80vh;
+	--note-y: 15vh;
+	--note-w: 40vh;
+	--note-h: 58vh;
+	--note-distance: 62vh;
+	--note-tilt: 21;
+	--note-rotate: 2.5;
+	--note-padding: 3.5vh;
+	--note-inner-width: calc(var(--note-w) - 2 * var(--note-padding));
+	--note-inner-height: calc(var(--note-h) - 3 * var(--note-padding));
 
-	--page-width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) - 2 * var(--background-padding));
-	--page-height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) - 2 * var(--background-padding));
-}
+	--note-prev-x: -12.5vh;
+	--note-prev-y: -7.7vh;
+	--note-prev-size: 6.8vh;
+	--note-next-x: -8vh;
+	--note-next-y: -7.5vh;
+	--note-next-size: 6.8vh;
 
-* {
-	box-sizing: border-box;
+	--page-width: calc(var(--note-inner-height) / 2 - var(--note-padding));
+	--page-height: var(--note-inner-height);
 }
 
 body {
-	font-family: 'Crimson';
-	max-width: none;
-	overflow-x: hidden;
 
-	/* set book as background */
+	/* set default note as background */
+
 	filter: grayscale(0.5);
-	background-color: #edc5c1;
-	background-image: url('images/note.png');
+	background-image: url('images/note_1.jpg');
 
-	background-position: center 2.5vh;
-	background-repeat: no-repeat;
-	background-size: var(--background-width) auto;
-	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)));
-	height: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)));
-	margin-top: calc(2.5vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
-	margin-left: calc(var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
-	padding: var(--background-padding);
-	font-size: calc(var(--background-height) * (var(--background-inner-height) / var(--background-original-height)) / var(--lines-per-page));
+	width: var(--note-w);
+	height: var(--note-h);
+	perspective: var(--note-distance);
+
+	margin-top: var(--note-y);
+	margin-left: var(--note-x);
+	margin-right: calc(100vh * 1920 / 922 - var(--note-x) - var(--note-w));
+	margin-bottom: calc(100vh - var(--note-y) - var(--note-h));
+	padding: calc(1.5 * var(--note-padding)) var(--note-padding);
+
+	font-size: calc(var(--page-height) / var(--lines-per-page));
 }
 
-header {
+body > * {
+  transform-style: preserve-3d;
+	transform: rotate(calc(1deg * var(--note-rotate))) rotateX(calc(1deg * var(--note-tilt)));
+}
+
+body a.close {
+	display: block;
 	position: absolute;
-	height: var(--header-height);
-	left: var(--background-padding);
-	width: var(--page-width);
-}
-
-main {
-	overflow: hidden;
-	column-count: 1;
-	column-fill: auto;
-	column-gap: calc(2 * var(--background-padding));
-	height: var(--page-height);
-}
-
-footer {
-	display: none;
-}
-
-@media only screen and (min-width: 1200px) {
-
-	:root {
-		--background-width: 600px;
-	}
-
-  body {
-		background-position: center 5vh;
-		margin-top: calc(5vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
-		margin-left: calc(50vw - var(--background-width) / 2 + var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
-  }
+	top: calc(-0.25 * var(--note-padding));
+	right: var(--note-padding);
+	font-family: 'Ada';
+	font-size: 5vh;
+	text-decoration: none;
+	color: #666;
 }
 
 header, footer, main {
@@ -139,9 +70,104 @@ header, footer, main {
 	padding: 0;
 }
 
-main > section:nth-child(1) {
+header {
+	position: absolute;
+	height: var(--header-height);
+	top: calc(var(--note-tilt) / 10 * var(--note-padding));
+	left: calc(var(--note-tilt) / 10 * var(--note-padding));
+	width: var(--page-width);
+}
+
+main {
+	overflow: hidden;
+	height: var(--page-height);
+}
+
+main > section:first-child {
 	margin-top: var(--header-height);
 }
+
+footer {
+	position: absolute;
+	overflow: visible;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 0;
+}
+
+footer .page-number {
+	display: block;
+	position: absolute;
+	bottom: calc(-1 * var(--note-padding) - 0.5em);
+	width: var(--page-width);
+	text-align: center;
+}
+
+footer .page-number:first-of-type {
+	left: var(--note-padding);
+}
+
+footer .page-number:last-of-type {
+	right: var(--note-padding);
+}
+
+footer a.next::after, footer a.prev::before {
+	content: none;
+}
+
+footer a.next, footer a.prev {
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-size: contain;
+	transition: 0.5s;
+	transform: scale(0.5);
+}
+
+footer a.next:hover, footer a.prev:hover {
+	transform: scale(1);
+}
+
+footer a.next {
+	background-image: url('images/note_1_next.png');
+	background-position: bottom right;
+	transform-origin: bottom right;
+	width: var(--note-next-size);
+	height: var(--note-next-size);
+	right: var(--note-next-x);
+	bottom: var(--note-next-y);
+	filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.1));
+}
+
+footer a.prev {
+	background-image: url('images/note_1_prev.png');
+	background-position: bottom left;
+	transform-origin: bottom left;
+	width: var(--note-prev-size);
+	height: var(--note-prev-size);
+	left: var(--note-prev-x);
+	bottom: var(--note-prev-y);
+	filter: drop-shadow(-2px 2px 3px rgba(0,0,0,0.1));
+}
+
+
+/*
+
+@media only screen and (min-width: 1200px) {
+
+	:root {
+		--background-width: 1200px;
+	}
+
+  body {
+		background-position: center 0.2vh;
+		margin-top: calc(0.2vh + var(--background-height) * (var(--background-margin-top) / var(--background-original-height)));
+		margin-left: calc(50vw - var(--background-width) / 2 + var(--background-width) * (var(--background-margin-left) / var(--background-original-width)));
+  }
+}
+*/
 
 header input, #example, #exercises {
 	display: none;
@@ -188,33 +214,6 @@ em {
 	font-family: 'Scene';
 }
 
-body a.close {
-	display: block;
-	position: absolute;
-	top: -3vw;
-	right: -6vw;
-	color: #fff;
-	font-family: 'Ada';
-	font-size: 3vw;
-	text-decoration: none;
-}
-
-footer .page-number {
-	display: block;
-	position: absolute;
-	top: calc(-0.5 * var(--background-padding) - 0.5em);
-	width: calc(var(--background-width) * (var(--background-inner-width) / var(--background-original-width)) / 2 - 2 * var(--background-padding));
-	text-align: center;
-}
-
-footer .page-number:first-of-type {
-	left: var(--background-padding);
-}
-
-footer .page-number:last-of-type {
-	right: var(--background-padding);
-}
-
 .note {
 	display: block;
 	position: absolute;
@@ -222,7 +221,41 @@ footer .page-number:last-of-type {
 	height: calc(0.8 * var(--page-width));
 	width: calc(0.8 * var(--page-width));
 	overflow: visible;
-	padding: 10%;
+	padding: calc(0.08 * var(--page-width));
 	filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.5));
 	transform: rotate(-5deg);
+}
+
+.note * {
+	filter: none;
+}
+
+.note::before {
+	content: '';
+	position: absolute;
+	height: calc(0.15 * var(--page-width));
+	width: calc(0.4 * var(--page-width));
+	transform: rotate(7deg);
+	top: calc(-0.075 * var(--page-width));
+	left: calc(0.2 * var(--page-width));
+	background-color: rgba(255,255,255,0.66);
+}
+
+/* special styles of helping notes */
+
+#huffman_kodierung main section:nth-child(4) {
+	display: none;
+}
+
+#stellenwertsysteme main section:nth-child(2),
+#ascii_code main section:nth-child(2),
+#caesar_verschluesselung main section:nth-child(3),
+#huffman_kodierung main section:nth-child(3) {
+	break-before: column;
+}
+
+#caesar_verschluesselung textarea,
+#caesar_verschluesselung #encoded,
+#huffman_kodierung textarea {
+	min-height: 8em;
 }

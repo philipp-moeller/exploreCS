@@ -3,7 +3,7 @@
 	/* default book data */
 
 	--header-height: 7em;
-	--lines-per-page: 42;
+	--lines-per-page: 40;
 
 	--book-x: 54vh;
 	--book-y: 12vh;
@@ -19,8 +19,8 @@
 	--book-prev-x: -12.5vh;
 	--book-prev-y: -7.7vh;
 	--book-prev-size: 6.8vh;
-	--book-next-x: -8.4vh;
-	--book-next-y: -6.8vh;
+	--book-next-x: -8vh;
+	--book-next-y: -7.5vh;
 	--book-next-size: 6.8vh;
 
 	--page-width: calc(var(--book-inner-height) / 2 - var(--book-padding));
@@ -60,6 +60,7 @@ body a.close {
 	font-family: 'Ada';
 	font-size: 5vh;
 	text-decoration: none;
+	color: #666;
 }
 
 header, footer, main {
@@ -241,4 +242,23 @@ em {
 	top: calc(-0.075 * var(--page-width));
 	left: calc(0.2 * var(--page-width));
 	background-color: rgba(255,255,255,0.66);
+}
+
+/* special styles of helping books */
+
+#huffman_kodierung main section:nth-child(4) {
+	display: none;
+}
+
+#stellenwertsysteme main section:nth-child(2),
+#ascii_code main section:nth-child(2),
+#caesar_verschluesselung main section:nth-child(3),
+#huffman_kodierung main section:nth-child(3) {
+	break-before: column;
+}
+
+#caesar_verschluesselung textarea,
+#caesar_verschluesselung #encoded,
+#huffman_kodierung textarea {
+	min-height: 8em;
 }

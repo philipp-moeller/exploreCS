@@ -15,30 +15,27 @@
 			function loadColorCode() {
 				var section = document.getElementById('colors');
 				for (var i=0; i<COLORS_HEX.length; i++) {
-					section.innerHTML += '<tr><td>'+i+'</td><td>'+COLORS_HEX[i]+'</td><td>'+(i<2 ? scribble(COLORS_HEX[i]) : '')+'</td></tr>';
+					section.innerHTML += '<tr><td>'+i+':</td><td>'+COLORS_HEX[i]+'</td><td>'+(i<2 ? scribble(COLORS_HEX[i]) : '')+'</td></tr>';
 				}
 			}
 
 		</script>
 
+		<link rel="stylesheet" type="text/css" href="../default.css" />
 		<link rel="stylesheet" type="text/css" href="../note.css" />
 		<style>
 
 			/* special styles */
-
-			body {
-				background-color: #880c21;
-			}
 
 			h1.ada {
 				font-family: 'Ada';
 			}
 
 			#colors {
-				font-family: 'Ada';
-				font-size: 1.4em;
-				transform: rotate(2deg);
-				margin-left: calc(var(--large-gap) * 2);
+				font-family: 'Scene';
+				font-size: 1.6em;
+				transform: rotate(4deg);
+				margin-left: calc(var(--large-gap) * 5);
 			}
 
 			#colors td {
@@ -55,15 +52,15 @@
 	</head>
 	<body onload="loadColorCode();">
 		<header>
-			<h1>Dreifarbentheorie</h1>
+			<h1 class="ada">Dreifarbentheorie</h1>
 		</header>
 		<main>
 			<section>
-				<p>Die additive Mischung bei den Trichromaten, zu denen die Menschen gehören, wird durch die Dreifarbentheorie von Thomas Young und Hermann von Helmholtz beschrieben.</p>
-				<table id="colors" class="ada"></table>
+				<table id="colors"></table>
 			</section>
 		</main>
 		<footer>
 		</footer>
+		<a class="close" href="#" onclick="window.history.back(); return false;">x</a>
 	</body>
 </html>

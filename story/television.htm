@@ -5,6 +5,85 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+		<script type="text/javascript" src="riddle.js"></script>
+		<script>
+
+			var code;
+			var started;
+
+			function createRiddle() {
+				var p = document.getElementById('solution');
+				p.textContent = '♛ '+POSITIONAL_NOTATION_SYSTEM_SOLUTION;
+				code = parseInt(POSITIONAL_NOTATION_SYSTEM_DECIMAL.toString(POSITIONAL_NOTATION_SYSTEM_BASE)).toString(2);
+				started = false;
+				document.getElementById('progress').setAttribute('data-size',code.length);
+				document.getElementById('solution').style.display = 'none';
+				document.getElementById('progress').style.display = 'none';
+				console.log(code);
+			}
+
+			var firstClick = false;
+			function clickRemote() {
+				if (firstClick) {
+					console.log('double click');
+					firstClick = false;
+					clearTimeout(clickTimeout);
+					if (!started) start(); else proceed(1);
+				}
+				else {
+					clickTimeout = setTimeout(function() {
+						console.log('click');
+						firstClick = false;
+						if (!started) lose(); else proceed(0);
+					},200);
+					firstClick = true;
+				}
+			}
+
+			function start() {
+				if (!started) {
+					document.getElementById('rick-astley').style.display = 'none';
+					started = true;
+					showCode();
+				}
+			}
+
+			function showCode() {
+				document.getElementById('progress').style.display = 'block';
+				var size = document.getElementById('progress').getAttribute('data-size');
+				document.getElementById('progressindex').style.width = ((size-code.length)/size*100)+'%';
+				console.log((size-code.length)/size);
+				if (code.length==0)
+					win();
+			}
+
+			function win() {
+				document.getElementById('solution').style.display = 'block';
+			}
+
+			function lose() {
+				if (document.getElementById('rick-astley').style.display=='block')
+					document.getElementById('rick-astley').style.display = 'none';
+				else
+					document.getElementById('rick-astley').style.display = 'block';
+				createRiddle();
+			}
+
+			function proceed(num) {
+				if (num==parseInt(code[0])) {
+					console.log('correct');
+					code = code.substr(1);
+					showCode();
+				}
+				else {
+					console.log('wrong');
+					lose();
+				}
+				console.log(code);
+			}
+
+		</script>
+
 		<link rel="stylesheet" type="text/css" href="../default.css" />
 		<style>
 
@@ -24,16 +103,61 @@
 				background-color: rgba(210,255,255,0.0);
 			}
 
+			#rick-astley, #progress {
+				position: absolute;
+				display: block;
+				left: 76vh;
+				top: 24.3vh;
+				width: 75vh;
+				height: 48.5vh;
+				transform: perspective(25vh) rotateY(2.3deg) rotateZ(0.1deg) rotateX(-0.9deg);
+				display: none;
+			}
+
+			#solution {
+				font-size: 9vh;
+				font-family: 'Ada';
+				text-align: center;
+			}
+
+			#progress {
+				padding: 5vh;
+				color: #333;
+				font-size: 2.5vh;
+				font-family: 'Ada';
+			}
+
+			#progressbar {
+				width: 100%;
+				border: 1px #333 solid;
+				height: 2vh;
+			}
+
+			#progressindex {
+				display: block;
+				float: left;
+				width: 0;
+				height: 100%;
+				background-color: #9999A0;
+			}
+
 		</style>
 	</head>
-	<body>
+	<body onload="createRiddle();">
 		<header>
 
 		</header>
 		<main>
-			<img src="../images/rick-astley.gif" style="position: absolute;left: 76vh;top: 24.3vh;width: 75vh;height: 48.5vh;transform: perspective(25vh) rotateY(2.3deg) rotateZ(0.1deg) rotateX(-0.9deg);" />
+			<div id="progress">
+				<p>Loading...</p>
+				<div id="progressbar"><div id="progressindex"></div></div>
+				<p id="solution"></p>
+			</div>
+			<img id="rick-astley" src="../images/rick-astley.gif" />
+			<a href="#" onclick="clickRemote(); return false;" style="left: 154.2vh; top: 73.3vh; width: 3.1vh; height: 7.6vh; transform: skew(68deg,-21deg);"></a>
 		</main>
 		<footer>
 		</footer>
+		<a class="close" href="#" onclick="window.history.back(); return false;">x</a>
 	</body>
 </html>
