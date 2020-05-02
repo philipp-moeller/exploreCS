@@ -9,8 +9,8 @@
 	--book-y: 12vh;
 	--book-w: 91vh;
 	--book-h: 63vh;
-	--book-distance: 20vh;
-	--book-tilt: 7.2;
+	--book-distance: 62vh;
+	--book-tilt: 21;
 	--book-rotate: 1;
 	--book-padding: 3.5vh;
 	--book-inner-width: calc(var(--book-w) - 2 * var(--book-padding));
@@ -72,8 +72,8 @@ header, footer, main {
 header {
 	position: absolute;
 	height: var(--header-height);
-	top: calc(var(--book-tilt) / 3.14 * var(--book-padding));
-	left: calc(var(--book-tilt) / 3.14 * var(--book-padding));
+	top: calc(var(--book-tilt) / 10 * var(--book-padding));
+	left: calc(var(--book-tilt) / 10 * var(--book-padding));
 	width: var(--page-width);
 }
 

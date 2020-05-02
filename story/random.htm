@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+	<head>
+		<title>Willkommen</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" type="text/css" href="../default.css" />
+		<link rel="stylesheet" type="text/css" href="../book.css" />
+
+		<script>
+
+			function randomize() {
+				var main = document.getElementsByTagName('main').item(0);
+				main.setAttribute('data-before',Array.from({length: 10}, () => Math.floor(Math.random() * 10**Math.floor(Math.random() * 6))));
+				main.setAttribute('data-after',Array.from({length: 10}, () => Math.floor(Math.random() * 10**Math.floor(Math.random() * 6))));
+			}
+
+		</script>
+
+	</head>
+	<body>
+		<header>
+			<h1 class="ada">Lorem Ipsum</h1>
+		</header>
+		<main data-before="39,1227,7110,91" data-after="202,34">
+		</main>
+		<footer>
+		</footer>
+		<a class="close" href="map.htm">x</a>
+	</body>
+	<script>randomize();</script>
+	<script type="text/javascript" src="../book.js"></script>
+</html>
