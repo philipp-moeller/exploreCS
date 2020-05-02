@@ -97,9 +97,12 @@ for (elem of body.children) {
 if (!closeable) {
 	var close = document.createElement('a');
 	close.className = 'close';
-	close.setAttribute('href','story/map.htm');
+	close.setAttribute('href','#');
+	close.onclick = function() { window.history.back() };
 	close.textContent = 'x';
 	body.appendChild(close);
 }
 
-goToPage(0);
+body.onload = function() {
+	goToPage(0);
+};
