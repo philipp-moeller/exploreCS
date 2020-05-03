@@ -26,6 +26,13 @@
 	font-weight: bold;
 }
 
+@font-face {
+	font-family: 'Impact';
+	src: local('Impact'), url('fonts/Impact.ttf') format('truetype');
+	font-display: swap;
+	font-weight: bold;
+}
+
 
 :root {
 	--border-default-style: 1px #ddd solid;

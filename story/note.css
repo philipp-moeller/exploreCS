@@ -2,8 +2,8 @@
 
 	/* default note data */
 
-	--header-height: 5em;
-	--lines-per-page: 32;
+	--header-height: 3em;
+	--lines-per-page: 20;
 
 	--note-x: 80vh;
 	--note-y: 15vh;
@@ -185,7 +185,7 @@ h2, h3, h4 {
 	font-weight: bold;
 	font-variant: normal;
 	margin: 0;
-	padding: 1em 0 0.5em;
+	padding: 0.5em 0 0.25em;
 }
 
 section {

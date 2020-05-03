@@ -8,17 +8,14 @@
 		<script type="text/javascript" src="riddle.js"></script>
 		<script>
 
-			var code, validCode;
-			var started;
+			var code = '';
+			var validCode;
+			var started = false;
 
 			function createRiddle() {
-				var p = document.getElementById('solution');
-				p.textContent = '♛ '+POSITIONAL_NOTATION_SYSTEM_SOLUTION;
+				var span = document.getElementById('solution');
+				span.textContent = 'Lösung: '+POSITIONAL_NOTATION_SYSTEM_SOLUTION;
 				validCode = parseInt(POSITIONAL_NOTATION_SYSTEM_DECIMAL.toString(POSITIONAL_NOTATION_SYSTEM_BASE)).toString(2);
-				started = false;
-				document.getElementById('progress').setAttribute('data-size',code.length);
-				document.getElementById('solution').style.display = 'none';
-				document.getElementById('progress').style.display = 'none';
 			}
 
 			var firstClick = false;
@@ -39,44 +36,44 @@
 
 			function start() {
 				if (!started) {
-					document.getElementById('rick-astley').style.display = 'none';
 					started = true;
+					document.getElementById('lose').style.display = 'none';
+					document.getElementById('win').style.display = 'none';
+					document.getElementById('progress').style.display = 'block';
 					showCode();
 				}
 			}
 
 			function showCode() {
-				var progress = document.getElementById('progress');
-				progress.style.display = 'block';
-				var size = progress.getAttribute('data-size');
-				progress.children[1].textContent = '*'.repeat(size-code.length);
-				if (code.length==0)
-					win();
+				document.getElementById('progress').children[1].textContent = '*'.repeat(code.length);
 			}
 
 			function win() {
-				document.getElementById('solution').style.display = 'block';
+				document.getElementById('progress').style.display = 'none';
+				document.getElementById('win').style.display = 'block';
 			}
 
 			function lose() {
-				if (document.getElementById('rick-astley').style.display=='block')
-					document.getElementById('rick-astley').style.display = 'none';
+				document.getElementById('progress').style.display = 'none';
+				if (document.getElementById('lose').style.display=='block' || document.getElementById('win').style.display=='block') {
+					document.getElementById('win').style.display = 'none';
+					document.getElementById('lose').style.display = 'none';
+				}
 				else
-					document.getElementById('rick-astley').style.display = 'block';
-				createRiddle();
+					document.getElementById('lose').style.display = 'block';
 			}
 
 			function proceed(num) {
 				code += num.toString();
-				if (num==parseInt(code[0])) {
-					console.log('correct');
-					showCode();
+				showCode();
+				if (code.length==validCode.length) {
+					if (code==validCode)
+						win();
+					else
+						lose();
+					code = '';
+					started = false;
 				}
-				else {
-					console.log('wrong');
-					lose();
-				}
-				console.log(code);
 			}
 
 		</script>
@@ -100,25 +97,51 @@
 				background-color: rgba(210,255,255,0.0);
 			}
 
-			#rick-astley, #progress {
+			.television {
 				position: absolute;
-				display: block;
+				display: none;
 				left: 76vh;
 				top: 24.3vh;
 				width: 75vh;
 				height: 48.5vh;
 				transform: perspective(25vh) rotateY(2.3deg) rotateZ(0.1deg) rotateX(-0.9deg);
-				display: none;
+				filter: grayscale(0.5);
+			}
+
+			.television * {
+			}
+
+			.television span {
+				position: absolute;
+				left: 0;
+				bottom: 2vh;
+				width: 100%;
+			}
+
+			.television img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+			}
+
+			.meme {
+				font-family: 'Impact';
+				color: #ddd;
+				font-size: 5vh;
+				text-shadow: -0.3vh 0.3vh 0 #111, 0.3vh 0.3vh 0 #111, 0.3vh -0.3vh 0 #111, -0.3vh -0.3vh 0 #111;
 			}
 
 			#solution {
-				font-size: 9vh;
-				font-family: 'Ada';
+				display: block;
 				text-align: center;
+				font-size: 7vh;
 			}
 
 			#progress {
-				padding: 5vh;
+				padding: 0 5vh;
 				color: #333;
 				font-size: 2.5vh;
 				font-family: 'Ada';
@@ -126,9 +149,10 @@
 
 			#progressbar {
 				width: 100%;
-				border: 1px #333 solid;
-				height: 5vh;
-				font-size: 1.5em;
+				border: 0.3vh #333 solid;
+				height: 7vh;
+				font-size: 6vh;
+				letter-spacing: 3vh;
 				text-align: center;
 			}
 
@@ -139,12 +163,12 @@
 
 		</header>
 		<main>
-			<div id="progress">
-				<p>Bitte Code eingeben...</p>
+			<div id="progress" class="television">
+				<p class="meme">Bitte Code eingeben...</p>
 				<div id="progressbar"></div>
-				<p id="solution"></p>
 			</div>
-			<img id="rick-astley" src="../images/rick-astley.gif" />
+			<div id="lose" class="television"><img src="images/rick-astley.gif" alt="Never gonna give you up..." /></div>
+			<div id="win" class="television meme"><img src="images/applause.gif" alt="Well done!" /><span id="solution"></span></div>
 			<a href="#" onclick="clickRemote(); return false;" style="left: 154.2vh; top: 73.3vh; width: 3.1vh; height: 7.6vh; transform: skew(68deg,-21deg);"></a>
 		</main>
 		<footer>

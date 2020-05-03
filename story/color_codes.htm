@@ -15,7 +15,7 @@
 			function loadColorCode() {
 				var section = document.getElementById('colors');
 				for (var i=0; i<COLORS_HEX.length; i++) {
-					section.innerHTML += '<tr><td>'+i+':</td><td>'+COLORS_HEX[i]+'</td><td>'+(i<2 ? scribble(COLORS_HEX[i]) : '')+'</td></tr>';
+					section.innerHTML += '<p>'+i+': &nbsp; '+COLORS_HEX[i]+' &nbsp; '+(i<2 ? scribble(COLORS_HEX[i]) : '')+'</p>';
 				}
 			}
 
@@ -27,20 +27,33 @@
 
 			/* special styles */
 
-			h1.ada {
+			main * {
 				font-family: 'Ada';
 			}
 
 			#colors {
-				font-family: 'Scene';
-				font-size: 1.6em;
-				transform: rotate(4deg);
+				font-size: 1em;
+				transform: rotate(-4deg);
 				margin-left: calc(var(--large-gap) * 5);
 			}
 
-			#colors td {
-				vertical-align: middle;
+			#colors p {
+				margin: 0;
 				padding: calc(var(--small-gap) / 2);
+			}
+
+			#colors p:nth-child(4n) {
+				transform: rotate(1deg);
+				margin-left: 1vh;
+			}
+
+			#colors p:nth-child(3n+1) {
+				transform: rotate(-2deg);
+			}
+
+			#colors p:nth-child(5n+2) {
+				transform: rotate(2deg);
+				margin-left: 0.5vh;
 			}
 
 			#colors svg {
@@ -52,11 +65,12 @@
 	</head>
 	<body onload="loadColorCode();">
 		<header>
-			<h1 class="ada">Dreifarbentheorie</h1>
 		</header>
 		<main>
+			<h2>Dreifarbentheorie</h2>
 			<section>
-				<table id="colors"></table>
+				<p>Falls du einmal einer Farbe eine Zahl zuordnen musst...</p>
+				<div id="colors"></div>
 			</section>
 		</main>
 		<footer>
