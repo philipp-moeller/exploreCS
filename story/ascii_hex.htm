@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 <html lang="de-DE">
 	<head>
-		<title>Ascii-Code</title>
+		<title></title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<script type="text/javascript" src="riddle.js"></script>
 		<script>
 
-			// copy from ascii_code.htm
+			// copy from /ascii_code.htm
 
-			// default values
 			const ASCII = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-			const BIN = 2;
-			const DEC = 10;
-			const HEX = 16;
 
-			// converting numbers and chars
 			function dec2hex(val) {
 				var hex = val.toString(16);
 				return val==='' ? '' : (val<16 ? '0'+hex : hex);
@@ -33,7 +28,7 @@
 				return str.split('').map(char2hex).join(' ');
 			}
 
-			// create Riddle
+			// create riddle
 
 			function createRiddle() {
 				var encoded = '';
@@ -45,8 +40,8 @@
 
 		</script>
 
-		<link rel="stylesheet" type="text/css" href="../default.css" />
-		<link rel="stylesheet" type="text/css" href="../book.css" />
+		<link rel="stylesheet" type="text/css" href="default.css" />
+		<link rel="stylesheet" type="text/css" href="book.css" />
 		<style>
 
 			.note {
@@ -56,11 +51,6 @@
 				top: calc(var(--page-height) - var(--page-width));
 				background: #ffc;
 				text-align: center;
-			}
-
-			p.ada {
-				font-family: 'Ada';
-				font-size: 1.4em;
 			}
 
 		</style>
@@ -81,6 +71,6 @@
 		<footer>
 		</footer>
 	</body>
-	<script type="text/javascript" src="../book.js"></script>
-
+	<!-- initialize book -->
+	<script type="text/javascript" src="book.js"></script>
 </html>

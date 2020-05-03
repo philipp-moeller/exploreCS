@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="riddle.js"></script>
 		<script>
 
-			// copy from caesar_verschluesselung.htm
+			// copy from /caesar_verschluesselung.htm
 
 			const UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -20,20 +20,19 @@
 				}).join('');
 			}
 
+			// create riddle
+
 			function createRiddle() {
-				console.log(caesar(HUFFMAN_CAESAR,HUFFMAN_CAESAR_SHIFT));
 				document.getElementById('riddle').textContent = caesar(HUFFMAN_CAESAR,HUFFMAN_CAESAR_SHIFT);
 			}
 
 		</script>
 
-		<link rel="stylesheet" type="text/css" href="../default.css" />
-		<link rel="stylesheet" type="text/css" href="../book.css" />
+		<link rel="stylesheet" type="text/css" href="default.css" />
+		<link rel="stylesheet" type="text/css" href="book.css" />
 		<style>
 
-			/* special styles */
-
-			.ada {
+			.background-note {
 				font-family: 'Ada';
 				font-size: 4.4em;
 				transform: rotate(-3deg);
@@ -54,12 +53,12 @@
 				<p>Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis.</p>
 				<p id="riddle"></p>
 				<p>Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
-				<div class="ada">[A-Z]</div>
+				<div class="background-note">[A-Z]</div>
 			</section>
 		</main>
 		<footer>
 		</footer>
 	</body>
+	<!-- initialize book -->
 	<script type="text/javascript" src="../book.js"></script>
-
 </html>
