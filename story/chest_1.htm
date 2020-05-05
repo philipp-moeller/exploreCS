@@ -84,7 +84,7 @@
 			/* special styles */
 
 			body {
-				background-image: url('images/television.jpg');
+				background-image: url('images/chest_1.jpg');
 			}
 
 			main a {
@@ -97,15 +97,13 @@
 				background-color: rgba(210,255,255,0.0);
 			}
 
-			.television {
+			.chest {
 				position: absolute;
-				display: none;
-				left: 76vh;
-				top: 24.3vh;
-				width: 75vh;
-				height: 48.5vh;
-				transform: perspective(25vh) rotateY(2.3deg) rotateZ(0.1deg) rotateX(-0.9deg);
-				filter: grayscale(0.5);
+				transform: skew(1deg,-3deg);
+				text-align: center;
+				font-size: 5vh;
+				padding-top: 2vh;
+				color: #555;
 			}
 
 			.television * {
@@ -163,13 +161,7 @@
 
 		</header>
 		<main>
-			<div id="progress" class="television">
-				<p class="meme">♛ Bitte Code eingeben...</p>
-				<div id="progressbar"></div>
-			</div>
-			<div id="lose" class="television"><img src="images/rick-astley.gif" alt="Never gonna give you up..." /></div>
-			<div id="win" class="television meme"><img src="images/applause.gif" alt="Well done!" /><span id="solution"></span></div>
-			<a href="#" onclick="clickRemote(); return false;" style="left: 154.2vh; top: 73.3vh; width: 3.1vh; height: 7.6vh; transform: skew(68deg,-21deg);"></a>
+			<span class="chest" style="left: 97.5vh; top: 41.3vh; width: 7.3vh; height: 11.1vh;">♜</span>
 		</main>
 		<footer>
 		</footer>

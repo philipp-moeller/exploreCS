@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+	<head>
+		<title>Farbkodierung</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script type="text/javascript" src="riddle.js"></script>
+		<script>
+
+			function createRiddle() {
+				document.getElementById('riddle').textContent = POSITIONAL_NOTATION_SYSTEM_DECIMAL.toString(POSITIONAL_NOTATION_SYSTEM_BASE)+' aus dem '+POSITIONAL_NOTATION_SYSTEM_BASE+'er-System in Binär';
+			}
+
+		</script>
+
+		<link rel="stylesheet" type="text/css" href="default.css" />
+		<link rel="stylesheet" type="text/css" href="note.css" />
+		<style>
+
+			:root {
+				--note-x: 92vh;
+				--note-y: 35vh;
+				--note-w: 37vh;
+				--note-h: 50vh;
+				--note-distance: 62vh;
+				--note-tilt: 15;
+				--note-rotate: -2.5;
+				--note-padding: 2vh;
+				--note-inner-width: calc(var(--note-w) - 2 * var(--note-padding));
+				--note-inner-height: calc(var(--note-h) - 3 * var(--note-padding));
+			}
+
+			body {
+				background-image: url('images/magazine_1.jpg');
+			}
+
+			main {
+				overflow: visible;
+			}
+
+			main h2 {
+				position: absolute;
+				left: 0vh;
+				top: 0vh;
+				height: 6vh;
+				width: 22.5vh;
+				background-color: rgba(128,0,0,0.5);
+			}
+
+			main h2::before {
+				content: '';
+				position: absolute;
+				top: 6vh;
+				left: 0vh;
+				width: 0;
+				height: 0;
+				border-style: solid;
+				border-width: 6vh 22.5vh 0 0;
+				border-color: rgba(128,0,0,0.5) transparent transparent transparent;
+			}
+
+			main h2 span {
+				position: absolute;
+				transform: rotate(-8deg);
+				font-family: 'Impact';
+				font-size: 5vh;
+				left: 3vh;
+				top: 2vh;
+				color: #fff;
+			}
+
+			main > img {
+				position: absolute;
+				left: 9vh;
+				bottom: 0.3vh;
+				width: 28vh;
+				filter: brightness(200%) contrast(33%);
+			}
+
+			main > section {
+				font-family: 'Impact';
+				color: #333;
+				font-size: 0.8em;
+				text-shadow: -0.3vh 0.3vh 0 #fff, 0.3vh 0.3vh 0 #fff, 0.3vh -0.3vh 0 #fff, -0.3vh -0.3vh 0 #fff;
+				position: absolute;
+				top: 14vh;
+				left: 1vh;
+				width: 15vh;
+			}
+
+			.note {
+				font-family: 'Ada';
+				font-size: 0.9em;
+				left: calc(var(--page-width));
+				top: calc(var(--page-height) - var(--page-width));
+				background: #ffc;
+				text-align: center;
+				padding-top: 1.2em;
+			}
+
+		</style>
+	</head>
+	<body onload="createRiddle();">
+		<header>
+		</header>
+		<main>
+			<h2><span>♛ Ada</span></h2>
+			<img src="images/model.png" alt="Foto" />
+			<section>
+				<p>Wassermelonen-Diät, ja oder nein?</p>
+				<p id="riddle">r</p>
+				<p>Beauty, Ernährung, Gesundheit</p>
+			</section>
+			<div class="note"><strong>Anleitung für Fernbedienung:</strong><br /><br />Klick 0, Klick 0, Doppelklick 1</div>
+		</main>
+		<footer>
+		</footer>
+		<a class="close" href="#" onclick="window.history.back(); return false;">x</a>
+	</body>
+</html>
