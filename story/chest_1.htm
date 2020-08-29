@@ -13,9 +13,10 @@
 			var started = false;
 
 			function createRiddle() {
-				var span = document.getElementById('solution');
-				span.textContent = 'Lösung: '+POSITIONAL_NOTATION_SYSTEM_SOLUTION;
-				validCode = parseInt(POSITIONAL_NOTATION_SYSTEM_DECIMAL.toString(POSITIONAL_NOTATION_SYSTEM_BASE)).toString(2);
+				var riddle = document.getElementById('riddle').children();
+				for (var i=0; i<riddle.length; i++) {
+					
+				}
 			}
 
 			var firstClick = false;
@@ -106,25 +107,6 @@
 				color: #555;
 			}
 
-			.television * {
-			}
-
-			.television span {
-				position: absolute;
-				left: 0;
-				bottom: 2vh;
-				width: 100%;
-			}
-
-			.television img {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				z-index: -1;
-			}
-
 			.meme {
 				font-family: 'Impact';
 				color: #ddd;
@@ -162,9 +144,14 @@
 		</header>
 		<main>
 			<span class="chest" style="left: 97.5vh; top: 41.3vh; width: 7.3vh; height: 11.1vh;">♜</span>
+			<table id="riddle" class="chest" style="left: 90.5vh; top: 55.5vh; width: 22vh; height: 17vh;">
+				<tr><td></td><td></td><td></td><td></td></tr>
+				<tr><td></td><td></td><td></td><td></td></tr>
+				<tr><td></td><td></td><td></td><td></td></tr>
+			</table>
 		</main>
 		<footer>
 		</footer>
-		<a class="close" href="#" onclick="window.history.back(); return false;">x</a>
+		<a class="close" href="room_1.htm">x</a>
 	</body>
 </html>
