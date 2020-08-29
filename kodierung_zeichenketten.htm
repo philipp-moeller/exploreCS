@@ -277,7 +277,7 @@
 	</head>
 	<body id="kodierung_zeichenketten" onload="encode();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" style="text-decoration: none;" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>Kodierung von Zeichenketten</h1>
 		</header>
@@ -303,16 +303,16 @@
 					</div>
 				</form>
 				<form id="alphabet"></form>
-				<p id="not-unique">Die Kodierung ist nicht eindeutig.</p>
+				<p id="not-unique">Die Kodierung ist nicht eindeutig. Eine Möglichkeit eine eindeutige Kodierung zu erreichen, besteht darin, jedem Zeichen eine gleichlange aber verschiedene Folge von Nullen und Einsen zuzuordnen.</p>
 			</section>
 			<section id="encoding">
 				<h2>Binäre Repräsentation</h2>
 				<p>Die Belegung der Zeichen ist gültig. Mit dieser Kodierung belegt der Text <span id="bitlength">0</span> Bit im Speicher.</p>
 				<span id="encoded"></span>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
-				<p>Formuliere eine allgemeine Strategie, mit der du eine gültige Kodierung der benötigten Zeichen findest.</p>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
+				<p>Beschreibe eine weitere Möglichkeit, eine eindeutige Kodierung systematisch zu konstruieren.</p>
 			</section>
 		</main>
 		<footer>

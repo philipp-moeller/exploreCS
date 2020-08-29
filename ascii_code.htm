@@ -28,6 +28,10 @@
 			const DEC = 10;
 			const HEX = 16;
 
+			const EXAMPLE = {
+				text: 'American Standard Code for Information Interchange!'
+			}
+
 			// converting numbers and chars
 			function dec2bin(val,len) {
 				var bin = val.toString(2);
@@ -58,6 +62,7 @@
 			}
 
 			function validate() {
+				document.getElementById('example').style.display = 'none';
 				// validate decoded
 				var rgxd = new RegExp('[^'+ASCII+']','g');
 				var decoded = document.getElementById('decoded').value;
@@ -100,6 +105,12 @@
 				var decoded = (encoded.length>0) ? encoded.split(' ').map(convert).join('') : '';
 				document.getElementById('decoded').value = decoded;
 				return decoded;
+			}
+
+			function drawExample() {
+				document.getElementById('example').style.display = 'none';
+				document.getElementById('decoded').value = EXAMPLE.text;
+				encode();
 			}
 
 		</script>
@@ -203,6 +214,13 @@
 
 			/* special styles */
 
+			#example {
+				position: absolute;
+				padding-top: 72px;
+				left: calc(50% - 14px);
+				font-size: 24px;
+				text-decoration: none;
+			}
 			#decoded, #encoded {
 				display: block;
 				width: 100%;
@@ -220,7 +238,7 @@
 	</head>
 	<body id="ascii_code">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" style="text-decoration: none;" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>ASCII-Code</h1>
 		</header>
@@ -233,6 +251,7 @@
 				<h2>ASCII-Code</h2>
 				<p class="text">Der ASCII-Code kodiert 95 druckbare Zeichen und 33 nicht druckbare Zeichen (z.B. Steuerzeichen) in Binärzahlen der Länge 7 Bit.</p>
 				<form>
+					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
 					<textarea id="decoded" oninput="validate(); encode();" rows="8"></textarea>
 					<textarea id="encoded" oninput="validate(); decode();" rows="8"></textarea>
 					<div id="format">
@@ -245,9 +264,9 @@
 					</div>
 				</form>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
-				<p>Beschreibe Bereiche im ASCII-Code die Sonderzeichen, Buchstaben und Zahlen enthalten. Begründe mithilfe der Zahlensysteme, weshalb die Bereiche so gewählt wurden.</p>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
+				<p>Beschreibe welche Bereiche im ASCII-Code Sonderzeichen, Buchstaben und Zahlen enthalten. Begründe mithilfe der Zahlensysteme, weshalb die Bereiche so gewählt wurden.</p>
 			</section>
 		</main>
 		<footer>
