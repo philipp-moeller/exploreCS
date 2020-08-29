@@ -60,7 +60,7 @@
 					else
 						return false;
 				}
-				draw(ctx,cx,cy) {
+				draw(ctx,cx,cy,code) {
 					var radius = size/3;
 					var length = size*4/5;
 					if (this.root!=null) {
@@ -71,7 +71,7 @@
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(lx,ly);
 							ctx.stroke();
-							this.left.draw(ctx,lx,ly);
+							this.left.draw(ctx,lx,ly,code);
 						}
 						if (this.right.root!=null) {
 							var rx = cx+(size/2)*2**(this.depth()-1);
@@ -80,7 +80,7 @@
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(rx,ry);
 							ctx.stroke();
-							this.right.draw(ctx,rx,ry);
+							this.right.draw(ctx,rx,ry,code);
 						}
 						ctx.fillStyle = '#eee';
 						if (this.root.char==null) {
@@ -107,7 +107,8 @@
 							ctx.font = length/4+'px Sans-Serif';
 							ctx.fillText(this.root.char,cx-length/4,cy-length/4+length/12);
 							ctx.fillText(this.root.quantity,cx+length/4,cy-length/4+length/12);
-							ctx.fillText(alphabet[this.root.char],cx,cy+length/4+length/12);
+							if (code)
+								ctx.fillText(alphabet[this.root.char],cx,cy+length/4+length/12);
 						}
 					}
 				}
@@ -128,6 +129,7 @@
 			// default values
 			const EXAMPLE = 'TRES TRISTES TIGRES';
 			const MIN_ROW_HEIGHT = 10;
+			const VALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 			var size = 40;
 			var alphabet = {};
 			var nodes = [];
@@ -139,7 +141,6 @@
 				alphabetFromText();
 				document.getElementById('input').value = text;
 				alphabetFromText();
-				encode();
 			}
 
 			function alphabetFromText() {
@@ -188,9 +189,11 @@
 			}
 
 			function validate() {
+				document.getElementById('example').style.display = 'none';
 				var input = document.getElementById('input');
 				input.value = input.value.replace(/[\t\n\r]/g,'');
-				document.getElementById('example').style.display = 'none';
+				input.value = input.value.toUpperCase();
+				input.value = input.value.split('').filter(char => VALID_CHARS.indexOf(char)!=-1 || char==' ').join('');
 				var alphabetElements = document.getElementsByClassName('alphabet');
 				for (var i=0; i<alphabetElements.length; i++) {
 					alphabetElements[i].children[1].value = alphabetElements[i].children[1].value.replace(/[^01]/g,'');
@@ -198,9 +201,13 @@
 			}
 
 			// concrete huffman algorithm
-			function encode() {
+			function encode(step) {
+				var step = step==undefined ? nodes.length-1 : Math.max(1,Math.min(nodes.length-1,step));
+				document.getElementById('step').setAttribute('data-step',step);
+				document.getElementById('step').innerText = 'Schritt '+step.toString()+' von '+(nodes.length-1).toString();
 				// create tree from alphabet nodes
-				while (nodes.length>1) {
+				depth = nodes.length-step;
+				while (nodes.length>depth) {
 					// select two nodes with smallest quantitiy
 					var smallest = [0,1];
 					if (nodes[smallest[0]].quantity>nodes[smallest[1]].quantity)
@@ -217,7 +224,7 @@
 					// add new Node with nodes left and right
 					var left = nodes.splice(Math.max(smallest[0],smallest[1]),1)[0];
 					var right = nodes.splice(Math.min(smallest[0],smallest[1]),1)[0];
-					nodes.push(new Node(null,left.quantity+right.quantity,left,right));
+					nodes.unshift(new Node(null,left.quantity+right.quantity,left,right));
 				}
 				tree = new BinaryTree(nodes[0]);
 
@@ -227,7 +234,7 @@
 						alphabet[char] = tree.find(char);
 					}
 					document.getElementById('tree').parentElement.style.display = '';
-					document.getElementById('encoding').parentElement.style.display = '';
+					document.getElementById('encoding').parentElement.style.display = nodes.length==1 ? '' : 'none';
 				}
 				else {
 					for (char in alphabet) {
@@ -260,7 +267,7 @@
 				var canvas = document.getElementById('tree');
 				var ctx = canvas.getContext('2d');
 				ctx.clearRect(0,0,canvas.width,canvas.height);
-				tree.draw(ctx,canvas.width/2,size/2);
+				tree.draw(ctx,canvas.width/2,size/2,nodes.length==1);
 			}
 
 			function redraw() {
@@ -269,6 +276,12 @@
 				size = Math.min(100,canvas.width/tree.width());
 				canvas.setAttribute('height',Math.max(MIN_ROW_HEIGHT,size)*tree.height());
 				draw();
+			}
+
+			function huffman(step) {
+				validate();
+				alphabetFromText();
+				encode(step);
 			}
 
 			function drawExample() {
@@ -433,11 +446,15 @@
 			#encoded:empty {
 				display: none;
 			}
+			.huffman-control {
+				height: 2em;
+				width: 2em;
+			}
 		</style>
 	</head>
 	<body id="huffman_kodierung" onload="encode();" onresize="redraw();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" style="text-decoration: none;" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>Huffman Kodierung</h1>
 		</header>
@@ -450,7 +467,7 @@
 				<h2>Eingabe</h2>
 				<form>
 					<a id="example" href="#" onclick="drawExample(); return false;">🧩</a>
-					<textarea id="input" rows="4" oninput="validate(); alphabetFromText(); encode();"></textarea>
+					<textarea id="input" rows="4" oninput="huffman();"></textarea>
 				</form>
 			</section>
 			<section>
@@ -466,6 +483,9 @@
 			</section>
 			<section>
 				<h2>Huffman Baum</h2>
+				<input class="huffman-control" type="button" value="&#9664;" onclick="huffman(parseInt(document.getElementById('step').getAttribute('data-step'))-1);" />
+				<input class="huffman-control" type="button" value="&#9654;" onclick="huffman(parseInt(document.getElementById('step').getAttribute('data-step'))+1);" />
+				<span id="step" data-step="0"></span>
 				<canvas id="tree"></canvas>
 			</section>
 			<section>
@@ -474,9 +494,9 @@
 				<p>Mit der Huffman Kodierung lässt sich der Text in <span id="encoded-bits">0</span> Bit darstellen. Dies entspricht einer Einsparung von <span id="rate-simple">0</span>% gegenüber der Kodierung durch Bitfolgen gleicher Länge und <span id="rate-ascii">0</span>% gegenüber der Darstellung in einem gewöhnlichen 8-bit Zeichensatz.</p>
 				<span id="encoded"></span>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
-				<p>Begründe, weshalb bei der Übertragung einer Huffman-kodierten Zeichenkette das Alphabet mit übermittelt werden muss. Schätze ab, wieviel Bit zur Übertragung des Alphabets nötig sind.</p>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
+				<p>Begründe, weshalb bei der Übertragung einer so kodierten Zeichenkette das Alphabet mit der Nachricht übermittelt werden muss. Schätze ab, wieviel Bit zur Übertragung des Alphabets nötig sind.</p>
 			</section>
 		</main>
 		<footer>
