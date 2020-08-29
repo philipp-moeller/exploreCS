@@ -252,9 +252,9 @@
 		</style>
 		<link rel="stylesheet" type="text/css" href="theme.css" />
 	</head>
-	<body onload="redraw();" onresize="redraw();">
+	<body id="stellenwertsysteme" onload="redraw();" onresize="redraw();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" style="text-decoration: none;" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>Stellenwertsysteme</h1>
 		</header>
@@ -278,8 +278,8 @@
 					<canvas id="image"></canvas>
 				</div>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
 				<p>Beschreibe einen Zusammenhang zwischen der Anzahl der verfügbaren Ziffern und der größten möglichen achtstelligen Zahl.</p>
 			</section>
 		</main>

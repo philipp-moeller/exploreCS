@@ -138,6 +138,7 @@
 				--large-gap: 8px;
 				--monospace-font-size: 16px;
 				--monospace-font-family: monospace;
+				--canvas-background-color: #eee;
 			}
 			* {
 				box-sizing: border-box;
@@ -202,7 +203,7 @@
 			section, form {
 				overflow: auto;
 			}
-			input {
+			input, textarea {
 				border: var(--border-default-style);
 				padding: var(--small-gap);
 				font-family: var(--monospace-font-family);
@@ -260,7 +261,7 @@
 				margin: var(--large-gap) auto;
 			}
 			#image {
-				background-color: #eee;
+				background-color: var(--canvas-background-color);
 				width: 100%;
 			}
 			#example {
@@ -277,7 +278,7 @@
 		</style>
 		<link rel="stylesheet" type="text/css" href="theme.css" />
 	</head>
-	<body onload="reduceProperties();">
+	<body id="vektorgrafiken" onload="reduceProperties();">
 		<header>
 			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
