@@ -323,7 +323,7 @@
 	</head>
 	<body id="farbige_rastergrafiken" onload="redraw();" onresize="redraw();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" style="text-decoration: none;" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>Kodierung farbiger Rastergrafiken</h1>
 		</header>
@@ -364,8 +364,8 @@
 					<canvas id="image"></canvas>
 				</div>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
 				<p>Entwirf ein Verfahren, ein Bild mit weniger Zeichen zu kodieren. Gib auch an, welche Absprachen mit dem Empfänger des Bildes getroffen werden müssen.</p>
 			</section>
 		</main>

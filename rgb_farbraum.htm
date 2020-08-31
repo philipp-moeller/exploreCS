@@ -251,6 +251,7 @@
 				display: none;
 				vertical-align: 4px;
 				width: 44px;
+				padding: 1px;
 			}
 			.component input[type=range] {
 				display: inline-block;
@@ -270,7 +271,7 @@
 	</head>
 	<body id="rgb_farbraum" onload="redraw();" onresize="redraw();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<!--<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />-->
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>RGB-Farbraum</h1>
 		</header>
@@ -327,10 +328,10 @@
 			</section>
 			<section>
 				<h2>Farbkodierung</h2>
-				<p class="text">Im RGB-Farbraum werden die Farbwerte durch drei Zahlen dargestellt. Der Zahlenbereich unterscheidet sich je nach Farbtiefe. Die obigen Mischfarben entsprechen den Kodierungen <span id="color-sub-dec" class="code">255,255,255</span> und <span id="color-add-dec" class="code">0,0,0</span>. Im Hexadezimalsystem können diese Farbwerte durch eine Zeichenkette mit konstanter Länge dargestellt werden: <span id="color-sub-hex" class="code">#ffffff</span> und <span id="color-add-hex" class="code">#000000</span>.</p>
+				<p>Im RGB-Farbraum werden die Farbwerte durch drei Zahlen dargestellt. Der Zahlenbereich unterscheidet sich je nach Farbtiefe. Die obigen Mischfarben entsprechen den Kodierungen <span id="color-sub-dec" class="code">255,255,255</span> und <span id="color-add-dec" class="code">0,0,0</span>. Im Hexadezimalsystem können diese Farbwerte durch eine Zeichenkette mit konstanter Länge dargestellt werden: <span id="color-sub-hex" class="code">#ffffff</span> und <span id="color-add-hex" class="code">#000000</span>.</p>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
 				<p></p>
 			</section>
 		</main>

@@ -27,7 +27,7 @@
 			const EXAMPLE = [
 				['rect','#1d2ddf',60,65,45,45],
 				['ellipse','#da1a1a',100,65,25,25],
-				['polyline','#ffeb2f',89,103,0,0,143,103,118,57]
+				['polyline','#ffeb2f',89,103,0,0,143,103,116,57]
 			]
 
 			function reduceProperties() {
@@ -279,7 +279,7 @@
 	</head>
 	<body id="vektorgrafiken" onload="reduceProperties();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<!-- <input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" /> -->
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>Vektorgrafiken</h1>
 		</header>
@@ -319,8 +319,8 @@
 				<h2>Quelltext</h2>
 				<textarea id="source" rows="6"></textarea>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
 				<p></p>
 			</section>
 		</main>

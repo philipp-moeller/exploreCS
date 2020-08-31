@@ -438,7 +438,7 @@
 	</head>
 	<body id="komprimierung_rastergrafiken" onload="redraw();" onresize="redraw();">
 		<header>
-			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" />
+			<input id="toggle-exercises" type="button" value="A" onclick="toggleExercises();" style="text-decoration: none;" />
 			<input id="toggle-text" type="button" value="T" onclick="toggleText();" />
 			<h1>Komprimierung von Rastergrafiken</h1>
 		</header>
@@ -488,9 +488,9 @@
 				<span id="compressing"></span>
 				<p>Länge: <span id="compressing-length">0</span> Zeichen</p>
 			</section>
-			<section id="exercises">
-				<h2>Aufgabe</h2>
-				<p>Beschreibe welche Bilder mit dem beschriebenen Verfahren besonders stark komprimiert werden.</p>
+			<section id="exercises" style="display: none;">
+				<h2>Weiterführende Aufgabe</h2>
+				<p>Beschreibe die Eigenschaften von Bildern, die mit dem beschriebenen Verfahren besonders stark komprimiert werden.</p>
 			</section>
 		</main>
 		<footer>
