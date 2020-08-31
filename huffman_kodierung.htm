@@ -60,7 +60,7 @@
 					else
 						return false;
 				}
-				draw(ctx,cx,cy,code) {
+				draw(ctx,cx,cy,size,code) {
 					var radius = size/3;
 					var length = size*4/5;
 					if (this.root!=null) {
@@ -71,7 +71,7 @@
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(lx,ly);
 							ctx.stroke();
-							this.left.draw(ctx,lx,ly,code);
+							this.left.draw(ctx,lx,ly,size,code);
 						}
 						if (this.right.root!=null) {
 							var rx = cx+(size/2)*2**(this.depth()-1);
@@ -80,7 +80,7 @@
 							ctx.moveTo(cx,cy);
 							ctx.lineTo(rx,ry);
 							ctx.stroke();
-							this.right.draw(ctx,rx,ry,code);
+							this.right.draw(ctx,rx,ry,size,code);
 						}
 						ctx.fillStyle = '#eee';
 						if (this.root.char==null) {
@@ -129,6 +129,7 @@
 			// default values
 			const EXAMPLE = 'TRES TRISTES TIGRES';
 			const MIN_ROW_HEIGHT = 10;
+			const THUMB_ROW_HEIGHT = 250;
 			const VALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 			var size = 40;
 			var alphabet = {};
@@ -202,11 +203,12 @@
 
 			// concrete huffman algorithm
 			function encode(step) {
-				var step = step==undefined ? nodes.length-1 : Math.max(1,Math.min(nodes.length-1,step));
+				var step = step==undefined ? nodes.length : Math.max(1,Math.min(nodes.length,step));
 				document.getElementById('step').setAttribute('data-step',step);
-				document.getElementById('step').innerText = 'Schritt '+step.toString()+' von '+(nodes.length-1).toString();
+				document.getElementById('step').innerText = 'Schritt '+step.toString()+' von '+nodes.length.toString();
 				// create tree from alphabet nodes
-				depth = nodes.length-step;
+				var depth = Math.max(1,nodes.length-step);
+				var code = step==nodes.length;
 				while (nodes.length>depth) {
 					// select two nodes with smallest quantitiy
 					var smallest = [0,1];
@@ -260,22 +262,30 @@
 					newChar.children[1].value = alphabet[char];
 					document.getElementById('encoding').appendChild(newChar);
 				}
-				redraw();
+				redraw(code);
 			}
 
-			function draw() {
+			function draw(code) {
 				var canvas = document.getElementById('tree');
 				var ctx = canvas.getContext('2d');
 				ctx.clearRect(0,0,canvas.width,canvas.height);
-				tree.draw(ctx,canvas.width/2,size/2,nodes.length==1);
+				tree.draw(ctx,canvas.width/2,size/2,size,code);
+				if (nodes.length>1) {
+					for (var i=1; i<nodes.length; i++) {
+						var incompleteTree = new BinaryTree(nodes[i]);
+						var incompleteWidth = canvas.width/(nodes.length-1);
+						var incompleteSize = Math.min(66,incompleteWidth/incompleteTree.width());
+						incompleteTree.draw(ctx,(i-0.5)*incompleteWidth,Math.max(MIN_ROW_HEIGHT,size)*tree.height()+(THUMB_ROW_HEIGHT-incompleteSize*incompleteTree.height())/2,incompleteSize,false);
+					}
+				}
 			}
 
-			function redraw() {
+			function redraw(code) {
 				var canvas = document.getElementById('tree');
 				canvas.setAttribute('width',canvas.clientWidth);
 				size = Math.min(100,canvas.width/tree.width());
-				canvas.setAttribute('height',Math.max(MIN_ROW_HEIGHT,size)*tree.height());
-				draw();
+				canvas.setAttribute('height',Math.max(MIN_ROW_HEIGHT,size)*tree.height()+(nodes.length>1 ? THUMB_ROW_HEIGHT : 0));
+				draw(code);
 			}
 
 			function huffman(step) {
@@ -450,6 +460,9 @@
 				height: 2em;
 				width: 2em;
 			}
+			#step {
+				padding: 0 0.3em;
+			}
 		</style>
 	</head>
 	<body id="huffman_kodierung" onload="encode();" onresize="redraw();">
@@ -484,8 +497,8 @@
 			<section>
 				<h2>Huffman Baum</h2>
 				<input class="huffman-control" type="button" value="&#9664;" onclick="huffman(parseInt(document.getElementById('step').getAttribute('data-step'))-1);" />
-				<input class="huffman-control" type="button" value="&#9654;" onclick="huffman(parseInt(document.getElementById('step').getAttribute('data-step'))+1);" />
 				<span id="step" data-step="0"></span>
+				<input class="huffman-control" type="button" value="&#9654;" onclick="huffman(parseInt(document.getElementById('step').getAttribute('data-step'))+1);" />
 				<canvas id="tree"></canvas>
 			</section>
 			<section>
